@@ -13,6 +13,10 @@
         var BlocksC = Backbone.Collection.extend({
             model: BlocksM,
 
+            comparator: function(item) {
+                return item.get("order");
+            },
+
             initialize: function(data) {
                 console.log("Initialized blocks collection");
                 this.JSON = { blocks: data };
@@ -125,20 +129,8 @@
 
                 console.log( this );
 
-                setTimeout(function() {
-                    $("#products").masonry({
-                        itemSelector : ".product",
-                        isFitWidth: true
-                    });
 
-                    $("#products .not-loaded").each(function() {
-                        $(this).load(function() {
-                            $(this).removeClass("not-loaded");
-                        });
-                    });
 
-                    //self.lazyLoad();
-                },5);
 
 
                 var previousScroll = 0;
@@ -298,5 +290,30 @@
             var route = $(this).data("route");
             router.navigate(route, {trigger: true});
         });
+    });
+
+    $(window).load(function() {
+        setTimeout(function() {
+            $("#products").masonry({
+                itemSelector : ".product",
+                isFitWidth: true
+            });
+
+            $("#products .not-loaded").each(function() {
+                $(this).load(function() {
+                    $(this).removeClass("not-loaded");
+                });
+            });
+
+
+            console.log("hello");
+            //self.lazyLoad();
+
+
+        }, 500);
+
+        setTimeout(function() {
+            $("#products").masonry("reload");
+        }, 1000);
     });
 })();
