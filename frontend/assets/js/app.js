@@ -13,17 +13,15 @@
         var BlocksC = Backbone.Collection.extend({
             model: BlocksM,
 
-            comparator: function(item) {
-                return item.get("order");
-            },
-
             initialize: function(data) {
                 console.log("Initialized blocks collection");
                 this.JSON = { blocks: data };
             }
         });
 
-        var blocks = new BlocksC(blocksJSON);
+        window.blocksJSON = blocksJSON;
+
+        var blocks = new BlocksC(_.sortBy(blocksJSON, function(block) { return new Date(block.date); }).reverse());
 
         var Router = Backbone.Router.extend({
             routes: {
@@ -312,8 +310,8 @@
 
         }, 500);
 
-        setTimeout(function() {
+        setInterval(function() {
             $("#products").masonry("reload");
-        }, 1000);
+        }, 2000);
     });
 })();

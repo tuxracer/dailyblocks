@@ -3,19 +3,37 @@ var FeedParser = require('feedparser'),
     request = require('request'),
     async = require('async');
 
-
-
 var imagefeed = [];
-
 var imagePattern = new RegExp('([^"]+).(jpg|jpeg|png)','i');
-
 var added = 0;
+var asyncQueue = [];
 
-/*parser.on('article', function (article){
-    "use strict";
-    //console.log("got article");
-    //console.log('Got article: %s', JSON.stringify(article));
-});*/
+
+// Feeds are defined here
+var feeds = ["http://www.haironthebrain.com/feed/",
+            "http://www.yesstyle.com/blog/category/trend-and-style/feed/",
+            "http://cuteoverload.com/feed/",
+            "http://asianmodelsblog.blogspot.com/feeds/posts/default",
+            "http://blog.forever21.com/feed/",
+            "http://www.boston.com/bigpicture/index.xml",
+            "http://android.appstorm.net/feed/",
+            "http://www.thesfstyle.com/feeds/posts/default",
+            "http://feed.500px.com/500px-upcoming",
+            "http://androidniceties.tumblr.com/rss",
+            "http://webappheaven.com/websites.rss",
+            "http://feeds.feedburner.com/smittenkitchen"];
+
+
+// Queue up the functions
+feeds.forEach(function(feedUrl) {
+    var asyncFunction = function(callback) {
+            var parser = new FeedParser();
+            parser.parseUrl(feedUrl, myCallback);
+            callback();
+        };
+
+    asyncQueue.push(asyncFunction);
+});
 
 function randOrd () {
     return (Math.round(Math.random())-0.5);
@@ -50,13 +68,11 @@ function addArticles (articles) {
     });
 
     added = added + 1;
+    console.log("Added feed " + added);
 
-    console.log(added);
-
-    //console.log(imagefeed);
-    if ( added == 4 ) {
-        imagefeed = imagefeed.sort(randOrd());
-        fs.writeFile("articles.json", JSON.stringify(imagefeed), function(err) {
+    if ( added == feeds.length ) {
+        imagefeed = imagefeed.sort(function() { return 0.5 - Math.random() });
+        fs.writeFile("/var/apps/dailyblocks/frontend/articles.json", JSON.stringify(imagefeed), function(err) {
             if (err) {
                 console.log(err);
             } else {
@@ -74,73 +90,8 @@ function myCallback (error, meta, articles){
     if (error) {
         console.error(error);
     } else {
-
-        //console.log('Feed info');
-        //console.log('%s - %s - %s', meta.title, meta.link, meta.xmlUrl);
-        //console.log('Articles');
-        /*articles.forEach(function (article){
-        var item = {
-        date: article.date,
-        title: article.title,
-        link: article.link,
-        description: article.description
-        };
-        imagefeed.push(article);
-        });
-
-        console.log(imagefeed.length);
-
-        fs.writeFile("articles.json", JSON.stringify(imagefeed), function(err) {
-        if (err) {
-        console.log(err);
-        } else {
-        console.log("The file was saved!");
-        }
-        });
-        */
-        console.log("adding articles");
         addArticles(articles);
     }
 }
-/*
-parser.parseFile("pretty.rss", function() {
-    myCallback();
-    parser.parseFile("full.rss", myCallback);
-});
-*/
-async.series([
-    function (callback) {
-        "use strict";
-        //console.log(FeedParser);
-        var parser = new FeedParser();
-        //parser.parseFile("full.rss", myCallback);
-        parser.parseUrl("http://www.haironthebrain.com/feed/", myCallback);
-        callback();
-    },
-    function (callback) {
-        "use strict";
-        var parser = new FeedParser();
-        parser.parseUrl("http://www.yesstyle.com/blog/category/trend-and-style/feed/", myCallback);
-        callback();
-    },
-    function (callback) {
-        "use strict";
-        var parser = new FeedParser();
-        parser.parseUrl("http://cuteoverload.com/feed/", myCallback);
-        callback();
-    },
-    function (callback) {
-        "use strict";
-        var parser = new FeedParser();
-        parser.parseUrl("http://asianmodelsblog.blogspot.com/feeds/posts/default", myCallback);
-        callback();
-    }
-]);
 
-//parser.parseFile("full.rss", myCallback);
-//parser.parseFile("pretty.rss", myCallback);
-
-
-//parser.parseUrl('http://feeds.gawker.com/gawker/full', myCallback);
-//
-//parser.parseFile("articles.json");
+async.series(asyncQueue);

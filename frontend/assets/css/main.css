@@ -136,6 +136,10 @@ img.logo {
     overflow: hidden;
 }
 
+.logo-blocks-word {
+    text-shadow: 0 0 15px #fff;
+}
+
 .prices {
     text-align: left;
 }
