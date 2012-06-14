@@ -18,7 +18,6 @@ var feeds = ["http://www.haironthebrain.com/feed/",
             "http://www.boston.com/bigpicture/index.xml",
             "http://android.appstorm.net/feed/",
             "http://www.thesfstyle.com/feeds/posts/default",
-            "http://feed.500px.com/500px-upcoming",
             "http://androidniceties.tumblr.com/rss",
             "http://webappheaven.com/websites.rss",
             "http://feeds.feedburner.com/smittenkitchen"];
