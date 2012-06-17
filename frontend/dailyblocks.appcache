@@ -1,0 +1,17 @@
+CACHE MANIFEST
+#Version: 20120616
+/index.html
+/assets/css/main.css
+/assets/images/loading_2.gif
+/assets/images/wood.jpg
+/assets/js/app.js
+/assets/js/backbone.js
+/assets/js/handlebars.js
+/assets/js/jquery-masonry.min.js
+/assets/js/jquery.js
+/assets/js/underscore.js
+/assets/templates.js
+NETWORK:
+*
+http://*
+https://*
