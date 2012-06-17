@@ -8,7 +8,26 @@ input, textarea, select {
     -webkit-touch-callout: auto;
 }
 
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 300;
+  src: local("Open Sans Light"), url("/assets/fonts/OpenSans-300.woff") format("woff");
+}
 
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Open Sans"), url("/assets/fonts/OpenSans-400.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Open Sans Bold"), url("/assets/fonts/OpenSans-700.woff") format("woff");
+}
 
 body {
     font-family: "Open Sans", sans-serif;
