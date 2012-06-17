@@ -1,4 +1,4 @@
-* {
+html {
     -webkit-touch-callout: none;
     -webkit-text-size-adjust: none;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -9,9 +9,10 @@ input, textarea, select {
 }
 
 body {
-    font-family: sans-serif;
+    font-family: "Open Sans", sans-serif;
     margin: 0;
     background: #ddd;
+    /* background: url("http://fc00.deviantart.net/fs30/i/2008/148/b/8/Wood_floor_by_gnrbishop.jpg"); */
 }
 
 h1, h2, h3, h4, h5 {
@@ -111,19 +112,12 @@ img.logo {
     overflow: hidden;
     cursor: pointer;
     text-decoration: none;
-    color: #888;
-    -webkit-transition: all 0.5s !important;
+    color: #666;
+
 }
 
-.product:hover {
-    -webkit-transform: scale(1.2);
-    box-shadow: 0 0 25px #000;
-    color: #000;
-    z-index: 100;
-}
-
-.product:hover h1 {
-    font-weight: 700;
+.product.touchactive {
+    -webkit-transform: scale(0.95);
 }
 
 .product > h1 {
@@ -131,6 +125,9 @@ img.logo {
     margin-top: 10px;
     font-weight: 300;
     text-transform: uppercase;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .product > h2 {
@@ -211,8 +208,15 @@ img.logo {
 }
 
 @media (min-width: 536px) {
-    body {
-        font-family: "Open Sans", sans-serif;
+    .product:hover {
+       /* -webkit-transform: scale(1.2); */
+       /* box-shadow: 0 0 25px #000; */
+        /* color: #000; */
+        /* z-index: 100; */
+    }
+
+    .product:hover h1 {
+        /* font-weight: 700; */
     }
 }
 

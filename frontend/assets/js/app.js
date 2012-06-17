@@ -25,10 +25,12 @@
 
         var Router = Backbone.Router.extend({
             routes: {
-                "*actions": "products"
+                  "blocks": "blocks",
+                  "settings": "blocks",
+                  "*actions": "defaultRoute"
             },
 
-            products: function(id) {
+            blocks: function(id) {
                 //document.getElementById("main").innerHTML = '<div class="loading">Loading...</div>';
                 if (typeof id === "undefined") {
                     id = "all";
@@ -62,9 +64,9 @@
             },
 
             defaultRoute: function( actions ) {
-                document.getElementById("main").innerHTML = '<div class="loading">Loading...</div>';
+                document.getElementById("main").innerHTML = 'Actually updated every hour or so...';
                 console.log( "DEFAULT ROUTE: " + actions );
-                var presenter = new HomePresenter();
+               // var presenter = new HomePresenter();
             }
         });
 
@@ -125,10 +127,9 @@
 
                 this.$el.html(this.rendered);
 
-                console.log( this );
-
-
-
+                $("a").on("touchclick", function(e) {
+                    console.log(this);
+                });
 
 
                 var previousScroll = 0;
@@ -304,14 +305,14 @@
             });
 
 
-            console.log("hello");
+             setInterval(function() {
+                $("#products").masonry({
+                  itemSelector: ".product",
+                  isFitWidth: true
+                });
+             }, 5000);
+
             //self.lazyLoad();
-
-
-        }, 500);
-
-        setInterval(function() {
-            $("#products").masonry("reload");
-        }, 2000);
+        }, 1000);
     });
 })();

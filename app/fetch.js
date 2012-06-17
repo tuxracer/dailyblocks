@@ -4,7 +4,7 @@ var FeedParser = require('feedparser'),
     async = require('async');
 
 var imagefeed = [];
-var imagePattern = new RegExp('([^"]+).(jpg|jpeg|png)','i');
+var imagePattern = new RegExp('http([^"]+).(jpg|jpeg|png)','i');
 var added = 0;
 var asyncQueue = [];
 
@@ -12,17 +12,41 @@ var asyncQueue = [];
 // Feeds are defined here
 var feeds = ["http://www.haironthebrain.com/feed/",
             "http://www.yesstyle.com/blog/category/trend-and-style/feed/",
-            "http://cuteoverload.com/feed/",
-            "http://asianmodelsblog.blogspot.com/feeds/posts/default",
             "http://blog.forever21.com/feed/",
             "http://www.boston.com/bigpicture/index.xml",
             "http://android.appstorm.net/feed/",
             "http://www.thesfstyle.com/feeds/posts/default",
             "http://androidniceties.tumblr.com/rss",
             "http://webappheaven.com/websites.rss",
-            "http://feeds.feedburner.com/smittenkitchen"];
+            "http://feeds.feedburner.com/smittenkitchen",
+            "http://www.thehollywoodgossip.com/categories/celebrity-hairstyles/rss.xml",
+            "http://kelseats.com/feed/",
+            "http://instagram.heroku.com/users/17620630.atom",
+            "http://instagram.heroku.com/users/1206501.atom",
+            "http://www.zooborns.com/zooborns/rss.xml",
+            "http://www.thatswhyimbroke.com/feed/",
+            "http://www.frmheadtotoe.com/feeds/posts/default",
+            "http://www.extrapetite.com/feeds/posts/default",
+            "http://www.thelittledustprincess.com/feeds/posts/default",
+            "http://www.nasa.gov/rss/image_of_the_day.rss",
+            "http://factsandchicks.com/rss",
+            "http://feeds.feedburner.com/chinaSMACK",
+            "http://sleeplessinsanfrancisco.tumblr.com/rss",
+            "http://fuckyeahsf.tumblr.com/rss",
+            "http://fuckyeahslowloris.tumblr.com/rss",
+            "http://f---yeahsanfrancisco.tumblr.com/rss",
+            "http://hollywoodinpics.tumblr.com/rss",
+            "http://accidentalchinesehipsters.tumblr.com/rss",
+            "http://bayfood.tumblr.com/rss",
+            "http://fuckyeaheyegasms.tumblr.com/rss",
+            "http://girlsonxbox.tumblr.com/rss",
+            "http://gqfashion.tumblr.com/rss",
+            "http://bakeitinacake.com/rss",
+            "http://betterbooktitles.com/rss",
+            "http://animalstalkinginallcaps.tumblr.com/rss"];
 
 
+            // "http://feeds.thekitchn.com/apartmenttherapy/thekitchn"
 // Queue up the functions
 feeds.forEach(function(feedUrl) {
     var asyncFunction = function(callback) {
@@ -38,7 +62,7 @@ function randOrd () {
     return (Math.round(Math.random())-0.5);
 }
 
-function addArticles (articles) {
+function addArticles (articles, meta) {
     "use strict";
 
     var order = 0;
@@ -54,6 +78,10 @@ function addArticles (articles) {
             image = imageMatches[0];
             order = order + 1;
 
+            if (typeof article.title === "string" && article.title.toLowerCase() == "photo") {
+                article.title = "";
+            }
+
             item = {
                 order: order,
                 date: article.date,
@@ -67,7 +95,7 @@ function addArticles (articles) {
     });
 
     added = added + 1;
-    console.log("Added feed " + added);
+    console.log("Added feed " + meta.title);
 
     if ( added == feeds.length ) {
         imagefeed = imagefeed.sort(function() { return 0.5 - Math.random() });
@@ -89,7 +117,7 @@ function myCallback (error, meta, articles){
     if (error) {
         console.error(error);
     } else {
-        addArticles(articles);
+        addArticles(articles, meta);
     }
 }
 
