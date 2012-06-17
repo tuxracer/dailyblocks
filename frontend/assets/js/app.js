@@ -1,4 +1,4 @@
-/*global Backbone, Handlebars, App */
+/*global Backbone, Handlebars, App, _ */
 (function() {
     "use strict";
     window.App = {};
@@ -15,7 +15,8 @@
 
             initialize: function(data) {
                 console.log("Initialized blocks collection");
-                this.JSON = { blocks: data };
+                var limited = _.first(data, 20);
+                this.JSON = { blocks: limited };
             }
         });
 
