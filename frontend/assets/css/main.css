@@ -51,13 +51,6 @@ a:focus {
   src: local("Open Sans"), url("/assets/fonts/OpenSans-400.woff") format("woff");
 }
 
-@font-face {
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: 700;
-  src: local("Open Sans Bold"), url("/assets/fonts/OpenSans-700.woff") format("woff");
-}
-
 /* End Custom Fonts */
 
 
@@ -67,9 +60,8 @@ a:focus {
 /* Animations */
 
 @-webkit-keyframes loading {
-    0%   { opacity: 1; }
-    50%  { opacity: 0; }
-    100% { opacity: 1;}
+    0%   { -webkit-transform: scale(0); opacity: 1; }
+    100% { -webkit-transform: scale(1); opacity: 0; }
 }
 
 @-moz-keyframes loading {
@@ -94,17 +86,22 @@ a:focus {
 body {
     font-family: "Open Sans", sans-serif;
     margin: 0;
-    background-color: #dfba8c;
-    background-image: url("/assets/images/wood.jpg");
+    background: #dfba8c;
 }
 
 .loading {
-    text-align: center;
-    font-weight: 700;
-    -webkit-animation: loading 0.7s infinite;
-    -moz-animation: loading 0.7s infinite;
-    -ms-animation: loading 0.7s infinite;
-    margin: 10px;
+    height: 32px;
+    width: 32px;
+    margin: 0 auto;
+}
+
+.loading div {
+    background: #4d668a;
+    height: 100%;
+    width: 100%;
+    -webkit-animation: loading 0.75s infinite;
+    -moz-animation: loading 0.75s infinite;
+    -ms-animation: loading 0.75s infinite;
 }
 
 .logo {
@@ -117,21 +114,21 @@ body {
     -moz-user-select: none;
 }
 
+.logo h1 {
+    font-weight: 300;
+    text-rendering: optimizeLegibility;
+}
+
 .logo-blocks-word {
-    text-shadow: 0 0 20px #fff;
+
 }
 
 .menu {
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(100%,#CCCCCC));
-    background: -webkit-linear-gradient(top, #FFFFFF 0%,#CCCCCC 100%);
-    background: -moz-linear-gradient(top, #FFFFFF 0%, #CCCCCC 100%);
-    background: linear-gradient(top, #FFFFFF 0%,#CCCCCC 100%);
+    background: #dfdfdf;
     color: #000;
     text-align: center;
-    box-shadow: 0 0 10px #000;
     -webkit-user-select: none;
     -moz-user-select: none;
-    text-rendering: optimizeLegibility;
 }
 
 .menu a,
@@ -139,15 +136,18 @@ body {
     color: #000;
     text-decoration: none;
     cursor: pointer;
-    font-weight: 700;
+    font-weight: 300;
     display: inline-block;
     padding: 10px;
     outline: 0;
 }
 
-.menu > a.touchactive {
-    background: #aaa;
-    background: rgba(0,0,0,0.25);
+.menu a.touchactive {
+    background: #eee;
+}
+
+.menu a.current {
+    background: #dfba8c;
 }
 
 #main {
@@ -163,7 +163,6 @@ body {
     max-width: 100%;
     width: 275px;
     text-align: center;
-    box-shadow: 0 0 5px #aaa, 0 0 10px #ddd inset;
     margin: 10px;
     padding: 10px;
     background: #fff;
@@ -172,7 +171,6 @@ body {
     cursor: pointer;
     text-decoration: none;
     color: #666;
-
 }
 
 .block > h1 {
@@ -187,11 +185,6 @@ body {
 
 .block-image-container {
     overflow: hidden;
-    background-image: url("/assets/images/loading.gif");
-    background-size: 32px auto;
-    background-position: center top;
-    background-repeat: no-repeat;
-    min-height: 32px;
 }
 
 .block-image-container img {
@@ -206,14 +199,17 @@ img.loaded {
     opacity: 1;
 }
 
-/* Fill the available width if we can fit less than two columns */
+img.loaded + .loading {
+    display: none;
+}
+
+/* Styles where we can fit less than two columns of blocks */
 @media (max-width: 630px) {
     body {
         margin: 0 0 60px 0;
     }
 
     .logo {
-        box-shadow: 0 0 10px #000;
         padding: 10px;
     }
 
@@ -235,27 +231,12 @@ img.loaded {
 
     .menu a {
         font-size: 13px;
-        padding: 16px 0 20px 0;
         width: 25%;
         white-space: nowrap;
         display: block;
         float: left;
-        border-top: 4px solid transparent;
-        border-left: 1px solid transparent;
-        border-right: 1px solid transparent;
-        margin-left: -1px;
-        margin-right: -1px;
-    }
-
-    .menu a.current {
-        border-top: 4px solid #4d668a;
-        border-left: 1px solid #666;
-        border-right: 1px solid #666;
-        background: #ccc;
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#AAAAAA), color-stop(100%,#CCCCCC));
-        background: -webkit-linear-gradient(top, #AAAAAA 0%,#CCCCCC 100%);
-        background: -moz-linear-gradient(top, #AAAAAA 0%, #CCCCCC 100%);
-        background: linear-gradient(top, #AAAAAA 0%,#CCCCCC 100%);
+        padding: 20px 0 20px 0;
+        font-weight: 400;
     }
 
     #blocks {
@@ -272,33 +253,5 @@ img.loaded {
 
     .block img {
         margin: 0 auto;
-    }
-}
-
-/* Only enable animations if we can fit at least two columns */
-@media (min-width: 630px) {
-    .masonry,
-    .masonry .masonry-brick {
-        -webkit-transition-duration: 0.7s;
-        -moz-transition-duration: 0.7s;
-        -ms-transition-duration: 0.7s;
-        -o-transition-duration: 0.7s;
-        transition-duration: 0.7s;
-    }
-
-    .masonry {
-        -webkit-transition-property: height, width;
-        -moz-transition-property: height, width;
-        -ms-transition-property: height, width;
-        -o-transition-property: height, width;
-        transition-property: height, width;
-    }
-
-    .masonry .masonry-brick {
-        -webkit-transition-property: left, right, top;
-        -moz-transition-property: left, right, top;
-        -ms-transition-property: left, right, top;
-        -o-transition-property: left, right, top;
-        transition-property: left, right, top;
     }
 }

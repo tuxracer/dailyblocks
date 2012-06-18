@@ -22,7 +22,7 @@
             },
 
             blocks: function() {
-                document.getElementById("main").innerHTML = '<div class="loading">Loading...</div>';
+                document.getElementById("main").innerHTML = '<div class="loading"><div></div></div>';
                 setTimeout(function() {
                     var presenter = new BlocksP();
                 },100);
