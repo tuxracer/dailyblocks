@@ -24,7 +24,7 @@
             blocks: function() {
                 setTimeout(function() {
                     var presenter = new BlocksP();
-                },0);
+                },10);
             },
 
             defaultRoute: function( actions ) {
