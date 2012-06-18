@@ -65,23 +65,36 @@
 
                 this.$el.html(this.rendered);
 
-                $("#blocks").masonry({
-                  itemSelector: ".block",
-                  isFitWidth: true
-                });
+                if ( App.masonry ) {
+                    $("#blocks").masonry({
+                      itemSelector: ".block",
+                      isFitWidth: true
+                    });
+                }
+
+
+                setTimeout(function() {
+                    //$("#blocks").masonry("reload");
+                }, 2000);
 
                 // Listen for the load and error events of the block images so we
                 // can reset masonry and show a loading indicator
                 $(".block-image-container img").each(function() {
                     $(this).load(function() {
                         $(this).addClass("loaded");
-                        $("#blocks").masonry("reload");
+
+                        if ( App.masonry ) {
+                            $("#blocks").masonry("reload");
+                        }
                     });
 
                     // Remove the block if there is an error loading its image
                     $(this).error(function() {
                         $(this).parent().parent().remove();
-                        $("#blocks").masonry("reload");
+
+                        if ( App.masonry ) {
+                            $("#blocks").masonry("reload");
+                        }
                     });
                 });
             }
@@ -111,5 +124,12 @@
             var route = $(this).data("route");
             router.navigate(route, {trigger: true});
         });
+
+        // Don't use masonry on mobile
+        if ( window.innerWidth > 630 ) {
+            App.masonry = true;
+        } else {
+            App.masonry = false;
+        }
     });
 })();

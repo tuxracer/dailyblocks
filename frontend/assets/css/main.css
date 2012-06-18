@@ -152,6 +152,7 @@ body {
     text-align: center;
     -webkit-user-select: none;
     -moz-user-select: none;
+    z-index: 99;
 }
 
 .menu a,
@@ -212,15 +213,7 @@ body {
 }
 
 .block-image-container img {
-    opacity: 0;
     width: 100%;
-    -webkit-transition: opacity 0.5s;
-    -moz-transition: opacity 0.5s;
-    transition: opacity 0.5s;
-}
-
-img.loaded {
-    opacity: 1;
 }
 
 img.loaded + .loading {
@@ -230,7 +223,7 @@ img.loaded + .loading {
 /* Styles where we can fit less than two columns of blocks */
 @media (max-width: 630px) {
     body {
-        margin: 0 0 60px 0;
+        margin: 0;
     }
 
     .logo {
@@ -250,7 +243,6 @@ img.loaded + .loading {
         bottom: 0;
         left: 0;
         width: 100%;
-        z-index: 2;
     }
 
     .menu a {
@@ -273,6 +265,10 @@ img.loaded + .loading {
         position: relative !important;
         top: 0 !important;
         left: 0 !important;
+    }
+
+    .block:last-child {
+        margin-bottom: 75px;
     }
 
     .block img {
