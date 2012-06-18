@@ -124,7 +124,7 @@ body {
 .logo .icon div:nth-child(1) {
     float: left;
     background: #fff;
-    height: 29px;
+    height: 15px;
     width: 14px;
     margin-right: 1px;
 }
@@ -132,7 +132,7 @@ body {
 .logo .icon div:nth-child(2) {
     float: left;
     background: #fff;
-    height: 15px;
+    height: 29px;
     width: 14px;
 }
 
