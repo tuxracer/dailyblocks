@@ -22,9 +22,10 @@
             },
 
             blocks: function() {
+                document.getElementById("main").innerHTML = '<div class="loading">Loading...</div>';
                 setTimeout(function() {
                     var presenter = new BlocksP();
-                },10);
+                },50);
             },
 
             defaultRoute: function( actions ) {
