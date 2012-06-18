@@ -25,7 +25,7 @@
                 document.getElementById("main").innerHTML = '<div class="loading">Loading...</div>';
                 setTimeout(function() {
                     var presenter = new BlocksP();
-                },50);
+                },100);
             },
 
             defaultRoute: function( actions ) {

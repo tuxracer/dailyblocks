@@ -23,6 +23,11 @@ img {
     max-width: 100%;
 }
 
+a:active,
+a:focus {
+    outline: 0;
+}
+
 /* End Basic Resets */
 
 
@@ -137,9 +142,11 @@ body {
     font-weight: 700;
     display: inline-block;
     padding: 10px;
+    outline: 0;
 }
 
 .menu > a.touchactive {
+    background: #aaa;
     background: rgba(0,0,0,0.25);
 }
 
