@@ -191,6 +191,7 @@ body {
     background-size: 32px auto;
     background-position: center top;
     background-repeat: no-repeat;
+    min-height: 32px;
 }
 
 .block-image-container img {
