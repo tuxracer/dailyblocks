@@ -29,8 +29,6 @@ var feeds = ["http://www.haironthebrain.com/feed/",
             "http://www.extrapetite.com/feeds/posts/default",
             "http://www.thelittledustprincess.com/feeds/posts/default",
             "http://www.nasa.gov/rss/image_of_the_day.rss",
-            "http://factsandchicks.com/rss",
-            "http://feeds.feedburner.com/chinaSMACK",
             "http://sleeplessinsanfrancisco.tumblr.com/rss",
             "http://fuckyeahsf.tumblr.com/rss",
             "http://fuckyeahslowloris.tumblr.com/rss",
@@ -43,10 +41,9 @@ var feeds = ["http://www.haironthebrain.com/feed/",
             "http://gqfashion.tumblr.com/rss",
             "http://bakeitinacake.com/rss",
             "http://betterbooktitles.com/rss",
-            "http://animalstalkinginallcaps.tumblr.com/rss"];
+            "http://animalstalkinginallcaps.tumblr.com/rss",
+            "http://feeds.thekitchn.com/apartmenttherapy/thekitchn"];
 
-
-            // "http://feeds.thekitchn.com/apartmenttherapy/thekitchn"
 // Queue up the functions
 feeds.forEach(function(feedUrl) {
     var asyncFunction = function(callback) {
@@ -99,7 +96,7 @@ function addArticles (articles, meta) {
 
     if ( added == feeds.length ) {
         imagefeed = imagefeed.sort(function() { return 0.5 - Math.random() });
-        fs.writeFile("/var/apps/dailyblocks/frontend/articles.json", JSON.stringify(imagefeed), function(err) {
+        fs.writeFile("feeds.json", JSON.stringify(imagefeed), function(err) {
             if (err) {
                 console.log(err);
             } else {

@@ -1,2 +1,3 @@
 #!/bin/bash
-node /var/apps/dailyblocks/app/fetch.js
+cd /var/apps/dailyblocks/app;
+node fetch.js;

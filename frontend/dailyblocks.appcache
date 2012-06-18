@@ -1,10 +1,10 @@
 CACHE MANIFEST
-#Version: 20120617-2
+#Version: 20120617-4
 /assets/css/main.css
 /assets/fonts/OpenSans-300.woff
 /assets/fonts/OpenSans-400.woff
 /assets/fonts/OpenSans-700.woff
-/assets/images/loading_2.gif
+/assets/images/loading.gif
 /assets/images/wood.jpg
 /assets/js/app.js
 /assets/js/backbone.js
