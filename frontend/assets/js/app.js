@@ -214,5 +214,7 @@
             var route = $(this).data("route");
             router.navigate(route, {trigger: true});
         });
+    }).error(function() {
+        document.getElementById("main").innerHTML = "<p style='text-align: center;'>Error. Try again.</p>";
     });
 })();
