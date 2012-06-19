@@ -1,19 +1,75 @@
 /*global Backbone, Handlebars, App, _ */
 (function() {
     "use strict";
-    window.App = {};
+    window.App = {
+        randomLogoColor: function() {
+            var possibleColors,
+                randomColor;
+
+            possibleColors = [  "#00949d",
+                                "#f04e40",
+                                "#4d668a",
+                                "#5a641c",
+                                "#04a2d7",
+                                "#1f013c",
+                                "#6b0021",
+                                "#fd9836",
+                                "#e9dc4a"];
+
+            randomColor = _.shuffle(possibleColors)[0];
+
+            document.getElementById("logo").style.backgroundColor = randomColor;
+        },
+
+        // Highlight the current menu item
+        highlightMenu: function(name) {
+            if (name != "defaultRoute") {
+                $("a").not('[data-route="' + name + '"]').removeClass("current");
+                $('a[data-route="' + name + '"]').addClass("current");
+            }
+        },
+
+        masonry: function() {
+            return window.innerWidth > 630;
+        }
+    };
 
     $.get("/feeds.json", function(feeds) {
-        var BlocksM = Backbone.Model.extend();
+        App.randomLogoColor();
+
+        var BlocksM = Backbone.Model.extend({
+            initialize: function() {
+                var self = this;
+
+                this.on("change", function() {
+                    if (self.hasChanged("viewed")) {
+                        // console.log("VIEWED: " + self);
+                    }
+                });
+            }
+        });
 
         var BlocksC = Backbone.Collection.extend({
             model: BlocksM,
 
             initialize: function(data) {
                 console.log("Initialized blocks collection");
-                this.JSON = { blocks: data };
+            },
+
+            comparator : function(model) {
+                return -new Date(model.get("date"));
+            },
+
+            unviewed: function(limit) {
+                if (typeof limit === "undefined") {
+                    limit = 20;
+                }
+
+                return _.first(this.where({viewed:false}), limit);
             }
         });
+
+        //window.blocksC = new BlocksC(feeds);
 
         var Router = Backbone.Router.extend({
             routes: {
@@ -22,32 +78,18 @@
             },
 
             blocks: function() {
-                document.getElementById("main").innerHTML = '<div class="loading"><div></div></div>';
-                setTimeout(function() {
-                    var presenter = new BlocksP();
-                },100);
+                var presenter = new BlocksContainer();
             },
 
             defaultRoute: function( actions ) {
-                document.getElementById("main").innerHTML = "";
-                App.hightlightMenu(actions);
+                document.getElementById("main").innerHTML = "<p style='text-align: center;'>Ready!</p>";
+                App.highlightMenu(actions);
             }
         });
 
-        var BlocksP = Backbone.View.extend({
-            el: document.getElementById("main"),
 
+        var BlockP = Backbone.View.extend({
             initialize: function() {
-                // Cache the rendered version of this template if it hasn't been already
-                if (typeof this.rendered === "undefined") {
-                    // @TODO Move this crap to the collection
-                    // We're sorting the feeds by date and then returning only the first 20
-                    var filtered = _.first(_.sortBy(feeds, function(feed) { return new Date(feed.date); }).reverse(), 20);
-                    this.collection = new BlocksC(filtered);
-
-                    this.rendered = Handlebars.templates.blocks(this.collection.JSON);
-                }
-
                 this.render();
             },
 
@@ -61,52 +103,91 @@
             },
 
             render: function() {
-                var self = this;
+                var json,
+                    template,
+                    $image;
 
-                this.$el.html(this.rendered);
+                this.model.set({viewed: true});
 
-                if ( App.masonry ) {
-                    $("#blocks").masonry({
-                      itemSelector: ".block",
-                      isFitWidth: true
-                    });
-                }
+                json = this.model.toJSON();
+                template = Handlebars.templates.block(json);
 
+                this.el.innerHTML = template;
 
-                setTimeout(function() {
-                    //$("#blocks").masonry("reload");
-                }, 2000);
+                $image = this.$el.find("img");
 
                 // Listen for the load and error events of the block images so we
                 // can reset masonry and show a loading indicator
-                $(".block-image-container img").each(function() {
-                    $(this).load(function() {
-                        $(this).addClass("loaded");
+                $image.load(function() {
+                    $(this).addClass("loaded");
+                    if ( App.masonry() ) {
+                        $("#blocks").masonry("reload");
+                    }
+                });
 
-                        if ( App.masonry ) {
-                            $("#blocks").masonry("reload");
-                        }
-                    });
+                // Remove the block if there is an error loading its image
+                $image.error(function() {
+                    //$(this).parent().parent().remove();
 
-                    // Remove the block if there is an error loading its image
-                    $(this).error(function() {
-                        $(this).parent().parent().remove();
-
-                        if ( App.masonry ) {
-                            $("#blocks").masonry("reload");
-                        }
-                    });
+                    if ( App.masonry() ) {
+                        $("#blocks").masonry("reload");
+                    }
                 });
             }
         });
 
-        // Highlight the current menu item
-        App.hightlightMenu = function(name) {
-            if (name != "defaultRoute") {
-                $("a").not('[data-route="' + name + '"]').removeClass("current");
-                $('a[data-route="' + name + '"]').addClass("current");
+        var BlocksContainer = Backbone.View.extend({
+            el: document.getElementById("main"),
+
+            initialize: function() {
+                var self,
+                    paused;
+
+                self = this;
+
+                this.collection = new BlocksC(feeds);
+                window.foo = this.collection;
+                this.render();
+                this.showMore();
+
+                this.paused = false;
+
+                $(window).on("scroll", function(event) {
+                    if ( !self.paused && ( window.scrollY + window.innerHeight + 250 > $(document).height() ) ) {
+                        self.showMore();
+                        self.paused = true;
+
+                        setTimeout(function() {
+                            self.paused = false;
+                        }, 1000);
+                    }
+                });
+            },
+
+            render: function() {
+                var template = Handlebars.templates.blocks();
+                this.el.innerHTML = template;
+
+                $("#blocks").masonry({
+                    itemSelector: ".block",
+                    isFitWidth: true
+                });
+            },
+
+            showMore: function(limit) {
+                var self,
+                    blocks;
+
+                self = this;
+                blocks = self.collection.unviewed(limit);
+
+                _.each(blocks, function(block) {
+                    var blockP;
+                    blockP = new BlockP({model: block});
+                    $("#blocks").append(blockP.$el);
+                });
             }
-        };
+        });
 
         // Initialize the router
         var router = new Router();
@@ -115,7 +196,7 @@
         // Highlight the menu item based on the current route
         router.bind("all", function(route) {
             route = route.replace("route:", "");
-            App.hightlightMenu(route);
+            App.highlightMenu(route);
         });
 
         // Navigate to the route of the menu item selected
@@ -124,12 +205,5 @@
             var route = $(this).data("route");
             router.navigate(route, {trigger: true});
         });
-
-        // Don't use masonry on mobile
-        if ( window.innerWidth > 630 ) {
-            App.masonry = true;
-        } else {
-            App.masonry = false;
-        }
     });
 })();

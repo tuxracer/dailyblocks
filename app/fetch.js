@@ -84,7 +84,9 @@ function addArticles (articles, meta) {
                 date: article.date,
                 title: article.title,
                 link: article.link,
-                image: image
+                image: image,
+                viewed: false,
+                bookmarked: false
             };
 
             imagefeed.push(item);

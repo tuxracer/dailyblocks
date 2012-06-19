@@ -101,24 +101,30 @@ body {
     -ms-animation: loading 0.75s infinite;
 }
 
+#main > .loading {
+    margin-top: 16px;
+}
+
 .logo {
     text-align: center;
     padding: 20px;
     cursor: default;
     color: #fff;
-    background: #4d668a;
+    background: #666;
     -webkit-user-select: none;
     -moz-user-select: none;
+    -webkit-transition: all 0.5s;
 }
 
 .logo .icon {
     border: 2px solid #fff;
-    background: #4d668a;
+    background: #dfba8c;
     padding: 1px;
     height: 29px;
     width: 29px;
     display: inline-block;
     vertical-align: text-bottom;
+    display: none;
 }
 
 .logo .icon div:nth-child(1) {
@@ -127,13 +133,15 @@ body {
     height: 15px;
     width: 14px;
     margin-right: 1px;
+    display: none;
 }
 
 .logo .icon div:nth-child(2) {
     float: left;
     background: #fff;
-    height: 29px;
+    height: 15px;
     width: 14px;
+    display: none;
 }
 
 .logo h1 {
@@ -143,7 +151,7 @@ body {
 }
 
 .logo-blocks-word {
-
+    font-weight: 400;
 }
 
 .menu {
