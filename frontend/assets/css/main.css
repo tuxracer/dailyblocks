@@ -275,10 +275,6 @@ img.loaded + .loading {
         left: 0 !important;
     }
 
-    .block:last-child {
-        margin-bottom: 75px;
-    }
-
     .block img {
         margin: 0 auto;
     }

@@ -78,7 +78,11 @@
             },
 
             blocks: function() {
-                var presenter = new BlocksContainer();
+                document.getElementById("main").innerHTML = '<div class="loading"><div></div></div>';
+                setTimeout(function() {
+                    var presenter = new BlocksContainer();
+                }, 100);
+
             },
 
             defaultRoute: function( actions ) {
@@ -153,9 +157,14 @@
                 this.paused = false;
 
                 $(window).on("scroll", function(event) {
-                    if ( !self.paused && ( window.scrollY + window.innerHeight + 250 > $(document).height() ) ) {
-                        self.showMore();
+                    if ( !self.paused && ( window.scrollY + 200 + window.innerHeight > $(document).height() ) ) {
+                        setTimeout(function() {
+                            self.showMore();
+                        }, 100);
+
                         self.paused = true;
+
+                        console.log("Getting more");
 
                         setTimeout(function() {
                             self.paused = false;
