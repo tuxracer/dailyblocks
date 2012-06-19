@@ -131,7 +131,7 @@
 
                 // Remove the block if there is an error loading its image
                 $image.error(function() {
-                    //$(this).parent().parent().remove();
+                    $(this).parent().parent().remove();
 
                     if ( App.masonry() ) {
                         $("#blocks").masonry("reload");
