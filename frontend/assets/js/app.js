@@ -24,6 +24,10 @@
         // Highlight the current menu item
         highlightMenu: function(name) {
             if (name != "defaultRoute") {
+                if (name === "redditR") {
+                    name = "blocks/reddit";
+                }
+
                 $("a").not('[data-route="' + name + '"]').removeClass("current");
                 $('a[data-route="' + name + '"]').addClass("current");
             }
@@ -33,6 +37,10 @@
             return window.innerWidth > 630;
         }
     };
+
+    $.get("/reddit.json", function(reddit) {
+        window.reddit = reddit;
+    });
 
     $.get("/feeds.json", function(feeds) {
         App.randomLogoColor();
@@ -74,15 +82,33 @@
         var Router = Backbone.Router.extend({
             routes: {
                   "blocks": "blocks",
+                  "blocks/reddit": "redditR",
                   "*actions": "defaultRoute"
             },
 
             blocks: function() {
                 document.getElementById("main").innerHTML = '<div class="loading"><div></div></div>';
                 setTimeout(function() {
-                    var presenter = new BlocksContainer();
+                    var presenter = new BlocksContainer({feed: feeds });
                 }, 100);
 
+            },
+
+            redditR: function() {
+                document.getElementById("main").innerHTML = '<div class="loading"><div></div></div>';
+
+                setTimeout(function() {
+                    if ( typeof window.reddit === undefined ) {
+                        $.get("/reddit.json", function(reddit) {
+                            window.reddit = reddit;
+
+                            var presenter = new BlocksContainer({feed: reddit});
+                        });
+                    } else {
+                        var presenter = new BlocksContainer({feed: reddit});
+                    }
+
+                }, 100);
             },
 
             defaultRoute: function( actions ) {
@@ -149,8 +175,7 @@
 
                 self = this;
 
-                this.collection = new BlocksC(feeds);
-                window.foo = this.collection;
+                this.collection = new BlocksC(this.options.feed);
                 this.render();
                 this.showMore();
 
@@ -163,8 +188,6 @@
                         }, 100);
 
                         self.paused = true;
-
-                        console.log("Getting more");
 
                         setTimeout(function() {
                             self.paused = false;
