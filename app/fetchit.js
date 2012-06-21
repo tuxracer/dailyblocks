@@ -15,7 +15,8 @@ scrapeImage = function(url, callback) {
     } else {
        fetch.fetchUrl(url, function(error, meta, body) {
             var data,
-                image;
+                image,
+		imageSize;
 
             data = body.toString();
 
@@ -26,8 +27,25 @@ scrapeImage = function(url, callback) {
             } else {
                 image = false;
             }
+		
 
-            callback(image);
+	    if (image) {
+	        fetch.fetchUrl(image, function(error, meta, body) {
+			console.log(meta.responseHeaders["content-length"] + ": " + image);
+			imageSize = meta.responseHeaders["content-length"];
+			
+			if (imageSize < 10000) {
+				image = false;
+				console.log('too small!');
+			        callback(false);
+			} else {
+				callback(image);
+			}
+			
+		});
+	    } else {
+            	callback(image);
+	    }
         });
     }
 };
