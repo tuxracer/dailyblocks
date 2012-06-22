@@ -28,9 +28,32 @@ db.open(function(p_db) {
       // app.use(express.static(__dirname + '/static'));
     });
 
+	    // function (error, results) {
+	    //         res.json(results);
+	    //       }
 
-    app.get('/', function(req, res){
-      res.json("hello from the mongo service");
+    app.get('/all', function(req, res){
+      db.collection('feeds', function(error, feed_collection) {
+        feed_collection.find().toArray(function (error, results) {
+            res.json(results);
+          });
+      });
+    });
+
+    app.get('/all/:id', function (req, res) {
+    	db.collection('feeds', function(error, feed_collection) {
+        feed_collection.find({user_id:ObjectID(req.params.user_id)}).toArray(function (error, results) {
+            res.json(results);
+          });
+      });
+    });
+
+    app.get('/item/:id', function (req, res) {
+    	db.collection('feeds', function(error, feed_collection) {
+        feed_collection.find({_id:ObjectID(req.params.id)}).toArray(function (error, results) {
+            res.json(results);
+          });
+      });
     });
 
     app.listen(3000);
