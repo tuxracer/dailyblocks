@@ -174,7 +174,8 @@
                     paused;
 
                 self = this;
-
+		
+		delete this.collection;
                 this.collection = new BlocksC(this.options.feed);
                 this.render();
                 this.showMore();
@@ -210,9 +211,9 @@
                 var self,
                     blocks;
 
-                self = this;
-                blocks = self.collection.unviewed(limit);
-
+                blocks = this.collection.unviewed(limit);
+		
+		console.log(blocks);
                 _.each(blocks, function(block) {
                     var blockP;
                     blockP = new BlockP({model: block});

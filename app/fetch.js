@@ -4,7 +4,7 @@ var FeedParser = require('feedparser'),
     async = require('async');
 
 var imagefeed = [];
-var imagePattern = new RegExp('http([^"]+).(jpg|jpeg|png)','i');
+var imagePattern = new RegExp('http([^"]+).(jpg|jpeg|png|gif)','i');
 var added = 0;
 var asyncQueue = [];
 
