@@ -1,6 +1,8 @@
 import { FunctionalComponent, h } from "preact";
 import { Route, Router, RouterOnChangeArgs } from "preact-router";
 
+import { Redirect } from '../components/Redirect';
+
 import { Subreddit } from "../pages/subreddit";
 import NotFoundPage from "../routes/notfound";
 
@@ -23,6 +25,7 @@ const App: FunctionalComponent = () => {
     return (
         <div id="app">
             <Router onChange={handleRoute}>
+                <Redirect path="/" to="/r/videos" />
                 <Route path="/r/:subreddit/comments/:id/:name?/:unknown?" component={Subreddit} />
                 <NotFoundPage default />
             </Router>
