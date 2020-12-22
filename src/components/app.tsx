@@ -1,10 +1,18 @@
 import { FunctionalComponent, h } from "preact";
 import { Route, Router, RouterOnChangeArgs } from "preact-router";
 
-import Home from "../routes/home";
-import Profile from "../routes/profile";
+import { Subreddit } from "../pages/subreddit";
 import NotFoundPage from "../routes/notfound";
-import Header from "./header";
+
+// export default routes
+//     .add("/top", "top")
+//     .add("/r/:subreddit/comments/:id/:name/:unknown", "app")
+//     .add("/r/:subreddit/comments/:id/:name", "app")
+//     .add("/r/:subreddit/comments/:id", "app")
+//     .add("/r/:subreddit", "app")
+//     .add("/s/:id", "app")
+//     .add("/", "app");
+
 
 const App: FunctionalComponent = () => {
     let currentUrl: string;
@@ -14,11 +22,8 @@ const App: FunctionalComponent = () => {
 
     return (
         <div id="app">
-            <Header />
             <Router onChange={handleRoute}>
-                <Route path="/" component={Home} />
-                <Route path="/profile/" component={Profile} user="me" />
-                <Route path="/profile/:user" component={Profile} />
+                <Route path="/r/:subreddit/comments/:id/:name?/:unknown?" component={Subreddit} />
                 <NotFoundPage default />
             </Router>
         </div>

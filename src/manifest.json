@@ -1,10 +1,10 @@
 {
-  "name": "rtv5",
-  "short_name": "rtv5",
-  "start_url": "/",
+  "name": "dailyblocks.tv",
+  "short_name": "dailyblocks",
+  "start_url": "/?utm_medium=pwa",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#fff",
+  "background_color": "#000",
   "theme_color": "#673ab8",
   "icons": [
     {
