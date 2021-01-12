@@ -6,14 +6,14 @@ interface ThumbnailProps {
     redditPost: RedditPost;
 }
 
-const Thumbnail: FunctionalComponent<ThumbnailProps> = props => {
+const Thumbnail: FunctionalComponent<ThumbnailProps> = ({ redditPost }) => {
+    const { permalink, title, thumbnailUrl } = redditPost;
     return (
-        <Link
-            href={props.redditPost.permalink}
-            activeClassName="active"
-            class="thumbnail"
-        >
-            {props.redditPost.title}
+        <Link href={permalink} activeClassName="active" class="thumbnail">
+            <img class="blur" src={thumbnailUrl} />
+            <img class="original" src={thumbnailUrl} />
+            <img class="spacer" src={thumbnailUrl} />
+            <div>{title}</div>
         </Link>
     );
 };

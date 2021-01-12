@@ -42,7 +42,6 @@ const Player: FunctionalComponent<PlayerProps> = ({ postId, subreddit }) => {
     const handlePlay = () => {
         setIsVideoPlaying(true);
         setIsVideoBuffering(false);
-        syncAudioPlayerWithVideoPlayer();
     };
 
     const handleEnded = () => {
@@ -50,13 +49,11 @@ const Player: FunctionalComponent<PlayerProps> = ({ postId, subreddit }) => {
     };
 
     const handlePause = () => {
-        syncAudioPlayerWithVideoPlayer();
         setIsVideoPlaying(false);
     };
 
     const handleBuffer = () => {
         setIsVideoBuffering(true);
-        syncAudioPlayerWithVideoPlayer();
     };
 
     const handleBufferEnd = () => {
@@ -66,18 +63,16 @@ const Player: FunctionalComponent<PlayerProps> = ({ postId, subreddit }) => {
 
     syncAudioPlayerWithVideoPlayer();
 
-    const isAudioPlaying = !isVideoBuffering && isVideoPlaying;
-
     return (
         <Fragment>
             <ReactPlayer
+                class="player"
                 ref={setVideoPlayerRef}
                 url={redditPost?.mediaUrl}
                 playing={isVideoPlaying}
                 controls={true}
                 height="100%"
                 width="100%"
-                onClick={syncAudioPlayerWithVideoPlayer}
                 onPlay={handlePlay}
                 onPause={handlePause}
                 onEnded={handleEnded}
@@ -92,7 +87,7 @@ const Player: FunctionalComponent<PlayerProps> = ({ postId, subreddit }) => {
                     class="hidden"
                     ref={setAudioPlayerRef}
                     url={redditPost.audioUrl}
-                    playing={isAudioPlaying}
+                    playing={isVideoPlaying}
                 />
             )}
         </Fragment>

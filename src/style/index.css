@@ -1,14 +1,18 @@
 :root {
-    --primary: #111;
-    --background: #efefef;
-    --attention: #00bcd4;
+    --dark: #000;
+    --light: #efefef;
+    --attention: rgba(0, 188, 212, 1);
+
     --headerHeight: 75px;
+
+    --primary: var(--dark);
+    --background: var(--light);
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
         --primary: #efefef;
-        --background: #111;
+        --background: #000;
     }
 }
 
@@ -21,9 +25,10 @@ body {
     padding: 0;
     margin: 0;
     background: var(--background);
-    font-family: sans-serif;
+    font-family: Verdana, sans-serif;
     font-weight: 400;
     color: var(--primary);
+    font-size: 10px;
 }
 
 ol,
@@ -58,27 +63,89 @@ a:focus {
     text-decoration: none;
 }
 
-section.subreddit nav {
+main {
+    display: grid;
+    overflow: hidden;
+}
+
+nav {
+    display: grid;
+    grid-gap: 10px;
+    padding: 10px;
     overflow: auto;
 }
 
+nav {
+    opacity: 0.5;
+    transition: 500ms opacity ease-out;
+}
+
+nav:hover {
+    opacity: 1;
+}
+
 .thumbnail {
-    display: block;
+    display: grid;
+    grid-gap: 5px;
+    justify-items: center;
+    align-items: center;
     border: 1px solid transparent;
+    opacity: 0.5;
+    padding: 5px;
+    transform: scale(1);
 }
 
+.thumbnail > img {
+    width: 100%;
+    height: var(--headerHeight);
+    border: 2px solid transparent;
+    border-radius: 5px;
+    object-fit: cover;
+    transition: 100ms border ease-out;
+}
+
+.thumbnail > img.original,
+.thumbnail > img.blur {
+    position: absolute;
+    top: 0;
+}
+
+.thumbnail > img.blur {
+    opacity: 0;
+    transition: 100ms opacity ease-out;
+}
+
+.thumbnail.active > img.blur,
+.thumbnail:active > img.blur {
+    opacity: 1;
+    filter: blur(10px);
+}
+
+.thumbnail:hover,
 .thumbnail.active {
-    border-color: var(--attention);
+    opacity: 1;
 }
 
-.thumbnail {
-    display: block;
+.thumbnail:active > img,
+.thumbnail.active > img {
+    border-color: var(--background);
 }
 
 .hidden {
-    visibility: none;
-    height: 0;
-    width: 0;
+    visibility: none !important;
+    height: 0 !important;
+    width: 0 !important;
     overflow: hidden;
+    pointer-events: none;
+}
+
+.player {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+img.spacer {
+    visibility: hidden;
     pointer-events: none;
 }

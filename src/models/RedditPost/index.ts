@@ -85,7 +85,7 @@ export class RedditPost {
 
         const redditVideoUrl = get(json, "media.reddit_video.fallback_url", "");
         const redditAudioUrl = redditVideoUrl
-            ? redditVideoUrl.split("/DASH")[0] + "/audio"
+            ? redditVideoUrl.split("/DASH")[0] + "/DASH_audio.mp4"
             : "";
 
         this.thumbnailUrl = redditVideoUrl
