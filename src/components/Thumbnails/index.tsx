@@ -1,5 +1,6 @@
 import { FunctionalComponent, h } from "preact";
 import { useSubreddit } from "../../hooks/reddit";
+import { Thumbnail } from "./components/Thumbnail";
 
 interface SubredditProps {
     subreddit?: string;
@@ -18,7 +19,9 @@ const Thumbnails: FunctionalComponent<SubredditProps> = ({
         <ul>
             {isLoading && <li>Loading...</li>}
             {data?.map(redditPost => (
-                <li>{redditPost.name}</li>
+                <li>
+                    <Thumbnail redditPost={redditPost} />
+                </li>
             ))}
         </ul>
     );

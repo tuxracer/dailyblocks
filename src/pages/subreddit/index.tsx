@@ -1,5 +1,5 @@
 import { FunctionalComponent, h } from "preact";
-import { usePost, useSubreddit } from "../../hooks/reddit";
+import Thumbnails from "../../components/Thumbnails";
 
 interface SubredditProps {
     subreddit?: string;
@@ -10,30 +10,15 @@ const Subreddit: FunctionalComponent<SubredditProps> = ({
     subreddit = "videos",
     postId
 }) => {
-    const {
-        data: redditPosts,
-        error: subredditError,
-        isLoading: isLoadingSubreddits
-    } = useSubreddit(subreddit);
-
-    const {
-        data: redditPost,
-        error: postError,
-        isLoading: isLoadingPost
-    } = usePost({
-        id: postId,
-        subreddit
-    });
-
-    console.log({ redditPosts, isLoadingSubreddits, subredditError });
-    console.log({ redditPost, isLoadingPost, postError });
-
     return (
-        <header>
-            <h1>
-                {subreddit} {postId}
-            </h1>
-        </header>
+        <div>
+            <header>
+                <h1>{subreddit}</h1>
+            </header>
+            <footer>
+                <Thumbnails />
+            </footer>
+        </div>
     );
 };
 
