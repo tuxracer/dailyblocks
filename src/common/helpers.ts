@@ -34,9 +34,9 @@ export const getInitialReferrer = () => {
 };
 
 export const firstResolve = (promises: Promise<any>[]) => {
-    return new Promise(function (fulfil, reject) {
+    return new Promise(function(fulfil, reject) {
         var rejectCount = 0;
-        promises.forEach(function (promise) {
+        promises.forEach(function(promise) {
             promise.then(fulfil, () => {
                 rejectCount++;
                 if (rejectCount == promises.length) {

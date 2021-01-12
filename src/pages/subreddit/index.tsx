@@ -1,10 +1,13 @@
 import { FunctionalComponent, h } from "preact";
+import { Suspense, lazy } from "preact/compat";
 
 const Subreddit: FunctionalComponent = () => {
     return (
         <header>
             <h1>Preact App</h1>
-            Hello
+            <Suspense fallback="loading...">
+                <h1>done!</h1>
+            </Suspense>
         </header>
     );
 };

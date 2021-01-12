@@ -2,8 +2,8 @@ import { stringify } from "qs";
 import { chain, get } from "lodash";
 import { RedditPost } from "../../models/RedditPost";
 import memoize from "memoizee";
-import { URLS, MINUTE_MS, BLACKLIST } from '../../common/consts';
-import { sanitizeStr, logServer } from '../../common/helpers';
+import { URLS, MINUTE_MS, BLACKLIST } from "../../common/consts";
+import { sanitizeStr, logServer } from "../../common/helpers";
 
 export const fetchUrl = async (
     url: string,
@@ -40,14 +40,14 @@ interface GetPostsBySubredditOptions {
 const defaultGetPostsBySubredditOptions: GetPostsBySubredditOptions = {
     subreddit: "videos",
     sortBy: "top",
-    sortTime: "recent",
+    sortTime: "recent"
 };
 
 export const getPostsBySubreddit = memoize(
     async ({
         subreddit = defaultGetPostsBySubredditOptions.subreddit,
         sortBy = defaultGetPostsBySubredditOptions.sortBy,
-        sortTime = defaultGetPostsBySubredditOptions.sortTime,
+        sortTime = defaultGetPostsBySubredditOptions.sortTime
     }: GetPostsBySubredditOptions) => {
         const sanitizedSubreddit = sanitizeStr(subreddit);
         const pathPostfix =
@@ -64,7 +64,7 @@ export const getPostsBySubreddit = memoize(
             `/r/${sanitizedSubreddit}${pathPostfix}`,
             {
                 limit: 100,
-                ...extraParams,
+                ...extraParams
             }
         );
 
@@ -77,7 +77,10 @@ export const getPostsBySubreddit = memoize(
             .value();
 
         if (sortBy === "top") {
-            return chain(posts).sortBy("score").reverse().value();
+            return chain(posts)
+                .sortBy("score")
+                .reverse()
+                .value();
         }
 
         return posts;
@@ -86,18 +89,18 @@ export const getPostsBySubreddit = memoize(
         promise: true,
         maxAge: MINUTE_MS * 20,
         preFetch: true,
-        normalizer: (args) => {
+        normalizer: args => {
             const {
                 subreddit = defaultGetPostsBySubredditOptions.subreddit,
                 sortBy = defaultGetPostsBySubredditOptions.sortBy,
-                sortTime = defaultGetPostsBySubredditOptions.sortTime,
+                sortTime = defaultGetPostsBySubredditOptions.sortTime
             } = args[0] as GetPostsBySubredditOptions;
             return JSON.stringify({
                 subreddit,
                 sortBy,
-                sortTime,
+                sortTime
             }).toLocaleLowerCase();
-        },
+        }
     }
 );
 

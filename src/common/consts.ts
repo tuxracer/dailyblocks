@@ -11,7 +11,7 @@ export const BLACKLIST = [
     "fxqx08",
     "fmi5y6",
     "grig6k",
-    "g3p34u",
+    "g3p34u"
 ];
 
 export const PLAYER_CONFIG: ReactPlayerConfig = {
@@ -24,9 +24,9 @@ export const PLAYER_CONFIG: ReactPlayerConfig = {
                 typeof window !== "undefined"
                     ? window.location.href
                     : undefined,
-            color: "white",
-        },
-    },
+            color: "white"
+        }
+    }
 };
 
 const date = new Date();
@@ -52,12 +52,12 @@ export const BOT_USER_AGENTS = [
     "Baiduspider",
     "Sogou",
     "Exalead",
-    "ia_archiver",
+    "ia_archiver"
 ];
 
 export const URLS = {
     REDDIT: "https://www.reddit.com",
-    DAILYBLOCKS: "https://" + DOMAIN_NAME,
+    DAILYBLOCKS: "https://" + DOMAIN_NAME
 };
 
 export const SUBREDDITS = [
@@ -100,7 +100,7 @@ export const SUBREDDITS = [
     "worldmusic",
     "drums",
     "movies",
-    "commercialcuts",
+    "commercialcuts"
 ];
 
 export const MINUTE_MS = 60000;
