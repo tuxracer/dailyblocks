@@ -29,6 +29,7 @@ const App: FunctionalComponent = () => {
                     path="/r/:subreddit/comments/:id/:name?/:unknown?"
                     component={Subreddit}
                 />
+                <Route path="/r/:subreddit" component={Subreddit} />
                 <NotFoundPage default />
             </Router>
         </div>

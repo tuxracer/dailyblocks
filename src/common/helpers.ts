@@ -1,5 +1,34 @@
 import { DOMAIN_NAME } from "./consts";
 
+export const fetcher = <T>(url: string) => fetch(url).then<T>(r => r.json());
+
+type SuspensifyStatus = "pending" | "error" | "success";
+
+export const suspensify = <T>(promise: Promise<T>) => {
+    let status: SuspensifyStatus = "pending";
+    let result: T;
+
+    let suspender = promise.then(
+        response => {
+            status = "success";
+            result = response;
+        },
+        error => {
+            status = "error";
+            result = error;
+        }
+    );
+
+    return {
+        read() {
+            console.log(status);
+            if (status === "pending") throw suspender;
+            if (status === "error") throw result;
+            return result; // success
+        }
+    };
+};
+
 export const stripSpecialChars = (str?: string | null) =>
     str ? str.replace(/[^a-z0-9]/gi, "") : "";
 

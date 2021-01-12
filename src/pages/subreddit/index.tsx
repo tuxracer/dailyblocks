@@ -1,10 +1,29 @@
 import { FunctionalComponent, h } from "preact";
-import { Suspense, lazy } from "preact/compat";
+import { Suspense } from "preact/compat";
+import { useSubreddit } from "../../hooks/reddit";
 
-const Subreddit: FunctionalComponent = () => {
+interface SubredditProps {
+    subreddit?: string;
+    postId?: string;
+}
+
+const Subreddit: FunctionalComponent<SubredditProps> = ({
+    subreddit = "videos",
+    postId
+}) => {
+    const { data, error, isLoading } = useSubreddit(subreddit);
+
+    if (isLoading) return <h1>Loading...</h1>;
+
+    if (error) return <h1>Error!</h1>;
+
+    console.log({ data, isLoading, error });
+
     return (
         <header>
-            <h1>Preact App</h1>
+            <h1>
+                {subreddit} {postId}
+            </h1>
             <Suspense fallback="loading...">
                 <h1>done!</h1>
             </Suspense>

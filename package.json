@@ -34,7 +34,8 @@
     "preact-render-to-string": "^5.1.4",
     "preact-router": "^3.2.1",
     "qs": "^6.9.4",
-    "react-player": "^2.7.2"
+    "react-player": "^2.7.2",
+    "swr": "^0.4.0"
   },
   "devDependencies": {
     "@teamsupercell/typings-for-css-modules-loader": "^2.2.0",
