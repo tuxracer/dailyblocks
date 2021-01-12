@@ -26,7 +26,7 @@ const App: FunctionalComponent = () => {
             <Router onChange={handleRoute}>
                 <Redirect path="/" to="/r/videos" />
                 <Route
-                    path="/r/:subreddit/comments/:id/:name?/:unknown?"
+                    path="/r/:subreddit/comments/:postId/:shortName?"
                     component={Subreddit}
                 />
                 <Route path="/r/:subreddit" component={Subreddit} />

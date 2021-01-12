@@ -1,6 +1,5 @@
 import { FunctionalComponent, h } from "preact";
-import { Suspense } from "preact/compat";
-import { useSubreddit } from "../../hooks/reddit";
+import { usePost, useSubreddit } from "../../hooks/reddit";
 
 interface SubredditProps {
     subreddit?: string;
@@ -11,22 +10,29 @@ const Subreddit: FunctionalComponent<SubredditProps> = ({
     subreddit = "videos",
     postId
 }) => {
-    const { data, error, isLoading } = useSubreddit(subreddit);
+    const {
+        data: redditPosts,
+        error: subredditError,
+        isLoading: isLoadingSubreddits
+    } = useSubreddit(subreddit);
 
-    if (isLoading) return <h1>Loading...</h1>;
+    const {
+        data: redditPost,
+        error: postError,
+        isLoading: isLoadingPost
+    } = usePost({
+        id: postId,
+        subreddit
+    });
 
-    if (error) return <h1>Error!</h1>;
-
-    console.log({ data, isLoading, error });
+    console.log({ redditPosts, isLoadingSubreddits, subredditError });
+    console.log({ redditPost, isLoadingPost, postError });
 
     return (
         <header>
             <h1>
                 {subreddit} {postId}
             </h1>
-            <Suspense fallback="loading...">
-                <h1>done!</h1>
-            </Suspense>
         </header>
     );
 };
