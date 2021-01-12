@@ -1,4 +1,4 @@
-import { FunctionalComponent, h } from "preact";
+import { Fragment, FunctionalComponent, h } from "preact";
 import Thumbnails from "../../components/Thumbnails";
 
 interface SubredditProps {
@@ -11,14 +11,18 @@ const Subreddit: FunctionalComponent<SubredditProps> = ({
     postId
 }) => {
     return (
-        <div>
+        <Fragment>
             <header>
                 <h1>{subreddit}</h1>
             </header>
-            <footer>
-                <Thumbnails />
-            </footer>
-        </div>
+            <section class="subreddit">
+                <nav>
+                    <Thumbnails subreddit={subreddit} />
+                </nav>
+                <main>Player</main>
+                <aside>Comments</aside>
+            </section>
+        </Fragment>
     );
 };
 

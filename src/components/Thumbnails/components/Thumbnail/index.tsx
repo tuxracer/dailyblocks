@@ -8,7 +8,13 @@ interface ThumbnailProps {
 
 const Thumbnail: FunctionalComponent<ThumbnailProps> = props => {
     return (
-        <Link href={props.redditPost.permalink}>{props.redditPost.title}</Link>
+        <Link
+            href={props.redditPost.permalink}
+            activeClassName="active"
+            class="thumbnail"
+        >
+            {props.redditPost.title}
+        </Link>
     );
 };
 

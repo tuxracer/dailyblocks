@@ -1,18 +1,76 @@
-html, body {
-	height: 100%;
-	width: 100%;
-	padding: 0;
-	margin: 0;
-	background: #FAFAFA;
-	font-family: 'Helvetica Neue', arial, sans-serif;
-	font-weight: 400;
-	color: #444;
+:root {
+    --primary: #111;
+    --background: #efefef;
+    --attention: #00bcd4;
+    --headerHeight: 75px;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary: #efefef;
+        --background: #111;
+    }
+}
+
+html,
+body {
+    display: grid;
+    grid-template-rows: 100%;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    background: var(--background);
+    font-family: sans-serif;
+    font-weight: 400;
+    color: var(--primary);
+}
+
+ol,
+ul {
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
 }
 
 * {
-	box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 #app {
-	height: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: var(--headerHeight) calc(100% - var(--headerHeight));
+    overflow: hidden;
+}
+
+section.subreddit {
+    display: grid;
+    grid-template-columns: 200px 1fr 200px;
+}
+
+a,
+a:visited,
+a:active,
+a:focus {
+    color: var(--primary);
+    outline: none;
+    text-decoration: none;
+}
+
+section.subreddit nav {
+    overflow: auto;
+}
+
+.thumbnail {
+    display: block;
+    border: 1px solid transparent;
+}
+
+.thumbnail.active {
+    border-color: var(--attention);
+}
+
+.thumbnail {
+    display: block;
 }
