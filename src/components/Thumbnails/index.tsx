@@ -2,12 +2,12 @@ import { Fragment, FunctionalComponent, h } from "preact";
 import { useSubreddit } from "../../hooks/reddit";
 import { Thumbnail } from "./components/Thumbnail";
 
-interface SubredditProps {
+interface ThumbnailsProps {
     subreddit?: string;
     activePostId?: string;
 }
 
-const Thumbnails: FunctionalComponent<SubredditProps> = ({
+const Thumbnails: FunctionalComponent<ThumbnailsProps> = ({
     subreddit = "videos",
     activePostId
 }) => {
@@ -18,7 +18,7 @@ const Thumbnails: FunctionalComponent<SubredditProps> = ({
     return (
         <Fragment>
             {!!error && "Unable to load thumbnails"}
-            {isLoading && "Loading..."}
+            {isLoading && "Loading thumbnails..."}
             {data?.map(redditPost => (
                 <Thumbnail redditPost={redditPost} />
             ))}

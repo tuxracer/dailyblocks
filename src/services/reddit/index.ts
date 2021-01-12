@@ -104,17 +104,37 @@ export const getPostsBySubreddit = memoize(
     }
 );
 
+export const getCachedPost = async (id: string, subreddit: string) => {
+    const sanitizedId = sanitizeStr(id);
+    const sanitizedSubreddit = sanitizeStr(subreddit);
+    console.log("getCachedPost", sanitizedId);
+    if (!sanitizedId || !sanitizedSubreddit) return;
+
+    const redditPostsBySubreddit = await getPostsBySubreddit({ subreddit });
+    return redditPostsBySubreddit.find(redditPost => redditPost.id === id);
+};
+
 export const getPostById = memoize(
     async (id?: string, fallbackSubreddit?: string) => {
         const sanitizedId = sanitizeStr(id);
+        const sanitizedFallbackSubreddit = sanitizeStr(fallbackSubreddit);
+
         console.log("getPostById", sanitizedId);
         if (!sanitizedId) {
             const redditPost = (
-                await getPostsBySubreddit({ subreddit: fallbackSubreddit })
+                await getPostsBySubreddit({
+                    subreddit: sanitizedFallbackSubreddit
+                })
             )[0];
             if (!redditPost) throw new Error("could not load fallback post");
             return redditPost;
         }
+
+        const cachedRedditPost = sanitizedFallbackSubreddit
+            ? await getCachedPost(sanitizedId, sanitizedFallbackSubreddit)
+            : undefined;
+
+        if (cachedRedditPost) return cachedRedditPost;
 
         const resp = await fetchRedditPath(`/by_id/t3_${sanitizedId}`);
         const postData = get(resp, "data.children[0].data");
@@ -125,95 +145,3 @@ export const getPostById = memoize(
     },
     { promise: true, max: 50000 }
 );
-
-// export const getPostByIdFastest = memoize(
-//     async (id?: string, fallbackSubreddit?: string) => {
-//         const sanitizedId = sanitizeStr(id);
-//         console.log("getPostByIdFastest", sanitizedId);
-//         const sanitizedFallbackSubreddit = sanitizeStr(fallbackSubreddit);
-
-//         const redditPost = (await firstResolve([
-//             getPostById(sanitizedId, sanitizedFallbackSubreddit),
-//             getCachedPost(sanitizedId),
-//         ])) as RedditPost;
-
-//         return redditPost;
-//     },
-//     { promise: true, max: 50000 }
-// );
-
-// export const getComments = memoize(
-//     async (permalink: string) => {
-//         logServer("getComments", permalink);
-//         const resp = await fetchRedditPath(permalink);
-//         const comments: RedditComment[] = (chain(resp).get(
-//             "[1].data.children",
-//             []
-//         ) as any)
-//             .map((item: any = {}) => {
-//                 if (
-//                     item.data &&
-//                     item.kind === "t1" &&
-//                     item.data.body !== "[deleted]" &&
-//                     item.data.body !== "[removed]"
-//                 ) {
-//                     return new RedditComment(item.data);
-//                 }
-//             })
-//             .compact()
-//             .value();
-
-//         return comments;
-//     },
-//     { promise: true, maxAge: MINUTE_MS * 120, preFetch: true }
-// );
-
-// export const getCachedPost = memoize(
-//     async (id: string) => {
-//         const sanitizedId = sanitizeStr(id);
-//         console.log("getCachedPost", sanitizedId);
-//         if (!sanitizedId) return;
-
-//         const resp = await fetch("https://dailyblocks.tv/api/post/" + id);
-//         if (resp.status !== 200)
-//             throw new Error("Unable to fetch existing post " + resp.status);
-
-//         const post: Post = await resp.json();
-//         const redditPost = RedditPost.fromPost(post);
-//         return redditPost;
-//     },
-//     { promise: true, max: 50000 }
-// );
-
-// export const trackView = memoize(
-//     async (id: string) => {
-//         if (1 === 1) return;
-//         const sanitizedId = sanitizeStr(id);
-
-//         if (isDoNotTrackEnabledClientside()) return console.log("skipping tv.");
-
-//         let url = "/api/post/" + sanitizedId;
-
-//         const referrer = getInitialReferrer();
-//         if (referrer) url = url + "?referrer=" + referrer;
-
-//         const views: number = await fetchUrl(url, "POST");
-//         return views;
-//     },
-//     { promise: true }
-// );
-
-// export const getTop = async (limit?: number) => {
-//     if (typeof limit === "string") return [] as Post[];
-//     let url = "https://dailyblocks.tv/api/post";
-//     if (limit) url = url + "?limit=" + limit;
-//     return (await fetchUrl(url)) as Post[];
-// };
-
-// export const getReferrers = async (postId: string, limit?: number) => {
-//     if (typeof postId !== "string") return [] as string[];
-//     let url = "https://dailyblocks.tv/api/referrers/" + postId;
-//     if (limit) url = url + "?limit=" + limit;
-//     const referrers = (await fetchUrl(url)) as string[];
-//     return referrers;
-// };

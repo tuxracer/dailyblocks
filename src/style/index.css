@@ -74,3 +74,11 @@ section.subreddit nav {
 .thumbnail {
     display: block;
 }
+
+.hidden {
+    visibility: none;
+    height: 0;
+    width: 0;
+    overflow: hidden;
+    pointer-events: none;
+}

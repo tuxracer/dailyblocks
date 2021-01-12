@@ -1,5 +1,6 @@
 import { Fragment, FunctionalComponent, h } from "preact";
-import Thumbnails from "../../components/Thumbnails";
+import { Player } from "../../components/Player";
+import { Thumbnails } from "../../components/Thumbnails";
 
 interface SubredditProps {
     subreddit?: string;
@@ -19,7 +20,9 @@ const Subreddit: FunctionalComponent<SubredditProps> = ({
                 <nav>
                     <Thumbnails subreddit={subreddit} />
                 </nav>
-                <main>Player</main>
+                <main>
+                    <Player postId={postId} subreddit={subreddit} />
+                </main>
                 <aside>Comments</aside>
             </section>
         </Fragment>
