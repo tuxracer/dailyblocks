@@ -1,13 +1,19 @@
 import { Fragment, FunctionalComponent, h } from "preact";
-import { useState, useContext, useEffect } from "preact/compat";
+import { useState } from "preact/compat";
+import { usePost } from "../../hooks/reddit";
 import ReactPlayer from "react-player";
 import { PLAYER_CONFIG } from "../../common/consts";
-import { AppStateContext } from "../../contexts/AppStateContext";
 
-const Player: FunctionalComponent = () => {
-    const { activePostResource, setIsPlaying } = useContext(AppStateContext)!;
+interface PlayerProps {
+    postId?: string;
+    subreddit?: string;
+}
 
-    const { data: redditPost, error, isLoading } = activePostResource;
+const Player: FunctionalComponent<PlayerProps> = ({ postId, subreddit }) => {
+    const { data: redditPost, error, isLoading } = usePost({
+        id: postId,
+        subreddit
+    });
 
     const [isVideoPlaying, setIsVideoPlaying] = useState(true);
     const [isVideoBuffering, setIsVideoBuffering] = useState(true);
@@ -56,10 +62,6 @@ const Player: FunctionalComponent = () => {
     };
 
     syncAudioPlayerWithVideoPlayer();
-
-    useEffect(() => {
-        setIsPlaying(isVideoPlaying);
-    }, [isVideoPlaying]);
 
     return (
         <Fragment>

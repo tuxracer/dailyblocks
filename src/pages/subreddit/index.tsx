@@ -1,7 +1,6 @@
-import { FunctionalComponent, h } from "preact";
+import { Fragment, FunctionalComponent, h } from "preact";
 import { Player } from "../../components/Player";
 import { Thumbnails } from "../../components/Thumbnails";
-import { AppStateContextProvider } from "../../contexts/AppStateContext";
 
 interface SubredditProps {
     subreddit?: string;
@@ -13,20 +12,20 @@ const Subreddit: FunctionalComponent<SubredditProps> = ({
     postId
 }) => {
     return (
-        <AppStateContextProvider subreddit={subreddit} activePostId={postId}>
+        <Fragment>
             <header>
                 <h1>{subreddit}</h1>
             </header>
             <section class="subreddit">
                 <nav>
-                    <Thumbnails />
+                    <Thumbnails subreddit={subreddit} />
                 </nav>
                 <main>
-                    <Player />
+                    <Player postId={postId} subreddit={subreddit} />
                 </main>
                 <aside>Comments</aside>
             </section>
-        </AppStateContextProvider>
+        </Fragment>
     );
 };
 
