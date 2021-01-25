@@ -40,7 +40,7 @@ interface GetPostsBySubredditOptions {
 
 const defaultGetPostsBySubredditOptions: GetPostsBySubredditOptions = {
     subreddit: "videos",
-    sortBy: "top",
+    sortBy: "hot",
     sortTime: "recent"
 };
 
