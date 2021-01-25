@@ -178,21 +178,28 @@ main {
     pointer-events: none;
 }
 
-.player,
-.player .loading {
+.player {
     background: #000;
     height: 100%;
     width: 100%;
     overflow: hidden;
 }
 
-.player .loading {
+.loading {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    cursor: default;
+    user-select: none;
+}
+
+.loading {
     display: grid;
     align-items: center;
     justify-content: center;
 }
 
-.player .loading > img {
+.loading > img {
     width: 100px;
 }
 
