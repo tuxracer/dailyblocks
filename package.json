@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "preact build",
+    "build": "preact build && copyfiles -f ./src/build/* build",
     "serve": "sirv build --port 8080 --cors --single",
     "dev": "preact watch",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
@@ -27,6 +27,7 @@
     "@types/memoizee": "^0.4.5",
     "@types/qs": "^6.9.5",
     "@types/react-helmet": "^6.1.0",
+    "copyfiles": "^2.4.1",
     "lodash": "^4.17.20",
     "memoizee": "^0.4.14",
     "preact": "^10.3.1",
