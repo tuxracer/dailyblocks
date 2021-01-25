@@ -3,7 +3,7 @@ import { useState } from "preact/compat";
 import { usePost } from "../../hooks/reddit";
 import ReactPlayer from "react-player";
 import { PLAYER_CONFIG } from "../../common/consts";
-import { Helmet } from "react-helmet";
+import { MetaTags } from "../MetaTags";
 
 interface PlayerProps {
     postId?: string;
@@ -74,14 +74,11 @@ export const Player: FunctionalComponent<PlayerProps> = ({
 
     syncAudioPlayerWithVideoPlayer();
 
+    if (!redditPost) return null;
+
     return (
         <Fragment>
-            {!!redditPost && (
-                <Helmet>
-                    <title>{redditPost.title}</title>
-                    <meta property="og:title" content={redditPost.title} />
-                </Helmet>
-            )}
+            <MetaTags redditPost={redditPost} />
             <ReactPlayer
                 class="player"
                 ref={setVideoPlayerRef}

@@ -1,6 +1,7 @@
-import { FunctionalComponent, h } from "preact";
+import { Fragment, FunctionalComponent, h } from "preact";
 import { usePost } from "../../hooks/reddit";
 import Redirect from "../Redirect";
+import { MetaTags } from "../MetaTags";
 
 interface RedirectToDefaultProps {
     subreddit?: string;
@@ -10,5 +11,10 @@ export const RedirectToDefault: FunctionalComponent<RedirectToDefaultProps> = pr
     const { data: redditPost } = usePost({ subreddit: props.subreddit });
     if (!redditPost) return null;
 
-    return <Redirect to={redditPost.permalink} replace={true} />;
+    return (
+        <Fragment>
+            <MetaTags redditPost={redditPost} />
+            <Redirect to={redditPost.permalink} replace={true} />
+        </Fragment>
+    );
 };
