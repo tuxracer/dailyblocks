@@ -1,18 +1,23 @@
 import { Fragment, FunctionalComponent, h } from "preact";
-import { useState } from "preact/compat";
+import { useEffect, useState } from "preact/compat";
 import { usePost } from "../../hooks/reddit";
 import ReactPlayer from "react-player";
 import { PLAYER_CONFIG } from "../../common/consts";
 import { MetaTags } from "../MetaTags";
+import { playNext } from "../../common/helpers";
+
+const PLAY_NEXT_TIMEOUT_MS = 5000;
 
 interface PlayerProps {
     postId?: string;
     subreddit?: string;
+    autoPlayNext?: boolean;
 }
 
 export const Player: FunctionalComponent<PlayerProps> = ({
     postId,
-    subreddit
+    subreddit,
+    autoPlayNext = true
 }) => {
     const { data: redditPost, error, isLoading } = usePost({
         id: postId,
@@ -28,18 +33,29 @@ export const Player: FunctionalComponent<PlayerProps> = ({
         null
     );
 
-    if (!!error) return <Fragment>Error loading video</Fragment>;
+    const [
+        playNextTimeout,
+        setPlayNextTimeout
+    ] = useState<NodeJS.Timeout | null>(null);
 
-    if (!!isLoading)
-        return (
-            <div class="player">
-                <div class="loading">
-                    <img src="/assets/loading.png" />
-                </div>
-            </div>
-        );
+    const playNextAfterDelay = () => {
+        cancelPlayNextTimeout();
+        setPlayNextTimeout(setTimeout(playNext, PLAY_NEXT_TIMEOUT_MS));
+    };
+
+    const cancelPlayNextTimeout = () => {
+        if (!playNextTimeout) return;
+        window.clearTimeout(playNextTimeout);
+        setPlayNextTimeout(null);
+    };
+
+    useEffect(() => {
+        setIsVideoPlaying(true);
+        return cancelPlayNextTimeout;
+    }, [redditPost?.permalink]);
 
     const handleSeek = (seconds: number) => {
+        cancelPlayNextTimeout();
         if (!audioPlayerRef) return;
         audioPlayerRef.seekTo(seconds, "seconds");
     };
@@ -53,10 +69,12 @@ export const Player: FunctionalComponent<PlayerProps> = ({
     const handlePlay = () => {
         setIsVideoPlaying(true);
         setIsVideoBuffering(false);
+        cancelPlayNextTimeout();
     };
 
     const handleEnded = () => {
         setIsVideoPlaying(false);
+        if (autoPlayNext) playNextAfterDelay();
     };
 
     const handlePause = () => {
@@ -73,6 +91,17 @@ export const Player: FunctionalComponent<PlayerProps> = ({
     };
 
     syncAudioPlayerWithVideoPlayer();
+
+    if (!!error) return <Fragment>Error loading video</Fragment>;
+
+    if (isLoading)
+        return (
+            <div class="player">
+                <div class="loading">
+                    <img src="/assets/loading.png" />
+                </div>
+            </div>
+        );
 
     if (!redditPost) return null;
 
