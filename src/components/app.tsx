@@ -6,6 +6,8 @@ import { Redirect } from "../components/Redirect";
 import { Subreddit } from "../pages/subreddit";
 import NotFoundPage from "../routes/notfound";
 
+console.log(window.document);
+
 // export default routes
 //     .add("/top", "top")
 //     .add("/r/:subreddit/comments/:id/:name/:unknown", "app")

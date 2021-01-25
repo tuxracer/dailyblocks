@@ -51,7 +51,7 @@ ul {
 
 section.subreddit {
     display: grid;
-    grid-template-columns: 200px 1fr 200px;
+    grid-template-columns: 175px 1fr 200px;
 }
 
 a,
@@ -70,28 +70,17 @@ main {
 
 nav {
     display: grid;
-    grid-gap: 10px;
-    padding: 10px;
+    grid-gap: 15px;
+    padding: 15px;
     overflow: auto;
-}
-
-nav {
-    opacity: 0.5;
-    transition: 500ms opacity ease-out;
-}
-
-nav:hover {
-    opacity: 1;
 }
 
 .thumbnail {
     display: grid;
     grid-gap: 5px;
-    justify-items: center;
     align-items: center;
     border: 1px solid transparent;
     opacity: 0.5;
-    padding: 5px;
     transform: scale(1);
 }
 
@@ -121,13 +110,19 @@ nav:hover {
     filter: blur(10px);
 }
 
+.thumbnail > caption {
+    display: grid;
+    grid-gap: 2px;
+    text-align: left;
+}
+
 .thumbnail:hover,
 .thumbnail.active {
     opacity: 1;
 }
 
-.thumbnail:active > img,
-.thumbnail.active > img {
+.thumbnail:active > img.original,
+.thumbnail.active > img.original {
     border-color: var(--background);
 }
 
@@ -148,4 +143,8 @@ nav:hover {
 img.spacer {
     visibility: hidden;
     pointer-events: none;
+}
+
+.scoreContainer {
+    text-align: center;
 }

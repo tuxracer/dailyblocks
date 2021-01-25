@@ -1,6 +1,7 @@
 import { Fragment, FunctionalComponent, h } from "preact";
 import { Player } from "../../components/Player";
 import { Thumbnails } from "../../components/Thumbnails";
+import { Toolbar } from "../../components/Toolbar";
 
 interface SubredditProps {
     subreddit?: string;
@@ -14,16 +15,16 @@ const Subreddit: FunctionalComponent<SubredditProps> = ({
     return (
         <Fragment>
             <header>
-                <h1>{subreddit}</h1>
+                <Toolbar postId={postId} subreddit={subreddit} />
             </header>
             <section class="subreddit">
-                <nav>
-                    <Thumbnails subreddit={subreddit} />
-                </nav>
+                <aside>Comments</aside>
                 <main>
                     <Player postId={postId} subreddit={subreddit} />
                 </main>
-                <aside>Comments</aside>
+                <nav>
+                    <Thumbnails subreddit={subreddit} />
+                </nav>
             </section>
         </Fragment>
     );
