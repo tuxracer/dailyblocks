@@ -26,7 +26,6 @@ export const MetaTags: FunctionalComponent<MetaTagsProps> = ({
             {redditPost.over18 && (
                 <meta name="rating" content="RTA-5042-1996-1400-1577-RTA" />
             )}
-            <meta name="theme-color" content="#000000" />
             <meta name="twitter:card" content="summary_large_image" />
             <meta name="twitter:title" content={redditPost.title} />
             <meta name="twitter:image" content={redditPost.thumbnailUrl} />
