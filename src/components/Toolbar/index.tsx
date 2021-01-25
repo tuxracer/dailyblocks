@@ -1,5 +1,4 @@
-import { FunctionalComponent, h } from "preact";
-import { Link } from "preact-router/match";
+import { FunctionalComponent, h, Fragment } from "preact";
 import { usePost } from "../../hooks/reddit";
 
 interface ToolbarProps {
@@ -7,21 +6,23 @@ interface ToolbarProps {
     postId?: string;
 }
 
-const Toolbar: FunctionalComponent<ToolbarProps> = ({ subreddit, postId }) => {
+export const Toolbar: FunctionalComponent<ToolbarProps> = ({
+    subreddit,
+    postId
+}) => {
     const { data: redditPost, error, isLoading } = usePost({
         id: postId,
         subreddit
     });
 
+    const isLoadedSuccessfully = !error && !isLoading;
+
     return (
-        <div>
-            <div>{subreddit}</div>
-            {!!error && <div>Error</div>}
-            <div>{isLoading ? "Loading..." : redditPost?.title}</div>
-        </div>
+        <Fragment>
+            <div class="subredditFilter">
+                {isLoadedSuccessfully && subreddit}
+            </div>
+            <div>{redditPost?.title}</div>
+        </Fragment>
     );
 };
-
-export { Toolbar };
-
-export default Toolbar;

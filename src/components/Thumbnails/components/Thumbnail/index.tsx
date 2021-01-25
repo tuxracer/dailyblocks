@@ -1,18 +1,15 @@
 import { FunctionalComponent, h } from "preact";
 import { Link } from "preact-router/match";
+import { scoreToShortScore } from "../../../../common/helpers";
 import RedditPost from "../../../../models/RedditPost";
-
-const scoreToShortScore = (score: number) => {
-    if (score < 1000) return score.toString();
-
-    return (score / 1000).toFixed(1) + "k";
-};
 
 interface ThumbnailProps {
     redditPost: RedditPost;
 }
 
-const Thumbnail: FunctionalComponent<ThumbnailProps> = ({ redditPost }) => {
+export const Thumbnail: FunctionalComponent<ThumbnailProps> = ({
+    redditPost
+}) => {
     const { permalink, title, thumbnailUrl, score } = redditPost;
 
     return (
@@ -27,7 +24,3 @@ const Thumbnail: FunctionalComponent<ThumbnailProps> = ({ redditPost }) => {
         </Link>
     );
 };
-
-export { Thumbnail };
-
-export default Thumbnail;

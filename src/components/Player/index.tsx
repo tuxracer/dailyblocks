@@ -3,13 +3,17 @@ import { useState } from "preact/compat";
 import { usePost } from "../../hooks/reddit";
 import ReactPlayer from "react-player";
 import { PLAYER_CONFIG } from "../../common/consts";
+import { Helmet } from "react-helmet";
 
 interface PlayerProps {
     postId?: string;
     subreddit?: string;
 }
 
-const Player: FunctionalComponent<PlayerProps> = ({ postId, subreddit }) => {
+export const Player: FunctionalComponent<PlayerProps> = ({
+    postId,
+    subreddit
+}) => {
     const { data: redditPost, error, isLoading } = usePost({
         id: postId,
         subreddit
@@ -26,7 +30,14 @@ const Player: FunctionalComponent<PlayerProps> = ({ postId, subreddit }) => {
 
     if (!!error) return <Fragment>Error loading video</Fragment>;
 
-    if (!!isLoading) return <Fragment>Loading video...</Fragment>;
+    if (!!isLoading)
+        return (
+            <div class="player">
+                <div class="loading">
+                    <img src="/assets/loading.png" />
+                </div>
+            </div>
+        );
 
     const handleSeek = (seconds: number) => {
         if (!audioPlayerRef) return;
@@ -65,6 +76,12 @@ const Player: FunctionalComponent<PlayerProps> = ({ postId, subreddit }) => {
 
     return (
         <Fragment>
+            {!!redditPost && (
+                <Helmet>
+                    <title>{redditPost.title}</title>
+                    <meta property="og:title" content={redditPost.title} />
+                </Helmet>
+            )}
             <ReactPlayer
                 class="player"
                 ref={setVideoPlayerRef}
@@ -93,7 +110,3 @@ const Player: FunctionalComponent<PlayerProps> = ({ postId, subreddit }) => {
         </Fragment>
     );
 };
-
-export { Player };
-
-export default Player;

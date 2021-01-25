@@ -3,7 +3,7 @@
     --light: #efefef;
     --attention: rgba(0, 188, 212, 1);
 
-    --headerHeight: 75px;
+    --headerHeight: 60px;
 
     --primary: var(--dark);
     --background: var(--light);
@@ -29,6 +29,7 @@ body {
     font-weight: 400;
     color: var(--primary);
     font-size: 10px;
+    word-break: break-word;
 }
 
 ol,
@@ -42,16 +43,33 @@ ul {
     box-sizing: border-box;
 }
 
-#app {
+#app,
+#app > div {
     height: 100%;
     display: grid;
-    grid-template-rows: var(--headerHeight) calc(100% - var(--headerHeight));
     overflow: hidden;
 }
 
-section.subreddit {
+.subreddit {
+    grid-template-rows: var(--headerHeight) calc(100% - var(--headerHeight));
+}
+
+.subreddit > header {
     display: grid;
-    grid-template-columns: 175px 1fr 200px;
+    font-size: 16px;
+    grid-template-columns: 200px 1fr;
+    align-items: center;
+    padding: 10px;
+}
+
+.subreddit > header > div {
+    max-height: 100%;
+    overflow: hidden;
+}
+
+.subreddit > section {
+    display: grid;
+    grid-template-columns: 200px 1fr 225px;
 }
 
 a,
@@ -68,11 +86,36 @@ main {
     overflow: hidden;
 }
 
-nav {
+.subreddit nav {
     display: grid;
     grid-gap: 15px;
     padding: 15px;
     overflow: auto;
+}
+
+.subreddit aside {
+    display: grid;
+    font-size: 12px;
+    overflow: auto;
+}
+
+.comment {
+    padding-bottom: 10px;
+    margin: 10px;
+    border-bottom: 1px solid var(--primary);
+    word-break: break-word;
+}
+
+.comment > header {
+    font-weight: bold;
+}
+
+.comment a {
+    display: block;
+}
+
+.comment a:hover {
+    text-decoration: underline;
 }
 
 .thumbnail {
@@ -82,11 +125,12 @@ nav {
     border: 1px solid transparent;
     opacity: 0.5;
     transform: scale(1);
+    word-break: break-word;
 }
 
 .thumbnail > img {
     width: 100%;
-    height: var(--headerHeight);
+    height: 75px;
     border: 2px solid transparent;
     border-radius: 5px;
     object-fit: cover;
@@ -134,10 +178,22 @@ nav {
     pointer-events: none;
 }
 
-.player {
+.player,
+.player .loading {
+    background: #000;
     height: 100%;
     width: 100%;
     overflow: hidden;
+}
+
+.player .loading {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}
+
+.player .loading > img {
+    width: 100px;
 }
 
 img.spacer {
@@ -145,6 +201,8 @@ img.spacer {
     pointer-events: none;
 }
 
-.scoreContainer {
-    text-align: center;
+.subredditFilter {
+    text-transform: uppercase;
+    cursor: default;
+    user-select: none;
 }

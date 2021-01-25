@@ -1,5 +1,9 @@
 import useSWR from "swr";
-import { getPostById, getPostsBySubreddit } from "../../services/reddit";
+import {
+    getPostById,
+    getPostsBySubreddit,
+    getComments
+} from "../../services/reddit";
 
 const subredditFetcher = (subreddit: string) =>
     getPostsBySubreddit({ subreddit });
@@ -26,6 +30,17 @@ export const usePost = ({ id, subreddit }: usePostProps) => {
 
     console.log("usePost", { id, subreddit });
 
+    return {
+        data,
+        error,
+        isLoading: !error && !data
+    };
+};
+
+const commentsFetcher = (permalink: string) => getComments(permalink);
+
+export const useComments = (permalink: string) => {
+    const { data = null, error } = useSWR(permalink, commentsFetcher);
     return {
         data,
         error,

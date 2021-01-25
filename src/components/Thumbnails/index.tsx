@@ -7,7 +7,7 @@ interface ThumbnailsProps {
     activePostId?: string;
 }
 
-const Thumbnails: FunctionalComponent<ThumbnailsProps> = ({
+export const Thumbnails: FunctionalComponent<ThumbnailsProps> = ({
     subreddit = "videos",
     activePostId
 }) => {
@@ -18,14 +18,10 @@ const Thumbnails: FunctionalComponent<ThumbnailsProps> = ({
     return (
         <Fragment>
             {!!error && "Unable to load thumbnails"}
-            {isLoading && "Loading thumbnails..."}
+            {/* {isLoading && "Loading thumbnails..."} */}
             {data?.map(redditPost => (
                 <Thumbnail redditPost={redditPost} />
             ))}
         </Fragment>
     );
 };
-
-export { Thumbnails };
-
-export default Thumbnails;

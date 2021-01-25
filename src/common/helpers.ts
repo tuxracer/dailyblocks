@@ -75,3 +75,9 @@ export const firstResolve = (promises: Promise<any>[]) => {
         });
     });
 };
+
+export const scoreToShortScore = (score: number) => {
+    if (score < 1000) return score.toString();
+
+    return (score / 1000).toFixed(1) + "k";
+};

@@ -6,7 +6,7 @@ interface RedirectProps {
     to: string;
 }
 
-export default class Redirect extends Component<RedirectProps> {
+export class Redirect extends Component<RedirectProps> {
     componentWillMount() {
         route(this.props.to, true);
     }
@@ -16,4 +16,4 @@ export default class Redirect extends Component<RedirectProps> {
     }
 }
 
-export { Redirect };
+export default Redirect;

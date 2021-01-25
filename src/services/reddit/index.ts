@@ -2,8 +2,9 @@ import { stringify } from "qs";
 import { chain, get } from "lodash";
 import { RedditPost } from "../../models/RedditPost";
 import memoize from "memoizee";
-import { URLS, MINUTE_MS, BLACKLIST } from "../../common/consts";
+import { URLS, MINUTE_MS, DAY_MS, BLACKLIST } from "../../common/consts";
 import { sanitizeStr, logServer } from "../../common/helpers";
+import { RedditComment } from "../../models/RedditComment";
 
 export const fetchUrl = async (
     url: string,
@@ -143,5 +144,31 @@ export const getPostById = memoize(
 
         return redditPost;
     },
-    { promise: true, max: 50000 }
+    { promise: true, maxAge: DAY_MS }
+);
+
+export const getComments = memoize(
+    async (permalink: string) => {
+        logServer("getComments", permalink);
+        const resp = await fetchRedditPath(permalink);
+        const comments: RedditComment[] = (chain(resp).get(
+            "[1].data.children",
+            []
+        ) as any)
+            .map((item: any = {}) => {
+                if (
+                    item.data &&
+                    item.kind === "t1" &&
+                    item.data.body !== "[deleted]" &&
+                    item.data.body !== "[removed]"
+                ) {
+                    return new RedditComment(item.data);
+                }
+            })
+            .compact()
+            .value();
+
+        return comments;
+    },
+    { promise: true, maxAge: MINUTE_MS * 5 }
 );
