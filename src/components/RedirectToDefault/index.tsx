@@ -14,10 +14,10 @@ export const RedirectToDefault: FunctionalComponent<RedirectToDefaultProps> = pr
     return (
         <Fragment>
             <MetaTags redditPost={redditPost} />
-            <Redirect to={redditPost.permalink} replace={true} />
             <div class="loading">
                 <img src="/assets/loading.png" />
             </div>
+            <Redirect to={redditPost.permalink} replace={true} />
         </Fragment>
     );
 };
