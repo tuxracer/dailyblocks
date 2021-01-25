@@ -8,12 +8,9 @@ interface ThumbnailsProps {
 }
 
 export const Thumbnails: FunctionalComponent<ThumbnailsProps> = ({
-    subreddit = "videos",
-    activePostId
+    subreddit = "videos"
 }) => {
     const { data, error, isLoading } = useSubreddit(subreddit);
-
-    console.log({ subreddit, activePostId, data, error, isLoading });
 
     return (
         <Fragment>

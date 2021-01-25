@@ -25,10 +25,9 @@ interface usePostProps {
     subreddit?: string;
 }
 
-export const usePost = ({ id, subreddit }: usePostProps) => {
+export const usePost = (props?: usePostProps) => {
+    const { id, subreddit } = props || {};
     const { data = null, error } = useSWR([id, subreddit], postFetcher);
-
-    console.log("usePost", { id, subreddit });
 
     return {
         data,

@@ -108,7 +108,7 @@ export const getPostsBySubreddit = memoize(
 export const getCachedPost = async (id: string, subreddit: string) => {
     const sanitizedId = sanitizeStr(id);
     const sanitizedSubreddit = sanitizeStr(subreddit);
-    console.log("getCachedPost", sanitizedId);
+    // console.log("getCachedPost", sanitizedId);
     if (!sanitizedId || !sanitizedSubreddit) return;
 
     const redditPostsBySubreddit = await getPostsBySubreddit({ subreddit });
@@ -120,7 +120,7 @@ export const getPostById = memoize(
         const sanitizedId = sanitizeStr(id);
         const sanitizedFallbackSubreddit = sanitizeStr(fallbackSubreddit);
 
-        console.log("getPostById", sanitizedId);
+        // console.log("getPostById", sanitizedId);
         if (!sanitizedId) {
             const redditPost = (
                 await getPostsBySubreddit({

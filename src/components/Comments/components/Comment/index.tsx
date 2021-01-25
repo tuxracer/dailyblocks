@@ -12,8 +12,6 @@ export const Comment: FunctionalComponent<CommentProps> = ({
     const { author, bodyHtml, numReplies, permalink } = redditComment;
     const commentUrl = URLS.REDDIT + permalink;
 
-    console.log({ numReplies });
-
     return (
         <article class="comment">
             <header>{author}</header>

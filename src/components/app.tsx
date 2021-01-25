@@ -1,19 +1,22 @@
 import { FunctionalComponent, h } from "preact";
 import { Route, Router } from "preact-router";
-import { Redirect } from "../components/Redirect";
 import { Subreddit } from "../pages/subreddit";
-import NotFoundPage from "../routes/notfound";
+import { NotFound } from "../pages/NotFound";
+import { ShareRedirect } from "../pages/ShareRedirect";
+import { RedirectToDefault } from "./RedirectToDefault";
 
-const App: FunctionalComponent = () => (
+export const App: FunctionalComponent = () => (
     <div id="app">
         <Router>
-            <Redirect path="/" to="/r/videos" />
             <Route
                 path="/r/:subreddit/comments/:postId/:shortName?"
                 component={Subreddit}
             />
-            <Route path="/r/:subreddit" component={Subreddit} />
-            <NotFoundPage default />
+            <Route path="/s/:postId" component={ShareRedirect} />
+            <Route path="/r/:subreddit" component={RedirectToDefault} />
+            <Route path="/" component={RedirectToDefault} />
+
+            <NotFound default />
         </Router>
     </div>
 );
