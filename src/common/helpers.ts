@@ -86,5 +86,11 @@ export const playNext = () => {
     const nextThumbnailEl =
         (document.querySelector<HTMLAnchorElement>(".thumbnail.active")
             ?.nextElementSibling as HTMLAnchorElement | null) || null;
-    nextThumbnailEl?.click();
+    if (!nextThumbnailEl) return;
+    try {
+        nextThumbnailEl.click();
+        nextThumbnailEl.scrollIntoView();
+    } catch {
+        console.warn("Autoplay next unsupported");
+    }
 };
