@@ -3,7 +3,7 @@
     --light: #efefef;
     --attention: rgba(0, 188, 212, 1);
 
-    --headerHeight: 60px;
+    --headerHeight: 63px;
 
     --primary: var(--dark);
     --background: var(--light);
@@ -69,6 +69,10 @@ ul {
 @media (max-width: 700px) {
     .subreddit > header {
         grid-template-columns: 75px 1fr;
+    }
+
+    .subreddit > header > div {
+        overflow: auto !important;
     }
 }
 
