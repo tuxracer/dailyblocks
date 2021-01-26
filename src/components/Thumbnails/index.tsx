@@ -12,7 +12,7 @@ export const getNextEl = () =>
 
 export const scrollToActiveEl = () => {
     try {
-        getActiveEl()?.scrollIntoView();
+        (getActiveEl() as any)?.scrollIntoViewIfNeeded();
     } catch {
         console.warn("Unsupported action: scrollToActiveEl");
     }
