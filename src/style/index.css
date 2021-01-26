@@ -9,6 +9,10 @@
     --background: var(--light);
 }
 
+* {
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+
 @media (prefers-color-scheme: dark) {
     :root {
         --primary: var(--light);
