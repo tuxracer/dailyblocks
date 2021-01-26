@@ -4,8 +4,8 @@ import { usePost } from "../../hooks/reddit";
 import ReactPlayer from "react-player";
 import { PLAYER_CONFIG } from "../../common/consts";
 import { MetaTags } from "../MetaTags";
-import { playNext } from "../../common/helpers";
 import { Loader } from "../Loader";
+import { playNext, scrollToActiveEl } from "../Thumbnails";
 
 const PLAY_NEXT_TIMEOUT_MS = 5000;
 
@@ -52,6 +52,7 @@ export const Player: FunctionalComponent<PlayerProps> = ({
 
     useEffect(() => {
         setIsVideoPlaying(true);
+        scrollToActiveEl();
         return cancelPlayNextTimeout;
     }, [redditPost?.permalink]);
 

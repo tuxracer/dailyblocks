@@ -81,16 +81,3 @@ export const scoreToShortScore = (score: number) => {
 
     return (score / 1000).toFixed(1) + "k";
 };
-
-export const playNext = () => {
-    const nextThumbnailEl =
-        (document.querySelector<HTMLAnchorElement>(".thumbnail.active")
-            ?.nextElementSibling as HTMLAnchorElement | null) || null;
-    if (!nextThumbnailEl) return;
-    try {
-        nextThumbnailEl.click();
-        nextThumbnailEl.scrollIntoView();
-    } catch {
-        console.warn("Autoplay next unsupported");
-    }
-};
