@@ -5,6 +5,7 @@ import ReactPlayer from "react-player";
 import { PLAYER_CONFIG } from "../../common/consts";
 import { MetaTags } from "../MetaTags";
 import { playNext } from "../../common/helpers";
+import { Loader } from "../Loader";
 
 const PLAY_NEXT_TIMEOUT_MS = 5000;
 
@@ -98,7 +99,7 @@ export const Player: FunctionalComponent<PlayerProps> = ({
         return (
             <div class="player">
                 <div class="loading">
-                    <img src="/assets/loading.png" />
+                    <Loader />
                 </div>
             </div>
         );
