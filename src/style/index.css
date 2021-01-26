@@ -90,7 +90,7 @@ ul {
 @media (max-width: 700px) {
     .subreddit > section {
         grid-template-columns: 1fr;
-        grid-template-rows: 1fr 150px 150px;
+        grid-template-rows: 1fr 150px 140px;
         grid-template-areas:
             "player"
             "comments"
