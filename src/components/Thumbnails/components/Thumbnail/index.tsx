@@ -18,8 +18,8 @@ export const Thumbnail: FunctionalComponent<ThumbnailProps> = ({
             <img class="original" src={thumbnailUrl} />
             <img class="spacer" src={thumbnailUrl} />
             <caption>
-                <div>{title}</div>
-                <div>▲ {scoreToShortScore(score)}</div>
+                <div class="title">{title}</div>
+                <div class="score">▲ {scoreToShortScore(score)}</div>
             </caption>
         </Link>
     );

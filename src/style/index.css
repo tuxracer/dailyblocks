@@ -62,6 +62,12 @@ ul {
     padding: 10px;
 }
 
+@media (max-width: 700px) {
+    .subreddit > header {
+        grid-template-columns: 75px 1fr;
+    }
+}
+
 .subreddit > header > div {
     max-height: 100%;
     overflow: hidden;
@@ -70,6 +76,17 @@ ul {
 .subreddit > section {
     display: grid;
     grid-template-columns: 200px 1fr 225px;
+    grid-template-areas: "thumbnails player comments";
+}
+
+@media (max-width: 700px) {
+    .subreddit > section {
+        grid-template-rows: 1fr 150px;
+        grid-template-columns: 1fr 200px;
+        grid-template-areas:
+            "player comments"
+            "thumbnails thumbnails";
+    }
 }
 
 a,
@@ -83,18 +100,28 @@ a:focus {
 
 main {
     display: grid;
+    grid-area: player;
     overflow: hidden;
 }
 
 .subreddit nav {
     display: grid;
+    grid-area: thumbnails;
     grid-gap: 15px;
     padding: 15px;
     overflow: auto;
 }
 
+@media (max-width: 700px) {
+    .subreddit nav {
+        grid-auto-flow: column;
+    }
+}
+
 .subreddit aside {
     display: grid;
+    grid-auto-rows: min-content;
+    grid-area: comments;
     font-size: 12px;
     overflow: auto;
 }
@@ -125,7 +152,23 @@ main {
     border: 1px solid transparent;
     opacity: 0.5;
     transform: scale(1);
-    word-break: break-word;
+}
+
+@media (max-width: 700px) {
+    .subreddit nav {
+        overflow-y: hidden;
+    }
+
+    .thumbnail {
+        width: 200px;
+        display: block;
+    }
+
+    .thumbnail .title {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
 }
 
 .thumbnail > img {
