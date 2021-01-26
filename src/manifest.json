@@ -3,7 +3,6 @@
     "short_name": "dailyblocks",
     "start_url": "/?utm_medium=pwa",
     "display": "standalone",
-    "orientation": "landscape",
     "categories": ["entertainment", "video"],
     "theme_color": "#FFFFFF",
     "background_color": "#FFFFFF",
