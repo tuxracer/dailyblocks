@@ -194,12 +194,13 @@ main {
 .thumbnail > img.blur {
     opacity: 0;
     transition: 100ms opacity ease-out;
+    transform: scale(1.1);
 }
 
 .thumbnail.active > img.blur,
 .thumbnail:active > img.blur {
     opacity: 1;
-    filter: blur(10px);
+    filter: blur(5px);
 }
 
 .thumbnail > caption {
