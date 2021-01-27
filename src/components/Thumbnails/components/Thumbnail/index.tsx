@@ -10,10 +10,14 @@ interface ThumbnailProps {
 export const Thumbnail: FunctionalComponent<ThumbnailProps> = ({
     redditPost
 }) => {
-    const { permalink, title, thumbnailUrl, score } = redditPost;
+    const { permalink, title, thumbnailUrl, score, isWatched } = redditPost;
 
     return (
-        <Link href={permalink} activeClassName="active" class="thumbnail">
+        <Link
+            href={permalink}
+            activeClassName="active"
+            class={"thumbnail" + (isWatched ? " w" : "")}
+        >
             <img class="blur" src={thumbnailUrl} />
             <img class="original" src={thumbnailUrl} />
             <img class="spacer" src={thumbnailUrl} />

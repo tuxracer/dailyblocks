@@ -1,4 +1,11 @@
 import { DOMAIN_NAME } from "./consts";
+import {
+    compressToEncodedURIComponent as compress,
+    decompressFromEncodedURIComponent as decompress
+} from "lz-string";
+import { isString, isArray, uniq } from "lodash";
+
+const WATCHED_LOCAL_STORAGE_KEY = "w";
 
 export const fetcher = <T>(url: string) => fetch(url).then<T>(r => r.json());
 
@@ -81,3 +88,39 @@ export const scoreToShortScore = (score: number) => {
 
     return (score / 1000).toFixed(1) + "k";
 };
+
+export const compressArray = (strings: string[]) => {
+    return compress(JSON.stringify(strings));
+};
+
+export const decompressArray = (s: string) => {
+    if (typeof s === "undefined" || !s) return [];
+    const decompressed = decompress(s);
+    if (!decompressed) return [];
+    try {
+        const watched = JSON.parse(decompressed);
+        if (isArray(watched)) {
+            return watched.filter(isString);
+        }
+    } catch (error) {
+        console.warn("Invalid watched string", error);
+    }
+    return [];
+};
+
+export const getWatched = () => {
+    const watchedCompressed = localStorage.getItem(WATCHED_LOCAL_STORAGE_KEY);
+    if (!watchedCompressed) return [];
+    return decompressArray(watchedCompressed);
+};
+
+export const addWatched = (id: string) => {
+    let watched = getWatched();
+    watched.push(id);
+    watched = uniq(watched);
+    const compressed = compressArray(watched);
+    localStorage.setItem(WATCHED_LOCAL_STORAGE_KEY, compressed);
+    return watched;
+};
+
+export const isWatched = (id: string) => getWatched().includes(id);

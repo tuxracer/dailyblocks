@@ -6,6 +6,7 @@ import { PLAYER_CONFIG } from "../../common/consts";
 import { MetaTags } from "../MetaTags";
 import { Loader } from "../Loader";
 import { playNext, scrollToActiveEl } from "../Thumbnails";
+import { addWatched } from "../../common/helpers";
 
 const PLAY_NEXT_TIMEOUT_MS = 5000;
 
@@ -72,6 +73,7 @@ export const Player: FunctionalComponent<PlayerProps> = ({
         setIsVideoPlaying(true);
         setIsVideoBuffering(false);
         cancelPlayNextTimeout();
+        if (redditPost?.id) addWatched(redditPost?.id);
     };
 
     const handleEnded = () => {

@@ -126,7 +126,7 @@ export const getPostById = memoize(
                 await getPostsBySubreddit({
                     subreddit: sanitizedFallbackSubreddit
                 })
-            )[0];
+            ).find(redditPost => !redditPost.isWatched);
             if (!redditPost) throw new Error("could not load fallback post");
             return redditPost;
         }
