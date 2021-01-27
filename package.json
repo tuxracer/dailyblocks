@@ -41,7 +41,7 @@
     "preact-router": "^3.2.1",
     "qs": "^6.9.4",
     "react-helmet": "^6.1.0",
-    "react-player": "^2.7.2",
+    "react-player": "^2.8.2",
     "swr": "^0.4.0"
   },
   "devDependencies": {
