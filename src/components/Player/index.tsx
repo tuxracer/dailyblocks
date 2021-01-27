@@ -54,6 +54,7 @@ export const Player: FunctionalComponent<PlayerProps> = ({
     useEffect(() => {
         setIsVideoPlaying(true);
         scrollToActiveEl();
+        if (redditPost?.id) addWatched(redditPost?.id);
         return cancelPlayNextTimeout;
     }, [redditPost?.permalink]);
 
@@ -73,7 +74,6 @@ export const Player: FunctionalComponent<PlayerProps> = ({
         setIsVideoPlaying(true);
         setIsVideoBuffering(false);
         cancelPlayNextTimeout();
-        if (redditPost?.id) addWatched(redditPost?.id);
     };
 
     const handleEnded = () => {
