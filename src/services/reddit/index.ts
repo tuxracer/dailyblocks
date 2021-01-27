@@ -73,7 +73,8 @@ export const getPostsBySubreddit = memoize(
             .map(({ data }) => new RedditPost(data))
             .filter("isPlayable")
             .filter(
-                ({ id, isPlayable }) => isPlayable && !BLACKLIST.includes(id)
+                ({ id, isPlayable, score }) =>
+                    isPlayable && !BLACKLIST.includes(id) && score > 0
             )
             .value();
 
