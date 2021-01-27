@@ -8,7 +8,6 @@ import { RedirectToDefault } from "./RedirectToDefault";
 const clearLegacy = async () => {
     try {
         await (window as any).cookieStore.delete("watched");
-        console.log("cleared");
     } catch {}
 };
 
