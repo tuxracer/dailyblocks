@@ -5,6 +5,15 @@ import { NotFound } from "../pages/NotFound";
 import { ShareRedirect } from "../pages/ShareRedirect";
 import { RedirectToDefault } from "./RedirectToDefault";
 
+const clearLegacy = async () => {
+    try {
+        await (window as any).cookieStore.delete("watched");
+        console.log("cleared");
+    } catch {}
+};
+
+clearLegacy();
+
 export const App: FunctionalComponent = () => (
     <div id="app">
         <Router>
