@@ -1,5 +1,6 @@
 import { FunctionalComponent, h, Fragment } from "preact";
 import { usePost } from "../../hooks/reddit";
+import { playNext } from "../Thumbnails";
 
 interface ToolbarProps {
     subreddit: string;
@@ -19,7 +20,7 @@ export const Toolbar: FunctionalComponent<ToolbarProps> = ({
 
     return (
         <Fragment>
-            <div class="subredditFilter">
+            <div class="subredditFilter" onClick={playNext}>
                 {isLoadedSuccessfully && subreddit}
             </div>
             <div>{redditPost?.title}</div>
