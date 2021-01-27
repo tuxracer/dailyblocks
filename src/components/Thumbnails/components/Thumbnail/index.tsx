@@ -2,6 +2,7 @@ import { FunctionalComponent, h } from "preact";
 import { Link } from "preact-router/match";
 import { scoreToShortScore } from "../../../../common/helpers";
 import RedditPost from "../../../../models/RedditPost";
+import classnames from "classnames";
 
 interface ThumbnailProps {
     redditPost: RedditPost;
@@ -16,7 +17,7 @@ export const Thumbnail: FunctionalComponent<ThumbnailProps> = ({
         <Link
             href={permalink}
             activeClassName="active"
-            class={"thumbnail" + (isWatched ? " w" : "")}
+            class={classnames("thumbnail", isWatched ? "w" : "u")}
         >
             <img class="blur" src={thumbnailUrl} />
             <img class="original" src={thumbnailUrl} />

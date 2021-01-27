@@ -2,16 +2,18 @@ import { Fragment, FunctionalComponent, h } from "preact";
 import { useSubreddit } from "../../hooks/reddit";
 import { Thumbnail } from "./components/Thumbnail";
 
-const THUMBNAIL_SELECTOR = ".thumbnail:not(.w)";
-const THUMBNAIL_SELECTOR_ACTIVE = ".thumbnail.active";
+export const getFirstEl = () =>
+    document.querySelector<HTMLAnchorElement>(".thumbnail:not(.w)") ||
+    document.querySelector<HTMLAnchorElement>(".thumbnail");
 
 export const getActiveEl = () =>
-    document.querySelector<HTMLAnchorElement>(THUMBNAIL_SELECTOR_ACTIVE) ||
-    document.querySelector<HTMLAnchorElement>(THUMBNAIL_SELECTOR);
+    document.querySelector<HTMLAnchorElement>(".thumbnail.active") ||
+    getFirstEl();
 
 export const getNextEl = () =>
-    (getActiveEl()?.nextElementSibling as HTMLAnchorElement | null) ||
-    document.querySelector<HTMLAnchorElement>(THUMBNAIL_SELECTOR);
+    document.querySelector<HTMLAnchorElement>(
+        ".thumbnail.active ~ .thumbnail:not(.w)"
+    ) || getFirstEl();
 
 export const scrollToActiveEl = () => {
     try {
