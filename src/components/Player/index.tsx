@@ -128,6 +128,7 @@ export const Player: FunctionalComponent<PlayerProps> = ({
                 onBufferEnd={handleBufferEnd}
                 onSeek={handleSeek}
                 config={PLAYER_CONFIG}
+                playsinline={true}
             />
             {!!redditPost?.audioUrl && (
                 <ReactPlayer
