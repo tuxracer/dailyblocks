@@ -136,6 +136,7 @@ export const Player: FunctionalComponent<PlayerProps> = ({
                     ref={setAudioPlayerRef}
                     url={redditPost.audioUrl}
                     playing={isVideoPlaying}
+                    playsinline={true}
                 />
             )}
         </Fragment>
