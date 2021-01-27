@@ -15,7 +15,7 @@ export const suspensify = <T>(promise: Promise<T>) => {
     let status: SuspensifyStatus = "pending";
     let result: T;
 
-    let suspender = promise.then(
+    const suspender = promise.then(
         response => {
             status = "success";
             result = response;
@@ -39,7 +39,7 @@ export const suspensify = <T>(promise: Promise<T>) => {
 export const stripSpecialChars = (str?: string | null) =>
     str ? str.replace(/[^a-z0-9]/gi, "") : "";
 
-export const sanitizeStr = (str?: string | null, maxLength: number = 1024) =>
+export const sanitizeStr = (str?: string | null, maxLength = 1024) =>
     str ? stripSpecialChars(str).slice(0, maxLength) : undefined;
 
 /** Clientside only isProd check */
@@ -71,7 +71,7 @@ export const getInitialReferrer = () => {
 
 export const firstResolve = (promises: Promise<any>[]) => {
     return new Promise(function(fulfil, reject) {
-        var rejectCount = 0;
+        let rejectCount = 0;
         promises.forEach(function(promise) {
             promise.then(fulfil, () => {
                 rejectCount++;
@@ -117,7 +117,7 @@ export const getWatched = () => {
 export const addWatched = (id: string) => {
     let watched = getWatched();
     watched.unshift(id);
-    watched = uniq(watched).slice(0, 512);
+    watched = uniq(watched).slice(0, 1024);
     const compressed = compressArray(watched);
     localStorage.setItem(WATCHED_LOCAL_STORAGE_KEY, compressed);
     return watched;
