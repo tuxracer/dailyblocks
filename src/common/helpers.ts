@@ -116,8 +116,8 @@ export const getWatched = () => {
 
 export const addWatched = (id: string) => {
     let watched = getWatched();
-    watched.push(id);
-    watched = uniq(watched);
+    watched.unshift(id);
+    watched = uniq(watched).slice(0, 512);
     const compressed = compressArray(watched);
     localStorage.setItem(WATCHED_LOCAL_STORAGE_KEY, compressed);
     return watched;
