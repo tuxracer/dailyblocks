@@ -160,6 +160,7 @@ export const getComments = memoize(
                 if (
                     item.data &&
                     item.kind === "t1" &&
+                    item.data.score > 0 &&
                     item.data.body !== "[deleted]" &&
                     item.data.body !== "[removed]"
                 ) {
