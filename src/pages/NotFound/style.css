@@ -1,4 +1,12 @@
-.notfound {
+a {
     padding: 0 5%;
     margin: 100px 0;
+    text-align: center;
+    width: 100%;
+}
+
+img {
+    display: inline-block;
+    width: 100%;
+    max-width: 500px;
 }

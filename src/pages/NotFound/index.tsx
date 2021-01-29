@@ -5,7 +5,9 @@ import * as style from "./style.css";
 export const NotFound: FunctionalComponent = () => {
     return (
         <div class={style.notfound}>
-            <Link href="/">Not found</Link>
+            <Link href="/">
+                <img src="/assets/empty.svg" />
+            </Link>
         </div>
     );
 };
