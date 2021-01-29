@@ -262,8 +262,15 @@ img.spacer {
     pointer-events: none;
 }
 
-.subredditFilter {
-    text-transform: uppercase;
-    cursor: default;
-    user-select: none;
+.notfound a {
+    padding: 0 5%;
+    margin: 100px 0;
+    text-align: center;
+    width: 100%;
+}
+
+.notfound img {
+    display: inline-block;
+    width: 100%;
+    max-width: 500px;
 }
