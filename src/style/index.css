@@ -61,14 +61,36 @@ ul {
 .subreddit > header {
     display: grid;
     font-size: 16px;
-    grid-template-columns: 200px 1fr;
+    grid-template-columns: 200px 1fr 40px;
     align-items: center;
     padding: 10px;
 }
 
+.subreddit > header .icons {
+    text-align: right;
+    overflow: hidden !important;
+}
+
+.subreddit > header .icons button {
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.subreddit > header .icons button img {
+    height: 32px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .subreddit > header .icons button img {
+        filter: invert(1);
+    }
+}
+
 @media (max-width: 700px) {
     .subreddit > header {
-        grid-template-columns: 75px 1fr;
+        grid-template-columns: 75px 1fr 40px;
     }
 
     .subreddit > header > div {
