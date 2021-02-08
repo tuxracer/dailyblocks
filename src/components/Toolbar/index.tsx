@@ -1,5 +1,4 @@
 import { FunctionalComponent, h, Fragment } from "preact";
-import { useState } from "preact/compat";
 import { usePost } from "../../hooks/reddit";
 import { playNext } from "../Thumbnails";
 
@@ -12,15 +11,12 @@ export const Toolbar: FunctionalComponent<ToolbarProps> = ({
     subreddit,
     postId
 }) => {
-    const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
-
     const toggleFullscreen = () => {
+        const isFullscreen = !!document.fullscreenElement;
         if (isFullscreen) {
             document.exitFullscreen();
-            setIsFullscreen(false);
         } else {
             document.documentElement.requestFullscreen();
-            setIsFullscreen(true);
         }
     };
 
