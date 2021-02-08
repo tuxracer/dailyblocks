@@ -124,3 +124,11 @@ export const addWatched = (id: string) => {
 };
 
 export const isWatched = (id: string) => getWatched().includes(id);
+
+export const getUserAgent = () => {
+    return window?.navigator.userAgent || "";
+};
+
+export const isiPhone = () => {
+    return !!getUserAgent().match(/iPhone/gi);
+};

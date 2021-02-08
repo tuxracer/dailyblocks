@@ -1,4 +1,5 @@
 import { FunctionalComponent, h, Fragment } from "preact";
+import { isiPhone } from "../../common/helpers";
 import { usePost } from "../../hooks/reddit";
 import { playNext } from "../Thumbnails";
 
@@ -27,6 +28,9 @@ export const Toolbar: FunctionalComponent<ToolbarProps> = ({
 
     const isLoadedSuccessfully = !error && !isLoading;
 
+    const isFullscreenPossible =
+        !isiPhone() && !!document.documentElement.requestFullscreen;
+
     return (
         <Fragment>
             <div class="subredditFilter" onClick={playNext}>
@@ -34,9 +38,11 @@ export const Toolbar: FunctionalComponent<ToolbarProps> = ({
             </div>
             <div>{redditPost?.title}</div>
             <div class="icons">
-                <button onClick={toggleFullscreen}>
-                    <img src="/assets/fullscreen.svg" />
-                </button>
+                {isFullscreenPossible && (
+                    <button onClick={toggleFullscreen}>
+                        <img src="/assets/fullscreen.svg" />
+                    </button>
+                )}
             </div>
         </Fragment>
     );
