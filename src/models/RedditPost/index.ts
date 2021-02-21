@@ -41,7 +41,7 @@ export class RedditPost {
 
     public mediaUrl: string;
 
-    public audioUrl: string;
+    public audioUrl?: string;
 
     /** Is a playable video? */
     public isPlayable: boolean;

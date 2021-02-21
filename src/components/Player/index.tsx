@@ -1,5 +1,5 @@
 import { Fragment, FunctionalComponent, h } from "preact";
-import { useEffect, useState } from "preact/compat";
+import { useEffect, useState, useRef } from "preact/compat";
 import { usePost } from "../../hooks/reddit";
 import ReactPlayer from "react-player";
 import { PLAYER_CONFIG } from "../../common/consts";
@@ -9,6 +9,14 @@ import { playNext, scrollToActiveEl } from "../Thumbnails";
 import { addWatched } from "../../common/helpers";
 
 const PLAY_NEXT_TIMEOUT_MS = 5000;
+
+const Loading: FunctionalComponent = () => (
+    <span class="player">
+        <div class="loading">
+            <Loader />
+        </div>
+    </span>
+);
 
 interface PlayerProps {
     postId?: string;
@@ -26,14 +34,28 @@ export const Player: FunctionalComponent<PlayerProps> = ({
         subreddit
     });
 
-    const [isVideoPlaying, setIsVideoPlaying] = useState(true);
-    const [isVideoBuffering, setIsVideoBuffering] = useState(true);
-    const [audioPlayerRef, setAudioPlayerRef] = useState<ReactPlayer | null>(
-        null
+    const audioPlayerRef = useRef<HTMLAudioElement | null>(null);
+    const videoPlayerRef = useRef<ReactPlayer | null>(null);
+
+    const playAudio = () => audioPlayerRef.current?.play();
+    const pauseAudio = () => audioPlayerRef.current?.pause();
+
+    const getPlayerCurrentTime = (playerType: "audio" | "video") => {
+        if (playerType === "audio") {
+            return audioPlayerRef.current?.currentTime ?? null;
+        }
+        if (playerType === "video") {
+            return videoPlayerRef.current?.getCurrentTime() ?? null;
+        }
+
+        throw new Error("unknown player type");
+    };
+
+    const [isExternalAudio, setIsExternalAudio] = useState(
+        !redditPost?.audioUrl
     );
-    const [videoPlayerRef, setVideoPlayerRef] = useState<ReactPlayer | null>(
-        null
-    );
+
+    const [isAudioReady, setIsAudioReady] = useState(!isExternalAudio);
 
     const [
         playNextTimeout,
@@ -52,91 +74,102 @@ export const Player: FunctionalComponent<PlayerProps> = ({
     };
 
     useEffect(() => {
-        setIsVideoPlaying(true);
         scrollToActiveEl();
+        setIsExternalAudio(!!redditPost?.audioUrl);
         if (redditPost?.id) addWatched(redditPost?.id);
         return cancelPlayNextTimeout;
     }, [redditPost?.permalink]);
 
+    useEffect(() => {
+        setIsAudioReady(!isExternalAudio);
+    }, [isExternalAudio]);
+
     const handleSeek = (seconds: number) => {
         cancelPlayNextTimeout();
-        if (!audioPlayerRef) return;
-        audioPlayerRef.seekTo(seconds, "seconds");
+        if (!audioPlayerRef.current) return;
+        syncAudioPlayerWithVideoPlayer(seconds);
     };
 
-    const syncAudioPlayerWithVideoPlayer = () => {
-        if (!audioPlayerRef || !videoPlayerRef) return;
-        const videoPlayerCurrentTime = videoPlayerRef.getCurrentTime();
-        audioPlayerRef.seekTo(videoPlayerCurrentTime, "seconds");
+    const syncAudioPlayerWithVideoPlayer = (forceSeconds?: number) => {
+        const audioPlayerCurrentTime = getPlayerCurrentTime("audio");
+        const videoPlayerCurrentTime =
+            forceSeconds || getPlayerCurrentTime("video");
+
+        if (audioPlayerCurrentTime === null || videoPlayerCurrentTime === null)
+            return;
+
+        if (
+            Math.round(videoPlayerCurrentTime) ===
+            Math.round(audioPlayerCurrentTime)
+        ) {
+            return;
+        }
+
+        console.log("syncing audio", {
+            videoPlayerCurrentTime,
+            audioPlayerCurrentTime
+        });
+
+        if (audioPlayerRef.current)
+            audioPlayerRef.current.currentTime = videoPlayerCurrentTime;
     };
 
     const handlePlay = () => {
-        setIsVideoPlaying(true);
-        setIsVideoBuffering(false);
+        playAudio();
         cancelPlayNextTimeout();
     };
 
     const handleEnded = () => {
-        setIsVideoPlaying(false);
         if (autoPlayNext) playNextAfterDelay();
     };
 
-    const handlePause = () => {
-        setIsVideoPlaying(false);
-    };
-
-    const handleBuffer = () => {
-        setIsVideoBuffering(true);
-    };
-
-    const handleBufferEnd = () => {
-        setIsVideoBuffering(false);
-        syncAudioPlayerWithVideoPlayer();
-    };
-
-    syncAudioPlayerWithVideoPlayer();
-
     if (!!error) return <Fragment>Error loading video</Fragment>;
 
-    if (isLoading)
-        return (
-            <div class="player">
-                <div class="loading">
-                    <Loader />
-                </div>
-            </div>
-        );
+    if (isLoading) return <Loading />;
 
     if (!redditPost) return null;
 
     return (
         <Fragment>
             <MetaTags redditPost={redditPost} />
-            <ReactPlayer
-                class="player"
-                ref={setVideoPlayerRef}
-                url={redditPost?.mediaUrl}
-                playing={isVideoPlaying}
-                controls={true}
-                height="100%"
-                width="100%"
-                onPlay={handlePlay}
-                onPause={handlePause}
-                onEnded={handleEnded}
-                onError={handleEnded}
-                onBuffer={handleBuffer}
-                onBufferEnd={handleBufferEnd}
-                onSeek={handleSeek}
-                config={PLAYER_CONFIG}
-                playsinline={true}
-            />
-            {!!redditPost?.audioUrl && (
+            {isAudioReady ? (
                 <ReactPlayer
-                    class="hidden"
-                    ref={setAudioPlayerRef}
-                    url={redditPost.audioUrl}
-                    playing={isVideoPlaying}
+                    class="player"
+                    ref={videoPlayerRef}
+                    url={redditPost?.mediaUrl}
+                    playing={true}
+                    controls={true}
+                    height="100%"
+                    width="100%"
+                    onPlay={handlePlay}
+                    onBuffer={pauseAudio}
+                    onBufferEnd={playAudio}
+                    onPause={pauseAudio}
+                    onEnded={handleEnded}
+                    onError={handleEnded}
+                    onProgress={({ playedSeconds }) => {
+                        syncAudioPlayerWithVideoPlayer(playedSeconds);
+                    }}
+                    onSeek={handleSeek}
+                    config={PLAYER_CONFIG}
                     playsinline={true}
+                    pip={true}
+                />
+            ) : (
+                <Loading />
+            )}
+
+            {isExternalAudio && (
+                <audio
+                    class="hidden"
+                    ref={audioPlayerRef}
+                    onCanPlay={() => setIsAudioReady(true)}
+                    preload="auto"
+                    src={redditPost.audioUrl}
+                    controls={true}
+                    onError={() => {
+                        setIsExternalAudio(false);
+                    }}
                 />
             )}
         </Fragment>
