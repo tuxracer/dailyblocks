@@ -162,7 +162,8 @@ export const getComments = memoize(
                     item.kind === "t1" &&
                     item.data.score > 0 &&
                     item.data.body !== "[deleted]" &&
-                    item.data.body !== "[removed]"
+                    item.data.body !== "[removed]" &&
+                    item.data.stickied !== true
                 ) {
                     return new RedditComment(item.data);
                 }
