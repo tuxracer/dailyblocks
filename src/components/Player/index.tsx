@@ -27,7 +27,7 @@ interface PlayerProps {
 export const Player: FunctionalComponent<PlayerProps> = ({
     postId,
     subreddit,
-    autoPlayNext = true
+    autoPlayNext = false
 }) => {
     const { data: redditPost, error, isLoading } = usePost({
         id: postId,
