@@ -252,6 +252,7 @@ main {
     width: 0 !important;
     overflow: hidden;
     pointer-events: none;
+    position: absolute;
 }
 
 .player {
