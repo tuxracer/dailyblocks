@@ -150,6 +150,21 @@ main {
     }
 }
 
+@media all and (display-mode: fullscreen) {
+    .subreddit nav {
+        display: none;
+    }
+
+    .subreddit > section {
+        grid-template-columns: 0 1fr 225px;
+    }
+
+    .subreddit > header {
+        grid-template-columns: max-content 1fr 40px;
+        grid-column-gap: 10px;
+    }
+}
+
 .subreddit aside {
     display: grid;
     grid-auto-rows: min-content;
