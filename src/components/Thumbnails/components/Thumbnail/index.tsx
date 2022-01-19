@@ -3,6 +3,7 @@ import { Link } from "preact-router/match";
 import { scoreToShortScore } from "../../../../common/helpers";
 import RedditPost from "../../../../models/RedditPost";
 import classnames from "classnames";
+import Tilt from "preact-tilt";
 
 interface ThumbnailProps {
     redditPost: RedditPost;
@@ -19,9 +20,21 @@ export const Thumbnail: FunctionalComponent<ThumbnailProps> = ({
             activeClassName="active"
             class={classnames("thumbnail", isWatched ? "w" : "u")}
         >
-            <img class="blur" src={thumbnailUrl} />
-            <img class="original" src={thumbnailUrl} />
-            <img class="spacer" src={thumbnailUrl} />
+            <div className="images">
+                <img class="blur" src={thumbnailUrl} />
+                <Tilt
+                    style={{ transformStyle: "preserve-3d" }}
+                    className="tilt"
+                    settings={{
+                        scale: 1.05,
+                        gyroscope: false
+                    }}
+                >
+                    <img class="original" src={thumbnailUrl} />
+                    <img class="spacer" src={thumbnailUrl} />
+                </Tilt>
+            </div>
+
             <caption>
                 <div class="title">{title}</div>
                 <div class="score">▲ {scoreToShortScore(score)}</div>

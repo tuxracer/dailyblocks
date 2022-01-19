@@ -1,0 +1,304 @@
+:root {
+    --dark: #000;
+    --light: #efefef;
+    --attention: rgba(0, 188, 212, 1);
+
+    --headerHeight: 62px;
+
+    --primary: var(--dark);
+    --background: var(--light);
+}
+
+* {
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary: var(--light);
+        --background: var(--dark);
+    }
+}
+
+html,
+body {
+    display: grid;
+    grid-template-rows: 100%;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    background: var(--background);
+    font-family: Verdana, sans-serif;
+    font-weight: 400;
+    color: var(--primary);
+    font-size: 10px;
+    word-break: break-word;
+}
+
+ol,
+ul {
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+#app,
+#app > div {
+    height: 100%;
+    display: grid;
+    overflow: hidden;
+}
+
+.subreddit {
+    grid-template-rows: var(--headerHeight) calc(100% - var(--headerHeight));
+}
+
+.subreddit > header {
+    display: grid;
+    font-size: 16px;
+    grid-template-columns: 200px 1fr 40px;
+    align-items: center;
+    padding: 10px;
+}
+
+.subreddit > header .icons {
+    text-align: right;
+    overflow: hidden !important;
+}
+
+.subreddit > header .icons button {
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.subreddit > header .icons button img {
+    height: 32px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .subreddit > header .icons button img {
+        filter: invert(1);
+    }
+}
+
+@media (max-width: 700px) {
+    .subreddit > header {
+        grid-template-columns: 75px 1fr 40px;
+    }
+
+    .subreddit > header > div {
+        overflow: auto !important;
+    }
+}
+
+.subreddit > header > div {
+    max-height: 100%;
+    overflow: hidden;
+}
+
+.subreddit > section {
+    display: grid;
+    grid-template-columns: 200px 1fr 225px;
+    grid-template-areas: "thumbnails player comments";
+}
+
+@media (max-width: 700px) {
+    .subreddit > section {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 150px 140px;
+        grid-template-areas:
+            "player"
+            "comments"
+            "thumbnails";
+    }
+}
+
+a,
+a:visited,
+a:active,
+a:focus {
+    color: var(--primary);
+    outline: none;
+    text-decoration: none;
+}
+
+main {
+    display: grid;
+    grid-area: player;
+    overflow: hidden;
+}
+
+.subreddit nav {
+    display: grid;
+    grid-area: thumbnails;
+    grid-gap: 15px;
+    padding: 15px;
+    overflow: auto;
+    scroll-behavior: smooth;
+}
+
+@media (max-width: 700px) {
+    .subreddit nav {
+        grid-auto-flow: column;
+    }
+}
+
+@media all and (display-mode: fullscreen) {
+    .subreddit nav {
+        display: none;
+    }
+
+    .subreddit > section {
+        grid-template-columns: 0 1fr 225px;
+    }
+
+    .subreddit > header {
+        grid-template-columns: max-content 1fr 40px;
+        grid-column-gap: 10px;
+    }
+}
+
+.subreddit aside {
+    display: grid;
+    grid-auto-rows: min-content;
+    grid-area: comments;
+    font-size: 12px;
+    overflow: auto;
+}
+
+.comment {
+    padding-bottom: 10px;
+    margin: 10px;
+    border-bottom: 1px solid var(--primary);
+    word-break: break-word;
+}
+
+.comment > header {
+    font-weight: bold;
+}
+
+.comment a {
+    display: block;
+}
+
+.comment a:hover {
+    text-decoration: underline;
+}
+
+.thumbnail {
+    display: grid;
+    grid-gap: 5px;
+    align-items: center;
+    border: 1px solid transparent;
+    opacity: 1;
+}
+
+@media (max-width: 700px) {
+    .subreddit nav {
+        overflow-y: hidden;
+    }
+
+    .thumbnail {
+        width: 200px;
+        display: block;
+    }
+
+    .thumbnail .title {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}
+
+.thumbnail img.original {
+    width: 100%;
+    height: 75px;
+    border: 2px solid var(--background);
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.thumbnail > caption {
+    display: grid;
+    grid-gap: 2px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    position: relative;
+    top: -3px;
+    transform: scale(0.9);
+    transition: transform 50ms ease-in;
+}
+
+.thumbnail:hover > caption {
+    transform: scale(1);
+}
+
+.thumbnail:hover,
+.thumbnail.active {
+    opacity: 1;
+}
+
+.thumbnail:active > img.original,
+.thumbnail.active > img.original {
+    border-color: var(--background);
+}
+
+.hidden {
+    visibility: none !important;
+    height: 0 !important;
+    width: 0 !important;
+    overflow: hidden;
+    pointer-events: none;
+    position: absolute;
+}
+
+.player {
+    background: #000;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.loading {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    cursor: default;
+    user-select: none;
+}
+
+.loading {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}
+
+.loading > img {
+    width: 100px;
+}
+
+img.spacer {
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.notfound a {
+    padding: 0 5%;
+    margin: 100px 0;
+    text-align: center;
+    width: 100%;
+}
+
+.notfound img {
+    display: inline-block;
+    width: 100%;
+    max-width: 500px;
+}

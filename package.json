@@ -39,6 +39,7 @@
     "preact-markup": "^2.1.1",
     "preact-render-to-string": "^5.1.19",
     "preact-router": "^3.2.1",
+    "preact-tilt": "^1.0.2",
     "qs": "^6.9.4",
     "react-helmet": "^6.1.0",
     "react-player": "^2.9.0",
