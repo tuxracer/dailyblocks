@@ -51,7 +51,7 @@ const isProd = () =>
 export const isDoNotTrackEnabledClientside = () =>
     Boolean(
         isProd() && typeof window !== "undefined"
-            ? window.navigator.doNotTrack || window.doNotTrack
+            ? window.navigator.doNotTrack || (window as any).doNotTrack
             : false
     );
 
