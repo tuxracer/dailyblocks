@@ -10,6 +10,9 @@
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "test": "jest ./tests"
   },
+  "engines": {
+    "node": "^16.0.0"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
