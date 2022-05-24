@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import { Config as ReactPlayerConfig } from "react-player";
 
 export const DEFAULT_TITLE = "dailyblocks video player for reddit";
@@ -11,7 +12,8 @@ export const BLACKLIST = [
     "fxqx08",
     "fmi5y6",
     "grig6k",
-    "g3p34u"
+    "g3p34u",
+    "tfih2g"
 ];
 
 export const PLAYER_CONFIG: ReactPlayerConfig = {
