@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { stringify } from "qs";
 import { chain, get } from "lodash";
 import { RedditPost } from "../../models/RedditPost";
@@ -69,7 +72,7 @@ export const getPostsBySubreddit = memoize(
             }
         );
 
-        const posts = chain(((resp as any).data || {}).children)
+        const posts = chain((resp.data || {}).children)
             .map(({ data }) => new RedditPost(data))
             .filter("isPlayable")
             .filter(
@@ -96,7 +99,7 @@ export const getPostsBySubreddit = memoize(
                 subreddit = defaultGetPostsBySubredditOptions.subreddit,
                 sortBy = defaultGetPostsBySubredditOptions.sortBy,
                 sortTime = defaultGetPostsBySubredditOptions.sortTime
-            } = args[0] as GetPostsBySubredditOptions;
+            } = args[0];
             return JSON.stringify({
                 subreddit,
                 sortBy,
@@ -110,7 +113,13 @@ export const getCachedPost = async (id: string, subreddit: string) => {
     const sanitizedId = sanitizeStr(id);
     const sanitizedSubreddit = sanitizeStr(subreddit);
     // console.log("getCachedPost", sanitizedId);
-    if (!sanitizedId || !sanitizedSubreddit) return;
+    if (
+        !sanitizedId ||
+        !sanitizedSubreddit ||
+        BLACKLIST.includes(sanitizedId)
+    ) {
+        return;
+    }
 
     const redditPostsBySubreddit = await getPostsBySubreddit({ subreddit });
     return redditPostsBySubreddit.find(redditPost => redditPost.id === id);
@@ -121,7 +130,10 @@ export const getPostById = memoize(
         const sanitizedId = sanitizeStr(id);
         const sanitizedFallbackSubreddit = sanitizeStr(fallbackSubreddit);
 
-        // console.log("getPostById", sanitizedId);
+        if (BLACKLIST.includes(sanitizedId || "")) {
+            throw new Error("Invalid post ID");
+        }
+
         if (!sanitizedId) {
             const redditPost = (
                 await getPostsBySubreddit({
@@ -151,6 +163,13 @@ export const getPostById = memoize(
 export const getComments = memoize(
     async (permalink: string) => {
         logServer("getComments", permalink);
+
+        const isBlacklisted = Boolean(
+            BLACKLIST.find(id => permalink.includes(id))
+        );
+
+        if (isBlacklisted) throw new Error("Invalid post ID for comments");
+
         const resp = await fetchRedditPath(permalink);
         const comments: RedditComment[] = (chain(resp).get(
             "[1].data.children",
