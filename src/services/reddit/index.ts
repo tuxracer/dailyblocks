@@ -135,11 +135,13 @@ export const getPostById = memoize(
         }
 
         if (!sanitizedId) {
-            const redditPost = (
-                await getPostsBySubreddit({
-                    subreddit: sanitizedFallbackSubreddit
-                })
-            ).find(redditPost => !redditPost.isWatched);
+            const redditPosts = await getPostsBySubreddit({
+                subreddit: sanitizedFallbackSubreddit
+            });
+            const unwatchedRedditPost = redditPosts.find(
+                redditPost => !redditPost.isWatched
+            );
+            const redditPost = unwatchedRedditPost || redditPosts[0];
             if (!redditPost) throw new Error("could not load fallback post");
             return redditPost;
         }
