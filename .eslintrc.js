@@ -36,7 +36,9 @@ module.exports = {
             files: ["*.js"],
             rules: {
                 "@typescript-eslint/explicit-function-return-type": "off",
-                "@typescript-eslint/camelcase": "off"
+                "@typescript-eslint/camelcase": "off",
+                "@typescript-eslint/explicit-function-return-type": "off",
+                "@typescript-eslint/no-inferrable-types": "off"
             }
         }
     ]
