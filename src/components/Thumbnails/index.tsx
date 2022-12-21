@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { Fragment, FunctionalComponent, h } from "preact";
 import { useSubreddit } from "../../hooks/reddit";
 import { Thumbnail } from "./components/Thumbnail";
@@ -17,6 +18,7 @@ export const getNextEl = () =>
 
 export const scrollToActiveEl = () => {
     try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (getActiveEl() as any)?.scrollIntoViewIfNeeded();
     } catch {
         console.warn("Unsupported action: scrollToActiveEl");
@@ -48,7 +50,7 @@ export const Thumbnails: FunctionalComponent<ThumbnailsProps> = ({
             {!!error && "Unable to load thumbnails"}
             {/* {isLoading && "Loading thumbnails..."} */}
             {data?.map(redditPost => (
-                <Thumbnail redditPost={redditPost} />
+                <Thumbnail redditPost={redditPost} key={redditPost.id} />
             ))}
         </Fragment>
     );
