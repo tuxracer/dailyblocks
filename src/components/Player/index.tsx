@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { Fragment, FunctionalComponent, h } from "preact";
 import { useEffect, useState, useRef } from "preact/compat";
 import { usePost } from "../../hooks/reddit";
@@ -62,15 +63,15 @@ export const Player: FunctionalComponent<PlayerProps> = ({
         setPlayNextTimeout
     ] = useState<NodeJS.Timeout | null>(null);
 
-    const playNextAfterDelay = () => {
-        cancelPlayNextTimeout();
-        setPlayNextTimeout(setTimeout(playNext, PLAY_NEXT_TIMEOUT_MS));
-    };
-
     const cancelPlayNextTimeout = () => {
         if (!playNextTimeout) return;
         window.clearTimeout(playNextTimeout);
         setPlayNextTimeout(null);
+    };
+
+    const playNextAfterDelay = () => {
+        cancelPlayNextTimeout();
+        setPlayNextTimeout(setTimeout(playNext, PLAY_NEXT_TIMEOUT_MS));
     };
 
     useEffect(() => {
@@ -83,12 +84,6 @@ export const Player: FunctionalComponent<PlayerProps> = ({
     useEffect(() => {
         setIsAudioReady(!isExternalAudio);
     }, [isExternalAudio]);
-
-    const handleSeek = (seconds: number) => {
-        cancelPlayNextTimeout();
-        if (!audioPlayerRef.current) return;
-        syncAudioPlayerWithVideoPlayer(seconds);
-    };
 
     const syncAudioPlayerWithVideoPlayer = (forceSeconds?: number) => {
         const audioPlayerCurrentTime = getPlayerCurrentTime("audio");
@@ -114,6 +109,12 @@ export const Player: FunctionalComponent<PlayerProps> = ({
             audioPlayerRef.current.currentTime = videoPlayerCurrentTime;
     };
 
+    const handleSeek = (seconds: number) => {
+        cancelPlayNextTimeout();
+        if (!audioPlayerRef.current) return;
+        syncAudioPlayerWithVideoPlayer(seconds);
+    };
+
     const handlePlay = () => {
         playAudio();
         cancelPlayNextTimeout();
@@ -123,7 +124,7 @@ export const Player: FunctionalComponent<PlayerProps> = ({
         if (autoPlayNext) playNextAfterDelay();
     };
 
-    if (!!error) return <Fragment>Error loading video</Fragment>;
+    if (error) return <Fragment>Error loading video</Fragment>;
 
     if (isLoading) return <Loading />;
 
