@@ -1,3 +1,6 @@
+/* eslint-disable no-empty */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FunctionalComponent, h } from "preact";
 import { Route, Router } from "preact-router";
 import { Subreddit } from "../pages/subreddit";
