@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-inferrable-types */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import useSWR from "swr";
 import {
     getPostById,
@@ -20,12 +22,12 @@ export const useSubreddit = (subreddit: string) => {
 const postFetcher = (id: string = "", subreddit?: string) =>
     getPostById(id, subreddit);
 
-interface usePostProps {
+interface UsePostProps {
     id?: string;
     subreddit?: string;
 }
 
-export const usePost = (props?: usePostProps) => {
+export const usePost = (props?: UsePostProps) => {
     const { id, subreddit } = props || {};
     const { data = null, error } = useSWR([id, subreddit], postFetcher);
 
