@@ -14,7 +14,11 @@ export const getActiveEl = () =>
 export const getNextEl = () =>
     document.querySelector<HTMLAnchorElement>(
         ".thumbnail.active ~ .thumbnail:not(.w)"
-    ) || getFirstEl();
+    ) ||
+    document.querySelector<HTMLAnchorElement>(
+        ".thumbnail.active ~ .thumbnail"
+    ) ||
+    getFirstEl();
 
 export const scrollToActiveEl = () => {
     try {
