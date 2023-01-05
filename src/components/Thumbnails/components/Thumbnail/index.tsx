@@ -18,7 +18,7 @@ export const Thumbnail: FunctionalComponent<ThumbnailProps> = ({
         <Link
             href={permalink}
             activeClassName="active"
-            class={classnames("thumbnail", isWatched ? "w" : "u")}
+            class={classnames("thumbnail", "h-entry", isWatched ? "w" : "u")}
         >
             <div className="images">
                 <img class="blur" src={thumbnailUrl} />
@@ -35,9 +35,11 @@ export const Thumbnail: FunctionalComponent<ThumbnailProps> = ({
                 </Tilt>
             </div>
 
-            <caption>
-                <div class="title">{title}</div>
-                <div class="score">▲ {scoreToShortScore(score)}</div>
+            <caption class="h-review-aggregate">
+                <div class="title p-name p-item">{title}</div>
+                <div class="score">
+                    ▲ <span class="p-average">{scoreToShortScore(score)}</span>
+                </div>
             </caption>
         </Link>
     );
