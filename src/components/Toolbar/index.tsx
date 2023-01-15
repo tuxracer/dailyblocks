@@ -34,11 +34,12 @@ export const Toolbar: FunctionalComponent<ToolbarProps> = ({
     const isFullscreenPossible =
         !isiPhone() && !!document.documentElement.requestFullscreen;
 
-    const previewed = simpleLocalStorage.getItem("previewed") as string;
+    /** @todo REMOVE */
+    const dash = simpleLocalStorage.getItem("dash") as string;
 
+    /** @todo REMOVE */
     const gotoDashradar = () => {
-        simpleLocalStorage.setItem("previewed", "true");
-        // window.open("https://dashradar.app", "_blank");
+        simpleLocalStorage.setItem("dash", "true");
     };
 
     return (
@@ -48,11 +49,11 @@ export const Toolbar: FunctionalComponent<ToolbarProps> = ({
             </div>
             <div>
                 {redditPost?.title}
-                {!previewed && (
+                {!dash && (
                     <span onClick={gotoDashradar}>
-                        &nbsp;/&nbsp;
+                        &nbsp;|&nbsp;
                         <a href="https://dashradar.app" target="_blank">
-                            dashradar.app (early beta)
+                            [ dashradar.app (early beta) ]
                         </a>
                     </span>
                 )}

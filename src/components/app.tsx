@@ -19,10 +19,6 @@ const clearLegacy = async () => {
 clearLegacy();
 
 export const App: FunctionalComponent = () => {
-    useEffect(() => {
-        simpleLocalStorage.setItem("previewed", "true");
-    }, []);
-
     return (
         <div id="app">
             <Router>

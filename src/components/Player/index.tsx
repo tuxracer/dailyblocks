@@ -8,6 +8,13 @@ import { MetaTags } from "../MetaTags";
 import { Loader } from "../Loader";
 import { playNext, scrollToActiveEl } from "../Thumbnails";
 import { addWatched } from "../../common/helpers";
+import { simpleLocalStorage } from "simple-storage";
+import { once } from "lodash";
+
+/** @todo REMOVE */
+const setdash = once(() => {
+    simpleLocalStorage.setItem("dash", "true");
+});
 
 const PLAY_NEXT_TIMEOUT_MS = 5000;
 
@@ -123,6 +130,11 @@ export const Player: FunctionalComponent<PlayerProps> = ({
     const handleEnded = () => {
         if (autoPlayNext) playNextAfterDelay();
     };
+
+    /** @todo REMOVE */
+    useEffect(() => {
+        setdash();
+    }, []);
 
     if (error) return <Fragment>Error loading video</Fragment>;
 
