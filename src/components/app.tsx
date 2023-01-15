@@ -7,6 +7,8 @@ import { Subreddit } from "../pages/subreddit";
 import { NotFound } from "../pages/NotFound";
 import { ShareRedirect } from "../pages/ShareRedirect";
 import { RedirectToDefault } from "./RedirectToDefault";
+import { useEffect } from "preact/hooks";
+import { simpleLocalStorage } from "simple-storage";
 
 const clearLegacy = async () => {
     try {
@@ -16,20 +18,26 @@ const clearLegacy = async () => {
 
 clearLegacy();
 
-export const App: FunctionalComponent = () => (
-    <div id="app">
-        <Router>
-            <Route
-                path="/r/:subreddit/comments/:postId/:shortName?"
-                component={Subreddit}
-            />
-            <Route path="/s/:postId" component={ShareRedirect} />
-            <Route path="/r/:subreddit" component={RedirectToDefault} />
-            <Route path="/" component={RedirectToDefault} />
+export const App: FunctionalComponent = () => {
+    useEffect(() => {
+        simpleLocalStorage.setItem("previewed", "true");
+    }, []);
 
-            <NotFound default />
-        </Router>
-    </div>
-);
+    return (
+        <div id="app">
+            <Router>
+                <Route
+                    path="/r/:subreddit/comments/:postId/:shortName?"
+                    component={Subreddit}
+                />
+                <Route path="/s/:postId" component={ShareRedirect} />
+                <Route path="/r/:subreddit" component={RedirectToDefault} />
+                <Route path="/" component={RedirectToDefault} />
+
+                <NotFound default />
+            </Router>
+        </div>
+    );
+};
 
 export default App;
