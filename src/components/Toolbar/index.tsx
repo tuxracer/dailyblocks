@@ -5,7 +5,7 @@ import { isiPhone } from "../../common/helpers";
 import { usePost } from "../../hooks/reddit";
 import { playNext } from "../Thumbnails";
 import { simpleLocalStorage } from "simple-storage";
-import { useEffect } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 
 interface ToolbarProps {
     subreddit: string;
@@ -36,11 +36,14 @@ export const Toolbar: FunctionalComponent<ToolbarProps> = ({
         !isiPhone() && !!document.documentElement.requestFullscreen;
 
     /** @todo REMOVE */
-    const dash = simpleLocalStorage.getItem("dash") as string;
+    const [dash, setDash] = useState(
+        simpleLocalStorage.getItem("dash") as string | null
+    );
 
     /** @todo REMOVE */
     const setDashradar = () => {
         simpleLocalStorage.setItem("dash", "true");
+        setDash("true");
     };
 
     /** @todo REMOVE */
@@ -83,6 +86,7 @@ export const Toolbar: FunctionalComponent<ToolbarProps> = ({
                                 fontSize: "14px"
                             }}
                             title="early preview of my other project"
+                            onClick={setDashradar}
                         >
                             🧙‍♂️ dashradar.app (beta)
                         </a>
