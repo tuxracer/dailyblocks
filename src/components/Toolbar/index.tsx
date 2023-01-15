@@ -5,6 +5,7 @@ import { isiPhone } from "../../common/helpers";
 import { usePost } from "../../hooks/reddit";
 import { playNext } from "../Thumbnails";
 import { simpleLocalStorage } from "simple-storage";
+import { useEffect } from "preact/hooks";
 
 interface ToolbarProps {
     subreddit: string;
@@ -38,9 +39,16 @@ export const Toolbar: FunctionalComponent<ToolbarProps> = ({
     const dash = simpleLocalStorage.getItem("dash") as string;
 
     /** @todo REMOVE */
-    const gotoDashradar = () => {
+    const setDashradar = () => {
         simpleLocalStorage.setItem("dash", "true");
     };
+
+    /** @todo REMOVE */
+    useEffect(() => {
+        setTimeout(() => {
+            simpleLocalStorage.setItem("dash", "true");
+        }, 10_000);
+    }, []);
 
     return (
         <Fragment>
@@ -55,18 +63,23 @@ export const Toolbar: FunctionalComponent<ToolbarProps> = ({
                 </div>
             )}
             {!dash && (
-                <div class="subredditFilter" onClick={gotoDashradar}>
+                <div
+                    class="subredditFilter"
+                    style={{ textAlign: "center" }}
+                    onClick={setDashradar}
+                >
                     {isLoadedSuccessfully && (
                         <a
                             href="https://dashradar.app"
                             target="_blank"
                             style={{
-                                textDecoration: "underline",
-                                whiteSpace: "nowrap"
+                                whiteSpace: "nowrap",
+                                color: "cornflowerblue !important",
+                                fontSize: "14px"
                             }}
                             title="early preview of my other project"
                         >
-                            dashradar.app (beta)
+                            🧙‍♂️ dashradar.app (beta)
                         </a>
                     )}
                 </div>
