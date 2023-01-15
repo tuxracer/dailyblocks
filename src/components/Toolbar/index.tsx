@@ -44,20 +44,34 @@ export const Toolbar: FunctionalComponent<ToolbarProps> = ({
 
     return (
         <Fragment>
-            <div class="subredditFilter" onClick={playNext}>
-                {isLoadedSuccessfully && subreddit}
-            </div>
-            <div>
-                {redditPost?.title}
-                {!dash && (
-                    <span onClick={gotoDashradar}>
-                        &nbsp;|&nbsp;
-                        <a href="https://dashradar.app" target="_blank">
-                            [ dashradar.app (early beta) ]
+            {dash && (
+                <div
+                    class="subredditFilter"
+                    onClick={playNext}
+                    style={{ userSelect: "none", cursor: "pointer" }}
+                    title="Play next"
+                >
+                    {isLoadedSuccessfully && subreddit}
+                </div>
+            )}
+            {!dash && (
+                <div class="subredditFilter" onClick={gotoDashradar}>
+                    {isLoadedSuccessfully && (
+                        <a
+                            href="https://dashradar.app"
+                            target="_blank"
+                            style={{
+                                textDecoration: "underline",
+                                whiteSpace: "nowrap"
+                            }}
+                            title="early preview of my other project"
+                        >
+                            dashradar.app (beta)
                         </a>
-                    </span>
-                )}
-            </div>
+                    )}
+                </div>
+            )}
+            <div>{redditPost?.title}</div>
             <div class="icons">
                 {isFullscreenPossible && (
                     <button onClick={toggleFullscreen}>
