@@ -1,7 +1,10 @@
+/* eslint-disable react/jsx-no-target-blank */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { FunctionalComponent, h, Fragment } from "preact";
 import { isiPhone } from "../../common/helpers";
 import { usePost } from "../../hooks/reddit";
 import { playNext } from "../Thumbnails";
+import { simpleLocalStorage } from "simple-storage";
 
 interface ToolbarProps {
     subreddit: string;
@@ -31,12 +34,29 @@ export const Toolbar: FunctionalComponent<ToolbarProps> = ({
     const isFullscreenPossible =
         !isiPhone() && !!document.documentElement.requestFullscreen;
 
+    const previewed = simpleLocalStorage.getItem("previewed") as string;
+
+    const gotoDashradar = () => {
+        simpleLocalStorage.setItem("previewed", "true");
+        // window.open("https://dashradar.app", "_blank");
+    };
+
     return (
         <Fragment>
             <div class="subredditFilter" onClick={playNext}>
                 {isLoadedSuccessfully && subreddit}
             </div>
-            <div>{redditPost?.title}</div>
+            <div>
+                {redditPost?.title}
+                {!previewed && (
+                    <span onClick={gotoDashradar}>
+                        &nbsp;/&nbsp;
+                        <a href="https://dashradar.app" target="_blank">
+                            dashradar.app (early beta)
+                        </a>
+                    </span>
+                )}
+            </div>
             <div class="icons">
                 {isFullscreenPossible && (
                     <button onClick={toggleFullscreen}>
