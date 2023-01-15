@@ -59,7 +59,7 @@ export const Toolbar: FunctionalComponent<ToolbarProps> = ({
                     style={{ userSelect: "none", cursor: "pointer" }}
                     title="Play next"
                 >
-                    {isLoadedSuccessfully && subreddit}
+                    {isLoadedSuccessfully && subreddit + " ⏭️"}
                 </div>
             )}
             {!dash && (
