@@ -65,7 +65,12 @@ export const Toolbar: FunctionalComponent<ToolbarProps> = ({
             {!dash && (
                 <div
                     class="subredditFilter"
-                    style={{ textAlign: "center" }}
+                    style={{
+                        whiteSpace: "nowrap",
+                        color: "cornflowerblue",
+                        fontSize: "14px",
+                        textAlign: "center"
+                    }}
                     onClick={setDashradar}
                 >
                     {isLoadedSuccessfully && (
@@ -74,7 +79,7 @@ export const Toolbar: FunctionalComponent<ToolbarProps> = ({
                             target="_blank"
                             style={{
                                 whiteSpace: "nowrap",
-                                color: "cornflowerblue !important",
+                                color: "cornflowerblue",
                                 fontSize: "14px"
                             }}
                             title="early preview of my other project"
