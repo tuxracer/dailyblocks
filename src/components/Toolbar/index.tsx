@@ -49,8 +49,8 @@ export const Toolbar: FunctionalComponent<ToolbarProps> = ({
     /** @todo REMOVE */
     useEffect(() => {
         setTimeout(() => {
-            simpleLocalStorage.setItem("dash", "true");
-        }, 10_000);
+            setDashradar();
+        }, 30_000);
     }, []);
 
     return (
