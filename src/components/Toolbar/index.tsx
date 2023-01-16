@@ -41,7 +41,6 @@ export const Toolbar: FunctionalComponent<ToolbarProps> = ({
                 class="subredditFilter"
                 onClick={playNext}
                 style={{ userSelect: "none", cursor: "pointer" }}
-                title="Play next"
             >
                 {isLoadedSuccessfully && subreddit + " ⏭️"}
             </div>
