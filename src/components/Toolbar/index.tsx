@@ -35,64 +35,16 @@ export const Toolbar: FunctionalComponent<ToolbarProps> = ({
     const isFullscreenPossible =
         !isiPhone() && !!document.documentElement.requestFullscreen;
 
-    /** @todo REMOVE */
-    const [dash, setDash] = useState(
-        simpleLocalStorage.getItem("dash") as string | null
-    );
-
-    /** @todo REMOVE */
-    const setDashradar = () => {
-        simpleLocalStorage.setItem("dash", "true");
-        setDash("true");
-    };
-
-    /** @todo REMOVE */
-    useEffect(() => {
-        setTimeout(() => {
-            setDashradar();
-        }, 30_000);
-    }, []);
-
     return (
         <Fragment>
-            {dash && (
-                <div
-                    class="subredditFilter"
-                    onClick={playNext}
-                    style={{ userSelect: "none", cursor: "pointer" }}
-                    title="Play next"
-                >
-                    {isLoadedSuccessfully && subreddit + " ⏭️"}
-                </div>
-            )}
-            {!dash && (
-                <div
-                    class="subredditFilter"
-                    style={{
-                        whiteSpace: "nowrap",
-                        color: "cornflowerblue",
-                        fontSize: "14px",
-                        textAlign: "center"
-                    }}
-                    onClick={setDashradar}
-                >
-                    {isLoadedSuccessfully && (
-                        <a
-                            href="https://dashradar.app"
-                            target="_blank"
-                            style={{
-                                whiteSpace: "nowrap",
-                                color: "cornflowerblue",
-                                fontSize: "14px"
-                            }}
-                            title="early preview of my other project"
-                            onClick={setDashradar}
-                        >
-                            🧙‍♂️ dashradar.app (beta)
-                        </a>
-                    )}
-                </div>
-            )}
+            <div
+                class="subredditFilter"
+                onClick={playNext}
+                style={{ userSelect: "none", cursor: "pointer" }}
+                title="Play next"
+            >
+                {isLoadedSuccessfully && subreddit + " ⏭️"}
+            </div>
             <div>{redditPost?.title}</div>
             <div class="icons">
                 {isFullscreenPossible && (
