@@ -13,7 +13,7 @@ export const fetchUrl = async (
     url: string,
     method?: "POST" | "GET" | "PUT" | "DELETE"
 ) => {
-    const resp = await fetch(url, { method });
+    const resp = await fetch(url, { method, cache: "no-cache" });
     const json: any = await resp.json();
     return json;
 };
