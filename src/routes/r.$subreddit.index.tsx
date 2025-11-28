@@ -1,22 +1,22 @@
-import { createFileRoute, Navigate } from '@tanstack/react-router'
-import { useSubreddit } from '../hooks/useSubreddit'
+import { createFileRoute, Navigate } from "@tanstack/react-router";
+import { useSubreddit } from "../hooks/useSubreddit";
 
-export const Route = createFileRoute('/r/$subreddit/')({
-  component: SubredditPage,
-})
+export const Route = createFileRoute("/r/$subreddit/")({
+    component: SubredditPage,
+});
 
 function SubredditPage() {
-  const params = Route.useParams()
-  const subreddit = useSubreddit({ subreddit: params.subreddit })
-  const firstPostPermalink = subreddit.data?.[0]?.permalink
+    const params = Route.useParams();
+    const subreddit = useSubreddit({ subreddit: params.subreddit });
+    const firstPostPermalink = subreddit.data?.[0]?.permalink;
 
-  if (subreddit.isLoading) {
-    return null
-  }
+    if (subreddit.isLoading) {
+        return null;
+    }
 
-  if (!firstPostPermalink) {
-    return "No videos found for this subreddit"
-  }
+    if (!firstPostPermalink) {
+        return "No videos found for this subreddit";
+    }
 
-  return <Navigate to={firstPostPermalink} replace />
+    return <Navigate to={firstPostPermalink} replace />;
 }
