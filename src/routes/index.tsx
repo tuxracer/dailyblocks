@@ -1,9 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Navigate } from '@tanstack/react-router'
+import { DEFAULT_SUBREDDIT } from '../consts'
 
 export const Route = createFileRoute('/')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  return <div>Hello "/"!</div>
+  return <Navigate to="/r/$subreddit" params={{ subreddit: DEFAULT_SUBREDDIT }} replace />
 }

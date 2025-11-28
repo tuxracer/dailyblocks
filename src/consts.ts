@@ -7,6 +7,8 @@ export const URLS = {
   DAILYBLOCKS: "https://" + DOMAIN_NAME,
 };
 
+export const DEFAULT_SUBREDDIT = "videos";
+
 export const MINUTE_MS = 60_000;
 
 export const HOUR_MS = MINUTE_MS * 60;
