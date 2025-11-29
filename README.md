@@ -1,75 +1,79 @@
-# React + TypeScript + Vite
+# dailyblocks.tv
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, lightweight video player for Reddit built with Vite + React. Browse and watch videos from your favorite subreddits with a clean, distraction-free interface.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 📱 **Mobile-Friendly**: Progressive Web App (PWA) with mobile web app support
+- 🔄 **Auto-Play**: Automatically play the next video when one ends
+- 💬 **Comments**: View Reddit comments alongside videos
+- 🖼️ **Thumbnail Navigation**: Browse through video thumbnails in a sidebar
+- 🎨 **Clean UI**: Minimalist interface focused on video content
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- **Framework**: React
+- **Language**: TypeScript
+- **Routing**: [TanStack Router](https://tanstack.com/router)
+- **Video Player**: [React Player](https://github.com/cookpete/react-player) (supports YouTube, Vimeo, and more)
+- **Data Fetching**: [SWR](https://swr.vercel.app/) for efficient data fetching and caching
+- **Build Tool**: [Vite](https://vite.dev/)
 
-Note: This will impact Vite dev & build performances.
+## Getting Started
 
-## Expanding the ESLint configuration
+### Prerequisites
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Node.js >= 24.0.0
+- npm
 
-```js
-export default defineConfig([
-    globalIgnores(["dist"]),
-    {
-        files: ["**/*.{ts,tsx}"],
-        extends: [
-            // Other configs...
+### Installation
 
-            // Remove tseslint.configs.recommended and replace with this
-            tseslint.configs.recommendedTypeChecked,
-            // Alternatively, use this for stricter rules
-            tseslint.configs.strictTypeChecked,
-            // Optionally, add this for stylistic rules
-            tseslint.configs.stylisticTypeChecked,
+1. Clone the repository:
 
-            // Other configs...
-        ],
-        languageOptions: {
-            parserOptions: {
-                project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-                tsconfigRootDir: import.meta.dirname,
-            },
-            // other options...
-        },
-    },
-]);
+```bash
+git clone https://github.com/tuxracer/dailyblocks.git
+cd dailyblocks
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Install dependencies:
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
-
-export default defineConfig([
-    globalIgnores(["dist"]),
-    {
-        files: ["**/*.{ts,tsx}"],
-        extends: [
-            // Other configs...
-            // Enable lint rules for React
-            reactX.configs["recommended-typescript"],
-            // Enable lint rules for React DOM
-            reactDom.configs.recommended,
-        ],
-        languageOptions: {
-            parserOptions: {
-                project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-                tsconfigRootDir: import.meta.dirname,
-            },
-            // other options...
-        },
-    },
-]);
+```bash
+npm install
 ```
+
+3. Start the development server:
+
+```bash
+npm run dev
+```
+
+The app will be available at `http://localhost:5173`
+
+## Available Scripts
+
+- `npm run dev` - Start development server with hot module replacement (HMR)
+- `npm run build` - Create a production-ready build
+- `npm run preview` - Preview the production build locally
+
+## Usage
+
+### Viewing Videos
+
+Navigate to a subreddit using the URL pattern:
+
+```
+/r/{subreddit}/comments/{postId}
+```
+
+For example:
+
+- `/r/videos/comments/abc123` - View a specific video from r/videos
+- `/r/videos` - Redirects to the default/hot video from r/videos
+
+## License
+
+MIT License
+
+## Author
+
+[Derek Petersen](https://github.com/tuxracer)

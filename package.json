@@ -3,6 +3,15 @@
     "private": true,
     "version": "0.0.0",
     "type": "module",
+    "license": "MIT",
+    "author": "Derek Petersen",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tuxracer/dailyblocks2"
+    },
+    "engines": {
+        "node": ">=24.0.0"
+    },
     "scripts": {
         "dev": "vite",
         "build": "tsc -b && vite build",
