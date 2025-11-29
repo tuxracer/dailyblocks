@@ -1,7 +1,7 @@
 import { stringify } from "qs";
 import { chain, get } from "lodash";
 import { RedditPost } from "../models/RedditPost";
-import { URLS } from "../consts";
+import { REDDIT_URL } from "../consts";
 import { RedditComment } from "../models/RedditComment";
 
 export const stripSpecialChars = (str?: string | null) =>
@@ -27,7 +27,7 @@ export const fetchRedditPath = async (
     const defaultParams = { raw_json: 1 };
     const allParams = { ...defaultParams, ...params };
     const paramsAppend = params ? "?" + stringify(allParams) : "";
-    const url = URLS.REDDIT + path + ".json" + paramsAppend;
+    const url = REDDIT_URL + path + ".json" + paramsAppend;
     const resp = await fetchUrl(url);
     return resp;
 };

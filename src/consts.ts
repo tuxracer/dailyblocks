@@ -2,10 +2,9 @@ export const DEFAULT_TITLE = "dailyblocks video player for reddit";
 
 export const DOMAIN_NAME = "dailyblocks.tv";
 
-export const URLS = {
-    REDDIT: "https://www.reddit.com",
-    DAILYBLOCKS: "https://" + DOMAIN_NAME,
-};
+export const REDDIT_URL = "https://www.reddit.com";
+
+export const DAILYBLOCKS_URL = "https://" + DOMAIN_NAME;
 
 export const DEFAULT_SUBREDDIT = "videos";
 

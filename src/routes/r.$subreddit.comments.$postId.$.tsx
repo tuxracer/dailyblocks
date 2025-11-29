@@ -1,7 +1,8 @@
-import { createFileRoute, useLocation } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { usePost } from "../hooks/useRedditPost";
-import { useComments } from "../hooks/useRedditComments";
 import ReactPlayer from "react-player";
+import { Comments } from "../components/Comments";
+import { useSubreddit } from "../hooks/useSubreddit";
 
 export const Route = createFileRoute("/r/$subreddit/comments/$postId/$")({
     component: PermalinkPage,
@@ -9,16 +10,10 @@ export const Route = createFileRoute("/r/$subreddit/comments/$postId/$")({
 
 function PermalinkPage() {
     const params = Route.useParams();
-    const location = useLocation();
-    const { subreddit, postId } = params;
+    const post = usePost(params.postId, params.subreddit);
+    const subreddit = useSubreddit({ subreddit: params.subreddit });
 
-    // Use the full pathname as the permalink (includes the title slug)
-    const permalink = location.pathname;
-
-    const post = usePost(postId, subreddit);
-    const comments = useComments(permalink);
-
-    if (post.isLoading) {
+    if (post.isLoading || subreddit.isLoading) {
         return null;
     }
 
@@ -30,77 +25,52 @@ function PermalinkPage() {
         return <div>Post not found</div>;
     }
 
-    const postData = post.data;
-
     return (
         <div className="p-4 max-w-4xl mx-auto">
             <div className="mb-6">
-                <h1 className="text-2xl font-bold mb-2">{postData.title}</h1>
+                <h1 className="text-2xl font-bold mb-2">{post.data.title}</h1>
                 <div className="text-sm text-gray-600 mb-4">
-                    <span>r/{postData.subreddit}</span>
+                    <span>r/{post.data.subreddit}</span>
                     <span className="mx-2">•</span>
-                    <span>{postData.score} points</span>
+                    <span>{post.data.score} points</span>
                     <span className="mx-2">•</span>
-                    <span>{postData.numComments} comments</span>
+                    <span>{post.data.numComments} comments</span>
                 </div>
 
-                {postData.isPlayable && postData.mediaUrl && (
-                    <div className="mb-4">
-                        <ReactPlayer
-                            src={postData.mediaUrl}
-                            controls
-                            playing={false}
-                            width="100%"
-                            height="auto"
-                        />
-                    </div>
-                )}
+                <div className="mb-4">
+                    <ReactPlayer
+                        src={post.data.mediaUrl}
+                        controls
+                        playing={false}
+                        width="100%"
+                        height="auto"
+                    />
+                </div>
 
-                {postData.description && (
+                {post.data.description && (
                     <div className="mb-4 text-gray-700">
-                        {postData.description}
+                        {post.data.description}
                     </div>
                 )}
             </div>
 
             <div className="border-t pt-4">
                 <h2 className="text-xl font-semibold mb-4">Comments</h2>
-                {comments.isLoading && <div>Loading comments...</div>}
-                {comments.error && (
-                    <div className="text-red-600">
-                        Error loading comments: {comments.error.message}
-                    </div>
-                )}
-                {comments.data && comments.data.length === 0 && (
-                    <div className="text-gray-500">No comments yet</div>
-                )}
-                {comments.data && comments.data.length > 0 && (
-                    <div className="space-y-4">
-                        {comments.data.map((comment) => (
-                            <div
-                                key={comment.id}
-                                className="border-l-2 border-gray-200 pl-4"
-                            >
-                                <div className="text-sm text-gray-600 mb-1">
-                                    <span className="font-semibold">
-                                        {comment.author}
-                                    </span>
-                                    {comment.numReplies > 0 && (
-                                        <span className="ml-2">
-                                            ({comment.numReplies} replies)
-                                        </span>
-                                    )}
-                                </div>
-                                <div
-                                    className="text-gray-800"
-                                    dangerouslySetInnerHTML={{
-                                        __html: comment.bodyHtml,
-                                    }}
-                                />
-                            </div>
-                        ))}
-                    </div>
-                )}
+                <Comments permalink={post.data.permalink} />
+            </div>
+            <div className="border-t pt-4">
+                <h2 className="text-xl font-semibold mb-4">
+                    Other posts from this subreddit
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {subreddit.data?.map((post) => (
+                        <ul key={post.id}>
+                            <li>
+                                <Link to={post.permalink}>{post.title}</Link>
+                            </li>
+                        </ul>
+                    ))}
+                </div>
             </div>
         </div>
     );

@@ -4,8 +4,15 @@ import {
     type GetPostsBySubredditOptions,
 } from "../../utils/reddit";
 
-export const useSubreddit = (options: GetPostsBySubredditOptions) => {
-    return useSWR(["subreddit", JSON.stringify(options)], () =>
-        getPostsBySubreddit(options),
+export const useSubreddit = (options?: GetPostsBySubredditOptions) => {
+    return useSWR(
+        options?.subreddit ? ["subreddit", JSON.stringify(options)] : null,
+        () => {
+            if (!options?.subreddit) {
+                throw new Error("subreddit is required");
+            }
+
+            return getPostsBySubreddit(options);
+        },
     );
 };
