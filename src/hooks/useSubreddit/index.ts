@@ -5,7 +5,7 @@ import {
 } from "../../utils/reddit";
 
 export const useSubreddit = (options?: GetPostsBySubredditOptions) => {
-    return useSWR(
+    const subreddit = useSWR(
         options?.subreddit ? ["subreddit", JSON.stringify(options)] : null,
         () => {
             if (!options?.subreddit) {
@@ -15,4 +15,11 @@ export const useSubreddit = (options?: GetPostsBySubredditOptions) => {
             return getPostsBySubreddit(options);
         },
     );
+
+    const firstPostPermalink = subreddit.data?.[0]?.permalink;
+
+    return {
+        ...subreddit,
+        firstPostPermalink,
+    };
 };
