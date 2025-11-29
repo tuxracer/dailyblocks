@@ -1,14 +1,10 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { usePost } from "../hooks/useRedditPost";
 import ReactPlayer from "react-player";
 import { Comments } from "../components/Comments";
 import { useSubreddit } from "../hooks/useSubreddit";
 
-export const Route = createFileRoute("/r/$subreddit/comments/$postId/$")({
-    component: PermalinkPage,
-});
-
-function PermalinkPage() {
+const PermalinkPage: React.FC = () => {
     const params = Route.useParams();
     const post = usePost(params.postId, params.subreddit);
     const subreddit = useSubreddit({ subreddit: params.subreddit });
@@ -22,7 +18,7 @@ function PermalinkPage() {
     }
 
     if (!post.data) {
-        return <div>Post not found</div>;
+        throw notFound();
     }
 
     return (
@@ -74,4 +70,8 @@ function PermalinkPage() {
             </div>
         </div>
     );
-}
+};
+
+export const Route = createFileRoute("/r/$subreddit/comments/$postId/$")({
+    component: PermalinkPage,
+});
