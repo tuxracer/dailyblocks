@@ -42,6 +42,8 @@ export class RedditPost {
 
     public redditAudioUrl?: string;
 
+    public isWatched: boolean = false;
+
     constructor(json: any = {}) {
         const fallbackThumbnailUrl =
             json.thumbnail_url ||

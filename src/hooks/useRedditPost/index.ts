@@ -1,6 +1,7 @@
 import useSWR from "swr";
 import { getPostById } from "../../utils/reddit";
 import { useSubreddit } from "../useSubreddit";
+import { isWatched } from "../../utils/history";
 
 export const usePost = (id?: string, subreddit?: string) => {
     const subredditData = useSubreddit({ subreddit });
@@ -19,6 +20,10 @@ export const usePost = (id?: string, subreddit?: string) => {
     );
 
     const data = postFromSubredditData || post.data;
+
+    if (data) {
+        data.isWatched = isWatched(data.id);
+    }
 
     return {
         data,
