@@ -28,76 +28,82 @@ const PermalinkPage: React.FC = () => {
     }
 
     return (
-        <div className="flex h-screen">
-            {/* Left sidebar - Other posts */}
-            <aside className="w-80 shrink-0 border-r border-gray-200 overflow-y-auto bg-gray-50">
-                <div className="p-4">
-                    <h2 className="text-lg font-semibold mb-4 text-gray-700">
-                        r/{params.subreddit}
-                    </h2>
-                    <ul className="space-y-2">
-                        {subreddit.data?.map((otherPost) => (
-                            <li key={otherPost.id}>
-                                <Link
-                                    to={otherPost.permalink}
-                                    className={`block p-3 rounded-lg hover:bg-gray-100 transition-colors ${
-                                        otherPost.id === post.data?.id
-                                            ? "bg-white border-l-4 border-blue-500 shadow-sm"
-                                            : ""
-                                    }`}
-                                >
-                                    <span className="text-sm line-clamp-2">
-                                        {otherPost.title}
-                                    </span>
-                                    <span className="text-xs text-gray-500 mt-1 block">
-                                        {otherPost.score} pts •{" "}
-                                        {otherPost.numComments} comments
-                                    </span>
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
+        <div className="flex flex-col h-screen">
+            {/* Title header - Full width */}
+            <header className="w-full shrink-0 border-b border-gray-200 bg-white px-6 py-4">
+                <h1 className="text-2xl font-bold mb-1">{post.data.title}</h1>
+                <div className="text-sm text-gray-600">
+                    <span>r/{post.data.subreddit}</span>
+                    <span className="mx-2">•</span>
+                    <span>{post.data.score} points</span>
+                    <span className="mx-2">•</span>
+                    <span>{post.data.numComments} comments</span>
                 </div>
-            </aside>
+            </header>
 
-            {/* Main content */}
-            <main className="flex-1 overflow-y-auto">
-                <div className="p-6 max-w-4xl">
-                    <div className="mb-6">
-                        <h1 className="text-2xl font-bold mb-2">
-                            {post.data.title}
-                        </h1>
-                        <div className="text-sm text-gray-600">
-                            <span>r/{post.data.subreddit}</span>
-                            <span className="mx-2">•</span>
-                            <span>{post.data.score} points</span>
-                            <span className="mx-2">•</span>
-                            <span>{post.data.numComments} comments</span>
-                        </div>
+            {/* Main content area */}
+            <div className="flex flex-1 min-h-0">
+                {/* Left sidebar - Other posts */}
+                <aside className="w-80 shrink-0 border-r border-gray-200 overflow-y-auto bg-gray-50">
+                    <div className="p-4">
+                        <h2 className="text-lg font-semibold mb-4 text-gray-700">
+                            r/{params.subreddit}
+                        </h2>
+                        <ul className="space-y-2">
+                            {subreddit.data?.map((otherPost) => (
+                                <li key={otherPost.id}>
+                                    <Link
+                                        to={otherPost.permalink}
+                                        className={`block p-3 rounded-lg hover:bg-gray-100 transition-colors ${
+                                            otherPost.id === post.data?.id
+                                                ? "bg-white border-l-4 border-blue-500 shadow-sm"
+                                                : ""
+                                        }`}
+                                    >
+                                        <span className="text-sm line-clamp-2">
+                                            {otherPost.title}
+                                        </span>
+                                        <span className="text-xs text-gray-500 mt-1 block">
+                                            {otherPost.score} pts •{" "}
+                                            {otherPost.numComments} comments
+                                        </span>
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
+                </aside>
 
-                    <div className="mb-4">
+                {/* Main content - Video (full height) */}
+                <main className="flex-1 flex flex-col min-w-0 bg-black">
+                    <div className="flex-1 flex items-center justify-center">
                         <ReactPlayer
                             src={post.data.mediaUrl}
                             controls
                             playing={false}
                             width="100%"
-                            height="auto"
+                            height="100%"
+                            style={{ maxHeight: "100%" }}
+                            autoPlay
                         />
                     </div>
-
                     {post.data.description && (
-                        <div className="mb-4 text-gray-700">
+                        <div className="text-gray-300 p-4 bg-gray-900">
                             {post.data.description}
                         </div>
                     )}
+                </main>
 
-                    <div className="border-t pt-4">
-                        <h2 className="text-xl font-semibold mb-4">Comments</h2>
+                {/* Right sidebar - Comments */}
+                <aside className="w-96 shrink-0 border-l border-gray-200 overflow-y-auto bg-white">
+                    <div className="p-4">
+                        <h2 className="text-lg font-semibold mb-4 text-gray-700">
+                            Comments ({post.data.numComments})
+                        </h2>
                         <Comments permalink={post.data.permalink} />
                     </div>
-                </div>
-            </main>
+                </aside>
+            </div>
         </div>
     );
 };
