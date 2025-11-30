@@ -17,9 +17,14 @@ export const useSubreddit = (options?: GetPostsBySubredditOptions) => {
     );
 
     const firstPostPermalink = subreddit.data?.[0]?.permalink;
+    const firstUnwatchedPostPermalink = subreddit.data?.find(
+        (post) => !post.isWatched,
+    )?.permalink;
+
+    const firstPermalink = firstUnwatchedPostPermalink || firstPostPermalink;
 
     return {
         ...subreddit,
-        firstPostPermalink,
+        firstPermalink,
     };
 };

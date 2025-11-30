@@ -9,11 +9,11 @@ const RouteComponent: React.FC = () => {
         return null;
     }
 
-    if (!subreddit.firstPostPermalink) {
+    if (!subreddit.firstPermalink) {
         throw notFound();
     }
 
-    return <Navigate to={subreddit.firstPostPermalink} replace />;
+    return <Navigate to={subreddit.firstPermalink} replace />;
 };
 
 export const Route = createFileRoute("/")({

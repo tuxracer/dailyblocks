@@ -85,6 +85,8 @@ const PermalinkPage: React.FC = () => {
                             height="100%"
                             style={{ maxHeight: "100%" }}
                             autoPlay
+                            // @ts-ignore
+                            playing
                         />
                     </div>
                     {post.data.description && (

@@ -1,5 +1,6 @@
 import { get, unescape } from "lodash";
 import ReactPlayer from "react-player";
+import { isWatched } from "../../utils/history";
 
 export class RedditPost {
     public score: number;
@@ -101,6 +102,7 @@ export class RedditPost {
             json.mediaUrl ||
             unescape(json.url);
         this.isPlayable = Boolean(ReactPlayer.canPlay?.(this.mediaUrl));
+        this.isWatched = isWatched(this.id);
     }
 }
 
