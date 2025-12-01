@@ -3,6 +3,8 @@ import { get, unescape } from "lodash";
 export class RedditComment {
     id: string;
 
+    createdAt: Date;
+
     replies: any;
 
     bodyHtml: string;
@@ -24,6 +26,7 @@ export class RedditComment {
         this.author = props.author;
         this.permalink = props.permalink;
         this.numReplies = get(props, "replies.data.children", []).length;
+        this.createdAt = new Date(props.created_utc * 1_000);
     }
 }
 
