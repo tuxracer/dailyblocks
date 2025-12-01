@@ -30,7 +30,7 @@ export const Comments = ({ permalink }: CommentsProps) => {
                 return (
                     <div
                         key={comment.id}
-                        className={`space-y-2 ${isLastComment ? "" : "border-b border-gray-200 pb-2"}`}
+                        className={`space-y-2 ${isLastComment ? "" : "border-b border-gray-200 dark:border-zinc-700 pb-2"}`}
                     >
                         <div className="flex items-center justify-between">
                             <span className="text-sm font-medium">
