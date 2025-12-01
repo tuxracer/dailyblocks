@@ -100,9 +100,6 @@ const PermalinkPage: React.FC = () => {
                 {/* Right sidebar - Comments */}
                 <aside className="w-72 shrink-0 border-l border-gray-200 dark:border-zinc-700 overflow-y-auto bg-white dark:bg-zinc-900">
                     <div className="p-4">
-                        <h2 className="text-lg font-semibold mb-4 text-gray-700 dark:text-gray-300">
-                            Comments ({post.data.numComments})
-                        </h2>
                         <Comments permalink={post.data.permalink} />
                     </div>
                 </aside>
