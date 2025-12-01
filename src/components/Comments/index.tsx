@@ -23,7 +23,7 @@ export const Comments = ({ permalink }: CommentsProps) => {
     }
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 text-sm">
             {comments.data.map((comment) => (
                 <div key={comment.id}>
                     <div

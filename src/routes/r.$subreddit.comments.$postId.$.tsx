@@ -1,10 +1,11 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, notFound } from "@tanstack/react-router";
 import { usePost } from "../hooks/useRedditPost";
 import ReactPlayer from "react-player";
 import { Comments } from "../components/Comments";
 import { useSubreddit } from "../hooks/useSubreddit";
 import { addToWatchHistory } from "../utils/history";
 import { useEffect } from "react";
+import { Thumbnails } from "../components/Thumbnails";
 
 const PermalinkPage: React.FC = () => {
     const params = Route.useParams();
@@ -49,32 +50,14 @@ const PermalinkPage: React.FC = () => {
                         <h2 className="text-lg font-semibold mb-4 text-gray-700">
                             r/{params.subreddit}
                         </h2>
-                        <ul className="space-y-2">
-                            {subreddit.data?.map((otherPost) => (
-                                <li key={otherPost.id}>
-                                    <Link
-                                        to={otherPost.permalink}
-                                        className={`block p-3 rounded-lg hover:bg-gray-100 transition-colors ${
-                                            otherPost.id === post.data?.id
-                                                ? "bg-white border-l-4 border-blue-500 shadow-sm"
-                                                : ""
-                                        }`}
-                                    >
-                                        <span className="text-sm line-clamp-2">
-                                            {otherPost.title}
-                                        </span>
-                                        <span className="text-xs text-gray-500 mt-1 block">
-                                            {otherPost.score} pts •{" "}
-                                            {otherPost.numComments} comments
-                                        </span>
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
+                        <Thumbnails
+                            subreddit={params.subreddit}
+                            selectedPostId={params.postId}
+                        />
                     </div>
                 </aside>
 
-                {/* Main content - Video (full height) */}
+                {/* Main content */}
                 <main className="flex-1 flex flex-col min-w-0 bg-black">
                     <div className="flex-1 flex items-center justify-center">
                         <ReactPlayer
@@ -97,7 +80,7 @@ const PermalinkPage: React.FC = () => {
                 </main>
 
                 {/* Right sidebar - Comments */}
-                <aside className="w-96 shrink-0 border-l border-gray-200 overflow-y-auto bg-white">
+                <aside className="w-72 shrink-0 border-l border-gray-200 overflow-y-auto bg-white">
                     <div className="p-4">
                         <h2 className="text-lg font-semibold mb-4 text-gray-700">
                             Comments ({post.data.numComments})
