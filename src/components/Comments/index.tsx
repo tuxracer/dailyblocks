@@ -6,8 +6,6 @@ interface CommentsProps {
 }
 
 export const Comments = ({ permalink }: CommentsProps) => {
-    const commentUrl = REDDIT_URL + permalink;
-
     const comments = useComments(permalink);
 
     if (comments.isLoading) {
@@ -24,21 +22,39 @@ export const Comments = ({ permalink }: CommentsProps) => {
 
     return (
         <div className="space-y-4 text-sm">
-            {comments.data.map((comment) => (
-                <div key={comment.id}>
+            {comments.data.map((comment) => {
+                const isLastComment =
+                    comments.data &&
+                    comment === comments.data[comments.data.length - 1];
+                const commentUrl = REDDIT_URL + comment.permalink;
+                return (
                     <div
-                        dangerouslySetInnerHTML={{ __html: comment.bodyHtml }}
-                    />
-                    <a
-                        href={commentUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        key={comment.id}
+                        className={`space-y-2 ${isLastComment ? "" : "border-b border-gray-200 pb-2"}`}
                     >
-                        {comment.numReplies}{" "}
-                        {comment.numReplies === 1 ? "reply" : "replies"}
-                    </a>
-                </div>
-            ))}
+                        <div className="flex items-center justify-between">
+                            <span className="text-sm font-medium">
+                                {comment.author}
+                            </span>
+                        </div>
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: comment.bodyHtml,
+                            }}
+                        />
+                        {!!comment.numReplies && (
+                            <a
+                                href={commentUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                {comment.numReplies}{" "}
+                                {comment.numReplies === 1 ? "reply" : "replies"}
+                            </a>
+                        )}
+                    </div>
+                );
+            })}
         </div>
     );
 };
