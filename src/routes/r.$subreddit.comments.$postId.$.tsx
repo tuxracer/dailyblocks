@@ -1,4 +1,9 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import {
+    createFileRoute,
+    Link,
+    notFound,
+    useNavigate,
+} from "@tanstack/react-router";
 import { usePost } from "../hooks/useRedditPost";
 import ReactPlayer from "react-player";
 import { Comments } from "../components/Comments";
@@ -9,6 +14,7 @@ import { useWatchedVideosHistory } from "../contexts/WatchedVideosHistoryContext
 
 const PermalinkPage: React.FC = () => {
     const params = Route.useParams();
+    const navigate = useNavigate();
     const post = usePost(params.postId, params.subreddit);
     const subreddit = useSubreddit({ subreddit: params.subreddit });
     const watchedVideosHistory = useWatchedVideosHistory();
@@ -80,6 +86,10 @@ const PermalinkPage: React.FC = () => {
                             autoPlay
                             // @ts-ignore
                             playing
+                            onEnded={() => {
+                                if (!nextUnwatchedPostPermalink) return;
+                                navigate({ to: nextUnwatchedPostPermalink });
+                            }}
                         />
                     </div>
                     {post.data.description && (
