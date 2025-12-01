@@ -1,19 +1,20 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { usePost } from "../hooks/useRedditPost";
 import ReactPlayer from "react-player";
 import { Comments } from "../components/Comments";
 import { useSubreddit } from "../hooks/useSubreddit";
-import { addToWatchHistory } from "../utils/history";
 import { useEffect } from "react";
 import { Thumbnails } from "../components/Thumbnails";
+import { useWatchedVideosHistory } from "../contexts/WatchedVideosHistoryContext";
 
 const PermalinkPage: React.FC = () => {
     const params = Route.useParams();
     const post = usePost(params.postId, params.subreddit);
     const subreddit = useSubreddit({ subreddit: params.subreddit });
+    const watchedVideosHistory = useWatchedVideosHistory();
 
     useEffect(() => {
-        addToWatchHistory(params.postId);
+        watchedVideosHistory.add(params.postId);
     }, [params.postId]);
 
     if (post.isLoading || subreddit.isLoading) {
@@ -27,6 +28,10 @@ const PermalinkPage: React.FC = () => {
     if (!post.data) {
         throw notFound();
     }
+
+    const nextUnwatchedPostPermalink = subreddit.data?.find(
+        (post) => !watchedVideosHistory.isWatched(post.id),
+    )?.permalink;
 
     return (
         <div className="flex flex-col h-screen">
@@ -47,9 +52,14 @@ const PermalinkPage: React.FC = () => {
                 {/* Left sidebar - Other posts */}
                 <aside className="w-80 shrink-0 border-r border-gray-200 overflow-y-auto bg-gray-50">
                     <div className="p-4">
-                        <h2 className="text-lg font-semibold mb-4 text-gray-700">
-                            r/{params.subreddit}
-                        </h2>
+                        {nextUnwatchedPostPermalink && (
+                            <Link
+                                to={nextUnwatchedPostPermalink}
+                                className="inline-block text-lg font-semibold mb-4  hover:underline"
+                            >
+                                /r/{params.subreddit}
+                            </Link>
+                        )}
                         <Thumbnails
                             subreddit={params.subreddit}
                             selectedPostId={params.postId}

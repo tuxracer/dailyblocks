@@ -1,6 +1,5 @@
 import { get, unescape } from "lodash";
 import ReactPlayer from "react-player";
-import { isWatched } from "../../utils/history";
 
 export class RedditPost {
     public score: number;
@@ -42,8 +41,6 @@ export class RedditPost {
     public redditVideoUrl?: string;
 
     public redditAudioUrl?: string;
-
-    public isWatched: boolean = false;
 
     constructor(json: any = {}) {
         const fallbackThumbnailUrl =
@@ -102,7 +99,6 @@ export class RedditPost {
             json.mediaUrl ||
             unescape(json.url);
         this.isPlayable = Boolean(ReactPlayer.canPlay?.(this.mediaUrl));
-        this.isWatched = isWatched(this.id);
     }
 }
 

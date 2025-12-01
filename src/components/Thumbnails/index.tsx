@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useSubreddit } from "../../hooks/useSubreddit";
+import { useWatchedVideosHistory } from "../../contexts/WatchedVideosHistoryContext";
 
 interface ThumbnailsProps {
     subreddit: string;
@@ -8,6 +9,7 @@ interface ThumbnailsProps {
 
 export const Thumbnails: React.FC<ThumbnailsProps> = (props) => {
     const subreddit = useSubreddit({ subreddit: props.subreddit });
+    const watchedVideosHistory = useWatchedVideosHistory();
 
     if (subreddit.isLoading) {
         return null;
@@ -21,10 +23,11 @@ export const Thumbnails: React.FC<ThumbnailsProps> = (props) => {
         <ul className="space-y-2">
             {subreddit.data?.map((post) => {
                 const isSelected = props.selectedPostId === post.id;
+                const isWatched = watchedVideosHistory.isWatched(post.id);
                 return (
                     <li
                         key={post.id}
-                        className={`${!isSelected && post.isWatched ? "opacity-50" : ""}`}
+                        className={`${!isSelected && isWatched ? "opacity-50" : ""}`}
                     >
                         <Link
                             to={post.permalink}

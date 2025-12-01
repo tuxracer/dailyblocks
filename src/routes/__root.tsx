@@ -1,4 +1,5 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { WatchedVideosHistoryProvider } from "../contexts/WatchedVideosHistoryContext";
 
 const NotFoundComponent: React.FC = () => {
     return (
@@ -9,6 +10,10 @@ const NotFoundComponent: React.FC = () => {
 };
 
 export const Route = createRootRoute({
-    component: () => <Outlet />,
+    component: () => (
+        <WatchedVideosHistoryProvider>
+            <Outlet />
+        </WatchedVideosHistoryProvider>
+    ),
     notFoundComponent: NotFoundComponent,
 });
