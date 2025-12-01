@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Link } from "@tanstack/react-router";
 import { useSubreddit } from "../../hooks/useSubreddit";
 import { useWatchedVideosHistory } from "../../contexts/WatchedVideosHistoryContext";
@@ -10,6 +11,14 @@ interface ThumbnailsProps {
 export const Thumbnails: React.FC<ThumbnailsProps> = (props) => {
     const subreddit = useSubreddit({ subreddit: props.subreddit });
     const watchedVideosHistory = useWatchedVideosHistory();
+    const selectedRef = useRef<HTMLLIElement>(null);
+
+    useEffect(() => {
+        selectedRef.current?.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+        });
+    }, [props.selectedPostId]);
 
     if (subreddit.isLoading) {
         return null;
@@ -27,6 +36,7 @@ export const Thumbnails: React.FC<ThumbnailsProps> = (props) => {
                 return (
                     <li
                         key={post.id}
+                        ref={isSelected ? selectedRef : null}
                         className={`${!isSelected && isWatched ? "opacity-50" : ""}`}
                     >
                         <Link
