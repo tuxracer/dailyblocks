@@ -16,34 +16,42 @@ export const Thumbnails: React.FC<ThumbnailsProps> = (props) => {
     if (subreddit.error) {
         return <div>Error loading subreddit: {subreddit.error.message}</div>;
     }
+
     return (
         <ul className="space-y-2">
-            {subreddit.data?.map((post) => (
-                <li key={post.id}>
-                    <Link
-                        to={post.permalink}
-                        className={`flex gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors ${
-                            props.selectedPostId === post.id
-                                ? "bg-white border-l-4 border-blue-500 shadow-sm"
-                                : ""
-                        }`}
+            {subreddit.data?.map((post) => {
+                const isSelected = props.selectedPostId === post.id;
+                return (
+                    <li
+                        key={post.id}
+                        className={`${!isSelected && post.isWatched ? "opacity-50" : ""}`}
                     >
-                        <img
-                            src={post.thumbnailUrl}
-                            alt=""
-                            className="w-16 h-16 object-cover rounded shrink-0 bg-gray-200"
-                        />
-                        <div className="flex flex-col min-w-0">
-                            <span className="text-sm line-clamp-2">
-                                {post.title}
-                            </span>
-                            <span className="text-xs text-gray-500 mt-1">
-                                {post.score} pts • {post.numComments} comments
-                            </span>
-                        </div>
-                    </Link>
-                </li>
-            ))}
+                        <Link
+                            to={post.permalink}
+                            className={`flex gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors ${
+                                isSelected
+                                    ? "bg-white border-l-4 border-blue-500 shadow-sm"
+                                    : ""
+                            }`}
+                        >
+                            <img
+                                src={post.thumbnailUrl}
+                                alt=""
+                                className="w-16 h-16 object-cover rounded shrink-0 bg-gray-200"
+                            />
+                            <div className="flex flex-col min-w-0">
+                                <span className="text-sm line-clamp-2">
+                                    {post.title}
+                                </span>
+                                <span className="text-xs text-gray-500 mt-1">
+                                    {post.score} pts • {post.numComments}{" "}
+                                    comments
+                                </span>
+                            </div>
+                        </Link>
+                    </li>
+                );
+            })}
         </ul>
     );
 };
