@@ -79,12 +79,10 @@ const PermalinkPage: React.FC = () => {
                         <ReactPlayer
                             src={post.data.mediaUrl}
                             controls
-                            playing={false}
                             width="100%"
                             height="100%"
                             style={{ maxHeight: "100%" }}
                             autoPlay
-                            // @ts-ignore
                             playing
                             onEnded={() => {
                                 if (!nextUnwatchedPostPermalink) return;
