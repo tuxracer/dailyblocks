@@ -5,7 +5,10 @@ import {
     useState,
     type ReactNode,
 } from "react";
-import { WATCHED_LOCAL_STORAGE_KEY } from "./consts";
+import {
+    MAX_WATCHED_VIDEOS_HISTORY_LENGTH,
+    WATCHED_LOCAL_STORAGE_KEY,
+} from "./consts";
 
 interface WatchedVideosHistoryContextType {
     watched: string[];
@@ -41,7 +44,10 @@ export const WatchedVideosHistoryProvider = ({
     }, [watched]);
 
     const add = (id: string) => {
-        setWatched((prev) => (prev.includes(id) ? prev : [...prev, id]));
+        const updatedWatched = watched.includes(id)
+            ? watched
+            : [id, ...watched].slice(0, MAX_WATCHED_VIDEOS_HISTORY_LENGTH);
+        setWatched(updatedWatched);
     };
 
     const remove = (id: string) => {
