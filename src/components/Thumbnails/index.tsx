@@ -22,18 +22,25 @@ export const Thumbnails: React.FC<ThumbnailsProps> = (props) => {
                 <li key={post.id}>
                     <Link
                         to={post.permalink}
-                        className={`block p-3 rounded-lg hover:bg-gray-100 transition-colors ${
+                        className={`flex gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors ${
                             props.selectedPostId === post.id
                                 ? "bg-white border-l-4 border-blue-500 shadow-sm"
                                 : ""
                         }`}
                     >
-                        <span className="text-sm line-clamp-2">
-                            {post.title}
-                        </span>
-                        <span className="text-xs text-gray-500 mt-1 block">
-                            {post.score} pts • {post.numComments} comments
-                        </span>
+                        <img
+                            src={post.thumbnailUrl}
+                            alt=""
+                            className="w-16 h-16 object-cover rounded shrink-0 bg-gray-200"
+                        />
+                        <div className="flex flex-col min-w-0">
+                            <span className="text-sm line-clamp-2">
+                                {post.title}
+                            </span>
+                            <span className="text-xs text-gray-500 mt-1">
+                                {post.score} pts • {post.numComments} comments
+                            </span>
+                        </div>
                     </Link>
                 </li>
             ))}
