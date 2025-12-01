@@ -77,11 +77,11 @@ const PermalinkPage: React.FC = () => {
                 <main className="flex-1 flex flex-col min-w-0 bg-black">
                     <div className="flex-1 flex items-center justify-center">
                         <ReactPlayer
+                            className="w-full h-full max-h-full max-w-full"
                             src={post.data.mediaUrl}
                             controls
                             width="100%"
                             height="100%"
-                            style={{ maxHeight: "100%" }}
                             autoPlay
                             playing
                             onEnded={() => {
