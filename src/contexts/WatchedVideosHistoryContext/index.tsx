@@ -29,10 +29,15 @@ export const WatchedVideosHistoryProvider = ({
     const [watched, setWatched] = useState<string[]>(initialHistory);
 
     useEffect(() => {
-        localStorage.setItem(
-            WATCHED_LOCAL_STORAGE_KEY,
-            JSON.stringify(watched),
-        );
+        try {
+            localStorage.setItem(
+                WATCHED_LOCAL_STORAGE_KEY,
+                JSON.stringify(watched),
+            );
+        } catch {
+            localStorage.removeItem(WATCHED_LOCAL_STORAGE_KEY);
+            setWatched([]);
+        }
     }, [watched]);
 
     const add = (id: string) => {
