@@ -47,6 +47,7 @@ export const Comments = ({ permalink }: CommentsProps) => {
                                 href={commentUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                className="hover:underline"
                             >
                                 {comment.numReplies}{" "}
                                 {comment.numReplies === 1 ? "reply" : "replies"}
