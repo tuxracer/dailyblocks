@@ -20,7 +20,7 @@ export const Thumbnails: React.FC<ThumbnailsProps> = (props) => {
     }
 
     return (
-        <ul className="space-y-2">
+        <ul className="space-y-3">
             {subreddit.data?.map((post) => {
                 const isSelected = props.selectedPostId === post.id;
                 const isWatched = watchedVideosHistory.isWatched(post.id);
@@ -31,21 +31,19 @@ export const Thumbnails: React.FC<ThumbnailsProps> = (props) => {
                     >
                         <Link
                             to={post.permalink}
-                            className={`flex gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors ${
+                            className={`flex flex-col rounded-lg overflow-hidden hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors ${
                                 isSelected
-                                    ? "bg-white dark:bg-zinc-900 border-l-4 border-blue-500 shadow-sm"
+                                    ? "bg-white dark:bg-zinc-900 ring-2 ring-blue-500 shadow-sm"
                                     : ""
                             }`}
                         >
                             <img
                                 src={post.thumbnailUrl}
                                 alt=""
-                                className="w-16 h-16 object-cover rounded shrink-0 bg-gray-200 dark:bg-zinc-700"
+                                className="w-full aspect-video object-cover bg-gray-200 dark:bg-zinc-700"
                             />
-                            <div className="flex flex-col min-w-0">
-                                <span className="text-sm line-clamp-2">
-                                    {post.title}
-                                </span>
+                            <div className="flex flex-col p-2">
+                                <span className="text-sm">{post.title}</span>
                                 <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                                     {post.score} pts • {post.numComments}{" "}
                                     comments

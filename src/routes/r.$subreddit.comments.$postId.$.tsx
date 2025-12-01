@@ -56,7 +56,7 @@ const PermalinkPage: React.FC = () => {
             {/* Main content area */}
             <div className="flex flex-1 min-h-0">
                 {/* Left sidebar - Other posts */}
-                <aside className="w-80 shrink-0 border-r border-gray-200 dark:border-zinc-700 overflow-y-auto bg-gray-50 dark:bg-zinc-800">
+                <aside className="w-56 shrink-0 border-r border-gray-200 dark:border-zinc-700 overflow-y-auto bg-gray-50 dark:bg-zinc-800">
                     <div className="p-4">
                         {nextUnwatchedPostPermalink && (
                             <Link
