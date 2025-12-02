@@ -8,6 +8,7 @@ import { Thumbnails } from "../components/Thumbnails";
 import { useWatchedVideosHistory } from "../contexts/WatchedVideosHistoryContext";
 import { REDDIT_URL } from "../consts";
 import { useComments } from "../hooks/useRedditComments";
+import { getPostById } from "../utils/reddit";
 
 const PermalinkPage: React.FC = () => {
     const params = Route.useParams();
@@ -111,4 +112,11 @@ const PermalinkPage: React.FC = () => {
 
 export const Route = createFileRoute("/r/$subreddit/comments/$postId/$")({
     component: PermalinkPage,
+    loader: async ({ params }) => {
+        const post = await getPostById(params.postId, params.subreddit);
+        return { post };
+    },
+    head: ({ loaderData }) => ({
+        meta: loaderData?.post?.title ? [{ title: loaderData.post.title }] : [],
+    }),
 });

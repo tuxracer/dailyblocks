@@ -1,4 +1,4 @@
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { createRootRoute, HeadContent, Outlet } from "@tanstack/react-router";
 import { WatchedVideosHistoryProvider } from "../contexts/WatchedVideosHistoryContext";
 import { SWRConfig } from "swr";
 
@@ -12,13 +12,16 @@ const NotFoundComponent: React.FC = () => {
 
 export const Route = createRootRoute({
     component: () => (
-        <SWRConfig
-            value={{ revalidateOnFocus: false, revalidateIfStale: false }}
-        >
-            <WatchedVideosHistoryProvider>
-                <Outlet />
-            </WatchedVideosHistoryProvider>
-        </SWRConfig>
+        <>
+            <HeadContent />
+            <SWRConfig
+                value={{ revalidateOnFocus: false, revalidateIfStale: false }}
+            >
+                <WatchedVideosHistoryProvider>
+                    <Outlet />
+                </WatchedVideosHistoryProvider>
+            </SWRConfig>
+        </>
     ),
     notFoundComponent: NotFoundComponent,
 });
