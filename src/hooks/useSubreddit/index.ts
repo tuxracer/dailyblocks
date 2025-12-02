@@ -3,8 +3,10 @@ import {
     getPostsBySubreddit,
     type GetPostsBySubredditOptions,
 } from "../../utils/reddit";
+import { useWatchedVideosHistory } from "../../contexts/WatchedVideosHistoryContext";
 
 export const useSubreddit = (options?: GetPostsBySubredditOptions) => {
+    const watchedVideosHistory = useWatchedVideosHistory();
     const subreddit = useSWR(
         options?.subreddit ? ["subreddit", JSON.stringify(options)] : null,
         () => {
@@ -18,7 +20,7 @@ export const useSubreddit = (options?: GetPostsBySubredditOptions) => {
 
     const firstPostPermalink = subreddit.data?.[0]?.permalink;
     const firstUnwatchedPostPermalink = subreddit.data?.find(
-        (post) => !post.isWatched,
+        (post) => !watchedVideosHistory.isWatched(post.id),
     )?.permalink;
 
     const firstPermalink = firstUnwatchedPostPermalink || firstPostPermalink;
