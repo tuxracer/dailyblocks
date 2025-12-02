@@ -63,10 +63,10 @@ const PermalinkPage: React.FC = () => {
                 </div>
             </header>
 
-            {/* Main content area - Desktop */}
-            <div className="hidden md:flex flex-1 min-h-0">
-                {/* Left sidebar - Other posts */}
-                <aside className="w-56 shrink-0 border-r border-gray-200 dark:border-zinc-700 overflow-y-auto bg-gray-50 dark:bg-zinc-800">
+            {/* Main content area */}
+            <div className="flex flex-col md:flex-row flex-1 min-h-0 pb-24 md:pb-0">
+                {/* Left sidebar - Other posts (Desktop only) */}
+                <aside className="hidden md:block w-56 shrink-0 border-r border-gray-200 dark:border-zinc-700 overflow-y-auto bg-gray-50 dark:bg-zinc-800">
                     <div className="p-4">
                         <Thumbnails
                             subreddit={params.subreddit}
@@ -76,10 +76,17 @@ const PermalinkPage: React.FC = () => {
                 </aside>
 
                 {/* Main content */}
-                <main className="flex-1 flex flex-col min-w-0 bg-black">
-                    <div className="flex-1 flex items-center justify-center">
+                <main className="flex-1 flex flex-col min-w-0 min-h-0">
+                    {/* Video container */}
+                    <div
+                        className={`w-full bg-black ${
+                            isCommentsPanelVisible
+                                ? "aspect-video shrink-0 md:aspect-auto md:flex-1"
+                                : "flex-1"
+                        }`}
+                    >
                         <ReactPlayer
-                            className="w-full h-full max-h-full max-w-full"
+                            className="w-full h-full"
                             src={post.data.mediaUrl}
                             controls
                             width="100%"
@@ -93,15 +100,22 @@ const PermalinkPage: React.FC = () => {
                         />
                     </div>
                     {post.data.description && (
-                        <div className="text-gray-300 p-4 bg-gray-900">
+                        <div className="text-gray-300 p-4 bg-gray-900 shrink-0">
                             {post.data.description}
+                        </div>
+                    )}
+
+                    {/* Comments - Mobile only (scrollable below video) */}
+                    {isCommentsPanelVisible && (
+                        <div className="md:hidden flex-1 overflow-y-auto bg-white dark:bg-zinc-900 p-4">
+                            <Comments permalink={post.data.permalink} />
                         </div>
                     )}
                 </main>
 
-                {/* Right sidebar - Comments */}
+                {/* Right sidebar - Comments (Desktop only) */}
                 {isCommentsPanelVisible && (
-                    <aside className="w-72 shrink-0 border-l border-gray-200 dark:border-zinc-700 overflow-y-auto bg-white dark:bg-zinc-900">
+                    <aside className="hidden md:block w-72 shrink-0 border-l border-gray-200 dark:border-zinc-700 overflow-y-auto bg-white dark:bg-zinc-900">
                         <div className="p-4">
                             <Comments permalink={post.data.permalink} />
                         </div>
@@ -109,41 +123,7 @@ const PermalinkPage: React.FC = () => {
                 )}
             </div>
 
-            {/* Main content area - Mobile */}
-            <div className="flex md:hidden flex-col flex-1 min-h-0 pb-24">
-                {/* Video - takes full height when no comments, fixed aspect ratio otherwise */}
-                <div
-                    className={`w-full bg-black ${isCommentsPanelVisible ? "aspect-video shrink-0" : "flex-1"}`}
-                >
-                    <ReactPlayer
-                        className="w-full h-full"
-                        src={post.data.mediaUrl}
-                        controls
-                        width="100%"
-                        height="100%"
-                        autoPlay
-                        playing
-                        onEnded={() => {
-                            if (!nextUnwatchedPostPermalink) return;
-                            navigate({ to: nextUnwatchedPostPermalink });
-                        }}
-                    />
-                </div>
-                {post.data.description && (
-                    <div className="text-gray-300 p-4 bg-gray-900 shrink-0">
-                        {post.data.description}
-                    </div>
-                )}
-
-                {/* Comments - scrollable independently */}
-                {isCommentsPanelVisible && (
-                    <div className="flex-1 overflow-y-auto bg-white dark:bg-zinc-900 p-4">
-                        <Comments permalink={post.data.permalink} />
-                    </div>
-                )}
-            </div>
-
-            {/* Fixed bottom thumbnails - Mobile */}
+            {/* Fixed bottom thumbnails - Mobile only */}
             <div className="md:hidden fixed bottom-0 left-0 right-0 bg-gray-50 dark:bg-zinc-800 px-4 pt-4 pb-3 border-t border-gray-200 dark:border-zinc-700">
                 <Thumbnails
                     subreddit={params.subreddit}
