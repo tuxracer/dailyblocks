@@ -4,7 +4,7 @@ A modern, lightweight video player for Reddit built with Vite + React. Browse an
 
 ## Features
 
-- 📱 **Mobile-Friendly**: Progressive Web App (PWA) with mobile web app support
+- 📱 **Mobile-Friendly**: Responsive layout optimized for mobile devices
 - 🔄 **Auto-Play**: Automatically play the next video when one ends
 - 💬 **Comments**: View Reddit comments alongside videos
 - 🖼️ **Thumbnail Navigation**: Browse through video thumbnails in a sidebar

@@ -41,10 +41,12 @@ const PermalinkPage: React.FC = () => {
     )?.permalink;
 
     return (
-        <div className="flex flex-col h-screen">
+        <div className="flex flex-col h-dvh">
             {/* Title header */}
-            <header className="w-full shrink-0 border-b border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-6 py-4">
-                <h1 className="text-xl font-bold mb-1">{post.data.title}</h1>
+            <header className="w-full shrink-0 border-b border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 md:px-6 py-3 md:py-4">
+                <h1 className="text-lg md:text-xl font-bold mb-1 line-clamp-2 md:line-clamp-none">
+                    {post.data.title}
+                </h1>
                 <div className="text-sm text-gray-600 dark:text-gray-400">
                     <span>r/{post.data.subreddit}</span>
                     <span className="mx-2">•</span>
@@ -61,8 +63,8 @@ const PermalinkPage: React.FC = () => {
                 </div>
             </header>
 
-            {/* Main content area */}
-            <div className="flex flex-1 min-h-0">
+            {/* Main content area - Desktop */}
+            <div className="hidden md:flex flex-1 min-h-0">
                 {/* Left sidebar - Other posts */}
                 <aside className="w-56 shrink-0 border-r border-gray-200 dark:border-zinc-700 overflow-y-auto bg-gray-50 dark:bg-zinc-800">
                     <div className="p-4">
@@ -105,6 +107,49 @@ const PermalinkPage: React.FC = () => {
                         </div>
                     </aside>
                 )}
+            </div>
+
+            {/* Main content area - Mobile */}
+            <div className="flex md:hidden flex-col flex-1 min-h-0 pb-24">
+                {/* Video - takes full height when no comments, fixed aspect ratio otherwise */}
+                <div
+                    className={`w-full bg-black ${isCommentsPanelVisible ? "aspect-video shrink-0" : "flex-1"}`}
+                >
+                    <ReactPlayer
+                        className="w-full h-full"
+                        src={post.data.mediaUrl}
+                        controls
+                        width="100%"
+                        height="100%"
+                        autoPlay
+                        playing
+                        onEnded={() => {
+                            if (!nextUnwatchedPostPermalink) return;
+                            navigate({ to: nextUnwatchedPostPermalink });
+                        }}
+                    />
+                </div>
+                {post.data.description && (
+                    <div className="text-gray-300 p-4 bg-gray-900 shrink-0">
+                        {post.data.description}
+                    </div>
+                )}
+
+                {/* Comments - scrollable independently */}
+                {isCommentsPanelVisible && (
+                    <div className="flex-1 overflow-y-auto bg-white dark:bg-zinc-900 p-4">
+                        <Comments permalink={post.data.permalink} />
+                    </div>
+                )}
+            </div>
+
+            {/* Fixed bottom thumbnails - Mobile */}
+            <div className="md:hidden fixed bottom-0 left-0 right-0 bg-gray-50 dark:bg-zinc-800 px-4 pt-4 pb-3 border-t border-gray-200 dark:border-zinc-700">
+                <Thumbnails
+                    subreddit={params.subreddit}
+                    selectedPostId={params.postId}
+                    horizontal
+                />
             </div>
         </div>
     );
