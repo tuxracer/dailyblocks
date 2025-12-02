@@ -37,7 +37,7 @@ export const Thumbnails: React.FC<ThumbnailsProps> = (props) => {
                     <li
                         key={post.id}
                         ref={isSelected ? selectedRef : null}
-                        className={`${!isSelected && isWatched ? "opacity-50" : ""}`}
+                        className={`transition-all hover:scale-105 ${!isSelected && isWatched ? "opacity-50 hover:opacity-100" : ""}`}
                     >
                         <Link
                             to={post.permalink}
