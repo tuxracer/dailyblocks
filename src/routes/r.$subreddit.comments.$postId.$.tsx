@@ -6,7 +6,7 @@ import { useSubreddit } from "../hooks/useSubreddit";
 import { useEffect } from "react";
 import { Thumbnails } from "../components/Thumbnails";
 import { useWatchedVideosHistory } from "../contexts/WatchedVideosHistoryContext";
-import { REDDIT_URL } from "../consts";
+import { DAILYBLOCKS_URL, REDDIT_URL } from "../consts";
 import { useComments } from "../hooks/useRedditComments";
 import { getPostById } from "../utils/reddit";
 
@@ -116,7 +116,31 @@ export const Route = createFileRoute("/r/$subreddit/comments/$postId/$")({
         const post = await getPostById(params.postId, params.subreddit);
         return { post };
     },
-    head: ({ loaderData }) => ({
-        meta: loaderData?.post?.title ? [{ title: loaderData.post.title }] : [],
-    }),
+    head: ({ loaderData }) => {
+        const post = loaderData?.post;
+        if (!post?.title) {
+            return { meta: [] };
+        }
+        return {
+            meta: [
+                { title: post.title },
+                { property: "og:title", content: post.title },
+                {
+                    property: "og:url",
+                    content: DAILYBLOCKS_URL + post.permalink,
+                },
+                { property: "og:image", content: post.thumbnailUrl },
+                { property: "og:image:type", content: "image/jpeg" },
+                ...(post.over18
+                    ? [
+                          { property: "og:restrictions:age", content: "18+" },
+                          {
+                              name: "rating",
+                              content: "RTA-5042-1996-1400-1577-RTA",
+                          },
+                      ]
+                    : []),
+            ],
+        };
+    },
 });
