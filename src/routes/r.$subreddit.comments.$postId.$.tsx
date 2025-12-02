@@ -11,6 +11,7 @@ import { useSubreddit } from "../hooks/useSubreddit";
 import { useEffect } from "react";
 import { Thumbnails } from "../components/Thumbnails";
 import { useWatchedVideosHistory } from "../contexts/WatchedVideosHistoryContext";
+import { REDDIT_URL } from "../consts";
 
 const PermalinkPage: React.FC = () => {
     const params = Route.useParams();
@@ -49,7 +50,14 @@ const PermalinkPage: React.FC = () => {
                     <span className="mx-2">•</span>
                     <span>{post.data.score} points</span>
                     <span className="mx-2">•</span>
-                    <span>{post.data.numComments} comments</span>
+                    <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={REDDIT_URL + post.data.permalink}
+                        className="hover:underline"
+                    >
+                        {post.data.numComments} comments
+                    </a>
                 </div>
             </header>
 
@@ -58,14 +66,6 @@ const PermalinkPage: React.FC = () => {
                 {/* Left sidebar - Other posts */}
                 <aside className="w-56 shrink-0 border-r border-gray-200 dark:border-zinc-700 overflow-y-auto bg-gray-50 dark:bg-zinc-800">
                     <div className="p-4">
-                        {nextUnwatchedPostPermalink && (
-                            <Link
-                                to={nextUnwatchedPostPermalink}
-                                className="inline-block text-lg font-semibold mb-4 hover:underline"
-                            >
-                                /r/{params.subreddit}
-                            </Link>
-                        )}
                         <Thumbnails
                             subreddit={params.subreddit}
                             selectedPostId={params.postId}
