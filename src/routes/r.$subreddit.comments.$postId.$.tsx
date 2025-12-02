@@ -1,9 +1,4 @@
-import {
-    createFileRoute,
-    Link,
-    notFound,
-    useNavigate,
-} from "@tanstack/react-router";
+import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
 import { usePost } from "../hooks/useRedditPost";
 import ReactPlayer from "react-player";
 import { Comments } from "../components/Comments";
@@ -12,6 +7,7 @@ import { useEffect } from "react";
 import { Thumbnails } from "../components/Thumbnails";
 import { useWatchedVideosHistory } from "../contexts/WatchedVideosHistoryContext";
 import { REDDIT_URL } from "../consts";
+import { useComments } from "../hooks/useRedditComments";
 
 const PermalinkPage: React.FC = () => {
     const params = Route.useParams();
@@ -19,6 +15,9 @@ const PermalinkPage: React.FC = () => {
     const post = usePost(params.postId, params.subreddit);
     const subreddit = useSubreddit({ subreddit: params.subreddit });
     const watchedVideosHistory = useWatchedVideosHistory();
+    const comments = useComments(post.data?.permalink);
+    const numComments = comments.data?.length || 0;
+    const isCommentsPanelVisible = !comments.data || numComments > 0;
 
     useEffect(() => {
         watchedVideosHistory.add(params.postId);
@@ -98,11 +97,13 @@ const PermalinkPage: React.FC = () => {
                 </main>
 
                 {/* Right sidebar - Comments */}
-                <aside className="w-72 shrink-0 border-l border-gray-200 dark:border-zinc-700 overflow-y-auto bg-white dark:bg-zinc-900">
-                    <div className="p-4">
-                        <Comments permalink={post.data.permalink} />
-                    </div>
-                </aside>
+                {isCommentsPanelVisible && (
+                    <aside className="w-72 shrink-0 border-l border-gray-200 dark:border-zinc-700 overflow-y-auto bg-white dark:bg-zinc-900">
+                        <div className="p-4">
+                            <Comments permalink={post.data.permalink} />
+                        </div>
+                    </aside>
+                )}
             </div>
         </div>
     );
