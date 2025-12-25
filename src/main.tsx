@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { injectSpeedInsights } from "@vercel/speed-insights";
+import { inject } from "@vercel/analytics";
 import "./index.css";
 
 // Import the generated route tree
@@ -9,6 +10,9 @@ import { routeTree } from "./routeTree.gen";
 
 // Initialize Vercel Speed Insights
 injectSpeedInsights();
+
+// Initialize Vercel Web Analytics
+inject();
 
 // Create a new router instance
 const router = createRouter({ routeTree });
