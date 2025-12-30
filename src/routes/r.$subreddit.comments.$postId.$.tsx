@@ -49,22 +49,43 @@ const PermalinkPage: React.FC = () => {
         <div className="flex flex-col h-dvh">
             {/* Title header */}
             <header className="w-full shrink-0 border-b border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 md:px-6 py-3 md:py-4">
-                <h1 className="text-lg md:text-xl font-bold mb-1 line-clamp-2 md:line-clamp-none">
-                    {post.data.title}
-                </h1>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
-                    <span>r/{post.data.subreddit}</span>
-                    <span className="mx-2">•</span>
-                    <span>{post.data.score} points</span>
-                    <span className="mx-2">•</span>
-                    <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={REDDIT_URL + post.data.permalink}
-                        className="hover:underline"
-                    >
-                        {post.data.numComments} comments
-                    </a>
+                <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                        <h1 className="text-lg md:text-xl font-bold mb-1 line-clamp-2 md:line-clamp-none">
+                            {post.data.title}
+                        </h1>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">
+                            <span>r/{post.data.subreddit}</span>
+                            <span className="mx-2">•</span>
+                            <span>{post.data.score} points</span>
+                            <span className="mx-2">•</span>
+                            <a
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                href={REDDIT_URL + post.data.permalink}
+                                className="hover:underline"
+                            >
+                                {post.data.numComments} comments
+                            </a>
+                        </div>
+                    </div>
+                    {/* Play Next button */}
+                    {nextUnwatchedPostPermalink && (
+                        <Link
+                            to={nextUnwatchedPostPermalink}
+                            className="flex items-center justify-center gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg transition-colors shadow-md shrink-0"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                                className="w-4 h-4"
+                            >
+                                <path d="M6.3 2.84A1.5 1.5 0 0 0 4 4.11v11.78a1.5 1.5 0 0 0 2.3 1.27l9.344-5.891a1.5 1.5 0 0 0 0-2.538L6.3 2.841Z" />
+                            </svg>
+                            <span className="hidden sm:inline">Play Next</span>
+                        </Link>
+                    )}
                 </div>
             </header>
 
@@ -72,25 +93,6 @@ const PermalinkPage: React.FC = () => {
             <div className="flex flex-col md:flex-row flex-1 min-h-0 pb-24 md:pb-0">
                 {/* Left sidebar - Other posts (Desktop only) */}
                 <aside className="hidden md:flex md:flex-col w-56 shrink-0 border-r border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-800">
-                    {/* Fixed header with Play Next button */}
-                    {nextUnwatchedPostPermalink && (
-                        <div className="p-4 pb-0 shrink-0">
-                            <Link
-                                to={nextUnwatchedPostPermalink}
-                                className="flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg transition-colors shadow-md w-full"
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                    className="w-4 h-4"
-                                >
-                                    <path d="M6.3 2.84A1.5 1.5 0 0 0 4 4.11v11.78a1.5 1.5 0 0 0 2.3 1.27l9.344-5.891a1.5 1.5 0 0 0 0-2.538L6.3 2.841Z" />
-                                </svg>
-                                Play Next
-                            </Link>
-                        </div>
-                    )}
                     {/* Scrollable thumbnails */}
                     <div className="p-4 overflow-y-auto flex-1">
                         <Thumbnails
@@ -149,26 +151,9 @@ const PermalinkPage: React.FC = () => {
             </div>
 
             {/* Fixed bottom thumbnails - Mobile only */}
-            <div className="md:hidden fixed bottom-0 left-0 right-0 bg-gray-50 dark:bg-zinc-800 pt-4 pb-3 border-t border-gray-200 dark:border-zinc-700 flex items-center gap-3">
-                {/* Fixed Play Next button */}
-                {nextUnwatchedPostPermalink && (
-                    <Link
-                        to={nextUnwatchedPostPermalink}
-                        className="flex items-center justify-center w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-md shrink-0 ml-4"
-                        aria-label="Play Next"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                            className="w-5 h-5"
-                        >
-                            <path d="M6.3 2.84A1.5 1.5 0 0 0 4 4.11v11.78a1.5 1.5 0 0 0 2.3 1.27l9.344-5.891a1.5 1.5 0 0 0 0-2.538L6.3 2.841Z" />
-                        </svg>
-                    </Link>
-                )}
+            <div className="md:hidden fixed bottom-0 left-0 right-0 bg-gray-50 dark:bg-zinc-800 pt-4 pb-3 border-t border-gray-200 dark:border-zinc-700">
                 {/* Scrollable thumbnails */}
-                <div className="overflow-x-auto pr-4">
+                <div className="overflow-x-auto px-4">
                     <Thumbnails
                         subreddit={params.subreddit}
                         selectedPostId={params.postId}
