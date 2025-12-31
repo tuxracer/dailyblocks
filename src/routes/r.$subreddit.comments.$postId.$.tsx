@@ -41,9 +41,18 @@ const PermalinkPage: React.FC = () => {
         throw notFound();
     }
 
-    const nextUnwatchedPostPermalink = subreddit.data?.find(
+    const currentIndex = subreddit.data?.findIndex(
+        (p) => p.id === params.postId,
+    );
+    const nextUnwatchedPost = subreddit.data?.find(
         (post) => !watchedVideosHistory.isWatched(post.id),
-    )?.permalink;
+    );
+    const nextPostInList =
+        currentIndex !== undefined && currentIndex !== -1 && subreddit.data
+            ? subreddit.data[currentIndex + 1]
+            : undefined;
+    const nextPostPermalink =
+        nextUnwatchedPost?.permalink ?? nextPostInList?.permalink;
 
     return (
         <div className="flex flex-col h-dvh">
@@ -51,9 +60,9 @@ const PermalinkPage: React.FC = () => {
             <header className="w-full shrink-0 border-b border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 md:px-6 py-3 md:py-4">
                 <div className="flex items-start gap-4">
                     {/* Play Next button */}
-                    {nextUnwatchedPostPermalink && (
+                    {nextPostPermalink && (
                         <Link
-                            to={nextUnwatchedPostPermalink}
+                            to={nextPostPermalink}
                             className="flex items-center justify-center gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg transition-colors shadow-md shrink-0"
                         >
                             <svg
@@ -121,8 +130,8 @@ const PermalinkPage: React.FC = () => {
                             autoPlay
                             playing
                             onEnded={() => {
-                                if (!nextUnwatchedPostPermalink) return;
-                                navigate({ to: nextUnwatchedPostPermalink });
+                                if (!nextPostPermalink) return;
+                                navigate({ to: nextPostPermalink });
                             }}
                         />
                     </div>
