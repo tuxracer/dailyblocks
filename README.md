@@ -1,6 +1,10 @@
-# dailyblocks.tv
+# ⚠️ Deprecated
 
-A modern, lightweight video player for Reddit built with Vite + React. Browse and watch videos from your favorite subreddits with a clean, distraction-free interface.
+_Reddit now returns HTTP 403 for all requests. This project depended on Reddit allowing unauthenticated requests from arbitrary hosts which appears to no longer be the case._
+
+## dailyblocks.tv
+
+Dailyblocks was a lightweight video player for Reddit built with Vite + React. Browse and watch videos from your favorite subreddits with a clean, distraction-free interface.
 
 ## Features
 
