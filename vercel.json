@@ -1,3 +1,10 @@
 {
+    "redirects": [
+        {
+            "source": "/r/:subreddit/comments/:path*",
+            "destination": "https://www.reddit.com/r/:subreddit/comments/:path*",
+            "permanent": true
+        }
+    ],
     "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
