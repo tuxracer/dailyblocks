@@ -15,6 +15,37 @@ import { DAILYBLOCKS_URL, REDDIT_URL } from "../consts";
 import { useComments } from "../hooks/useRedditComments";
 import { getPostById } from "../utils/reddit";
 
+/**
+ * When we can't load a post from Reddit's API (e.g. Reddit returns 403, which
+ * surfaces as a "Failed to fetch" error), send the visitor to the equivalent
+ * page on Reddit. We do both a JS redirect (immediate) and a <meta> refresh
+ * (fallback) to the same path on reddit.com. React 19 hoists the <meta> tag
+ * into the document <head> automatically.
+ */
+const RedditRedirect: React.FC = () => {
+    const redditUrl = REDDIT_URL + window.location.pathname;
+
+    useEffect(() => {
+        window.location.replace(redditUrl);
+    }, [redditUrl]);
+
+    return (
+        <>
+            <meta httpEquiv="refresh" content={`0; url=${redditUrl}`} />
+            <div className="w-full h-screen flex flex-col items-center justify-center gap-4 p-4 text-center">
+                <div>Redirecting to Reddit…</div>
+                <a
+                    className="text-sm text-blue-500 underline"
+                    href={redditUrl}
+                    rel="noreferrer"
+                >
+                    Click here if you are not redirected automatically.
+                </a>
+            </div>
+        </>
+    );
+};
+
 const PermalinkPage: React.FC = () => {
     const params = Route.useParams();
     const navigate = useNavigate();
@@ -34,7 +65,7 @@ const PermalinkPage: React.FC = () => {
     }
 
     if (post.error) {
-        return <div>Error loading post {post.error.message}</div>;
+        return <RedditRedirect />;
     }
 
     if (!post.data) {
@@ -176,6 +207,7 @@ const PermalinkPage: React.FC = () => {
 
 export const Route = createFileRoute("/r/$subreddit/comments/$postId/$")({
     component: PermalinkPage,
+    errorComponent: RedditRedirect,
     loader: async ({ params }) => {
         const post = await getPostById(params.postId, params.subreddit);
         return { post };
