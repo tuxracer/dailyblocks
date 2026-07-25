@@ -3,10 +3,9 @@ import { NotFound } from "../components/NotFound";
 
 /**
  * dailyblocks no longer works because Reddit closed off the public JSON API, so
- * every permalink now sends the visitor to the equivalent page on reddit.com.
- * vercel.json handles this with a 308 for requests that reach the server, but a
- * client-side navigation (or a cached index.html) can still land here, in which
- * case the empty state explains what happened and offers the same hand-off.
+ * post permalinks show the empty state and hand the visitor off to the
+ * equivalent page on reddit.com. Used for load errors too, since a post that
+ * cannot be fetched leaves nothing to play either way.
  */
 const PostNotFound: React.FC = () => {
     const params = Route.useParams();
