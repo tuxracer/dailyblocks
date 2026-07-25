@@ -8,6 +8,11 @@ import { REDDIT_URL } from "../../consts";
 export interface NotFoundData {
     /** Subreddit the visitor was trying to watch, when it is known. */
     subreddit?: string;
+    /**
+     * Path to continue to on reddit.com, for when a specific post is known.
+     * Falls back to the subreddit listing, then to reddit.com itself.
+     */
+    permalink?: string;
 }
 
 type NotFoundProps = NotFoundData;
@@ -76,9 +81,9 @@ const ArrowRightIcon: React.FC<{ className?: string }> = (props) => (
  * which is where every dailyblocks URL now points.
  */
 export const NotFound: React.FC<NotFoundProps> = (props) => {
-    const redditUrl = props.subreddit
-        ? `${REDDIT_URL}/r/${props.subreddit}`
-        : REDDIT_URL;
+    const redditPath =
+        props.permalink ?? (props.subreddit ? `/r/${props.subreddit}` : "");
+    const redditUrl = REDDIT_URL + redditPath;
 
     /**
      * Records the hand-off to Reddit in Vercel Web Analytics. The browser
