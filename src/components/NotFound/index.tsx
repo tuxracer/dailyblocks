@@ -39,6 +39,14 @@ const OTHER_PROJECTS = [
     },
 ];
 
+/**
+ * Shared treatment for the two structural labels, the wordmark above the
+ * headline and the heading over the project list. Monospace and wide tracking
+ * set them apart from the prose so they read as signposts rather than content.
+ */
+const LABEL_CLASS =
+    "font-mono text-[0.6875rem] uppercase tracking-[0.18em] text-gray-500 dark:text-gray-400";
+
 /** Vercel Web Analytics custom event fired when the Reddit CTA is clicked. */
 const CONTINUE_ON_REDDIT_EVENT = "continue_on_reddit";
 
@@ -105,57 +113,54 @@ export const NotFound: React.FC<NotFoundProps> = (props) => {
     };
 
     return (
-        <main className="min-h-dvh w-full flex items-center justify-center px-6 py-12">
-            <div className="w-full max-w-md flex flex-col items-center text-center">
-                <div className="relative">
-                    <div
-                        aria-hidden="true"
-                        className="absolute inset-0 -z-10 rounded-full bg-orange-500/25 blur-2xl"
-                    />
-                    <div className="flex size-16 sm:size-20 items-center justify-center rounded-2xl bg-linear-to-br from-orange-500 to-rose-500 text-white shadow-lg shadow-orange-500/25">
-                        <PlayElsewhereIcon className="size-8 sm:size-10" />
-                    </div>
+        <main className="min-h-dvh w-full flex items-center justify-center px-6 py-16">
+            <div className="w-full max-w-sm">
+                <div className="flex flex-col items-center text-center">
+                    <span className="flex size-11 items-center justify-center rounded-full bg-orange-500/12 text-orange-600 ring-1 ring-inset ring-orange-500/30 dark:text-orange-400">
+                        <PlayElsewhereIcon className="size-5" />
+                    </span>
+
+                    <p className={`${LABEL_CLASS} mt-5`}>dailyblocks</p>
+
+                    <h1 className="mt-2.5 text-[1.75rem] sm:text-[2.125rem] font-semibold leading-tight tracking-[-0.02em] text-balance">
+                        Watch it on Reddit
+                    </h1>
+
+                    <p className="mt-2.5 text-[0.9375rem] sm:text-base text-pretty text-gray-600 dark:text-gray-400">
+                        Every video is still up, just not here.
+                    </p>
+
+                    <a
+                        className="mt-7 w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-orange-600 px-7 py-3.5 text-[0.9375rem] font-medium text-white transition-colors hover:bg-orange-500 active:bg-orange-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
+                        href={redditUrl}
+                        rel="noreferrer"
+                        onClick={handleContinueClick}
+                    >
+                        Continue on Reddit
+                        <ArrowRightIcon className="size-4" />
+                    </a>
+
+                    <p className="mt-4 text-[0.8125rem] leading-relaxed text-balance text-gray-500 dark:text-gray-400">
+                        dailyblocks is retired. Reddit shut off the API it ran
+                        on.{" "}
+                        <a
+                            className="underline decoration-gray-300 underline-offset-4 transition-colors hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400 dark:decoration-zinc-700 dark:hover:text-gray-200"
+                            href={GITHUB_URL}
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            Source on GitHub
+                        </a>
+                    </p>
                 </div>
 
-                <h1 className="mt-6 sm:mt-8 text-2xl sm:text-3xl font-semibold tracking-tight text-balance">
-                    Watch it on Reddit
-                </h1>
-
-                <p className="mt-3 text-sm sm:text-base text-pretty text-gray-600 dark:text-gray-400">
-                    Every video is still up, just not here.
-                </p>
-
-                <a
-                    className="mt-8 w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-orange-600 px-7 py-3.5 text-base font-medium text-white shadow-sm transition-colors hover:bg-orange-500 active:bg-orange-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
-                    href={redditUrl}
-                    rel="noreferrer"
-                    onClick={handleContinueClick}
-                >
-                    Continue on Reddit
-                    <ArrowRightIcon className="size-4" />
-                </a>
-
-                <p className="mt-8 text-xs leading-relaxed text-balance text-gray-500 dark:text-gray-400">
-                    dailyblocks is retired. Reddit shut off the API it ran on.{" "}
-                    <a
-                        className="underline underline-offset-4 transition-colors hover:text-gray-900 dark:hover:text-gray-100"
-                        href={GITHUB_URL}
-                        target="_blank"
-                        rel="noreferrer"
-                    >
-                        Source on GitHub
-                    </a>
-                </p>
-
-                <div className="mt-10 w-full border-t border-gray-200 dark:border-zinc-800 pt-6">
-                    <h2 className="text-xs font-medium uppercase tracking-wider text-gray-400 dark:text-gray-500">
-                        More things I made
-                    </h2>
-                    <ul className="mt-3 flex flex-col gap-2">
+                <div className="mt-16 sm:mt-20">
+                    <h2 className={LABEL_CLASS}>More things I made</h2>
+                    <ul className="mt-3 border-y border-gray-200 divide-y divide-gray-200 dark:border-zinc-800 dark:divide-zinc-800">
                         {OTHER_PROJECTS.map((project) => (
                             <li key={project.url}>
                                 <a
-                                    className="group flex items-center gap-3 rounded-xl border border-gray-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-800/50 px-4 py-3 text-left transition-colors hover:border-gray-300 dark:hover:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-800"
+                                    className="group flex items-center gap-4 py-4 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400"
                                     href={project.url}
                                     target="_blank"
                                     rel="noreferrer"
@@ -166,14 +171,14 @@ export const NotFound: React.FC<NotFoundProps> = (props) => {
                                     }
                                 >
                                     <span className="min-w-0 flex-1">
-                                        <span className="block text-sm font-medium">
+                                        <span className="block text-[0.9375rem] font-medium">
                                             {project.name}
                                         </span>
-                                        <span className="block text-xs text-pretty text-gray-500 dark:text-gray-400">
+                                        <span className="mt-0.5 block text-[0.8125rem] text-pretty text-gray-500 dark:text-gray-400">
                                             {project.description}
                                         </span>
                                     </span>
-                                    <ArrowRightIcon className="size-4 shrink-0 text-gray-400 dark:text-gray-500 transition-transform group-hover:translate-x-0.5" />
+                                    <ArrowRightIcon className="size-4 shrink-0 text-gray-400 transition group-hover:translate-x-0.5 group-hover:text-gray-600 motion-reduce:transform-none dark:text-zinc-500 dark:group-hover:text-gray-300" />
                                 </a>
                             </li>
                         ))}
