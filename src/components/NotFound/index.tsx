@@ -32,6 +32,9 @@ const OTHER_PROJECTS = [
 /** Vercel Web Analytics custom event fired when the Reddit CTA is clicked. */
 const CONTINUE_ON_REDDIT_EVENT = "continue_on_reddit";
 
+/** Vercel Web Analytics custom event fired when another project is clicked. */
+const OTHER_PROJECT_EVENT = "other_project_click";
+
 /** Video camera with a slash through it, shown in the header badge. */
 const NoVideoIcon: React.FC<{ className?: string }> = (props) => (
     <svg
@@ -153,6 +156,11 @@ export const NotFound: React.FC<NotFoundProps> = (props) => {
                                     href={project.url}
                                     target="_blank"
                                     rel="noreferrer"
+                                    onClick={() =>
+                                        track(OTHER_PROJECT_EVENT, {
+                                            project: project.name,
+                                        })
+                                    }
                                 >
                                     <span className="min-w-0 flex-1">
                                         <span className="block text-sm font-medium">
