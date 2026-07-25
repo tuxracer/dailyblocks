@@ -10,7 +10,7 @@ const RouteComponent: React.FC = () => {
     }
 
     if (!subreddit.firstPermalink) {
-        throw notFound();
+        throw notFound({ data: { subreddit: DEFAULT_SUBREDDIT } });
     }
 
     return <Navigate to={subreddit.firstPermalink} replace />;
