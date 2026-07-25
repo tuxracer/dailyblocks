@@ -4,6 +4,11 @@ import { REDDIT_URL } from "../../consts";
 /**
  * Payload routes attach to `notFound()`, forwarded by TanStack Router to the
  * root `notFoundComponent` as its `data` prop.
+ *
+ * Both fields come from the URL, so anyone can put anything in them. They only
+ * ever build the reddit.com link, which cannot leave that host because the
+ * origin is a fixed prefix. Keep them out of the copy so the page cannot be
+ * used to display arbitrary text under this domain.
  */
 export interface NotFoundData {
     /** Subreddit the visitor was trying to watch, when it is known. */
@@ -117,19 +122,7 @@ export const NotFound: React.FC<NotFoundProps> = (props) => {
                 </h1>
 
                 <p className="mt-3 text-sm sm:text-base text-pretty text-gray-600 dark:text-gray-400">
-                    {props.permalink ? (
-                        <>This post and its comments are</>
-                    ) : props.subreddit ? (
-                        <>
-                            <span className="font-medium text-gray-900 dark:text-gray-100">
-                                r/{props.subreddit}
-                            </span>{" "}
-                            is
-                        </>
-                    ) : (
-                        <>Every video is</>
-                    )}{" "}
-                    still up, just not here.
+                    Every video is still up, just not here.
                 </p>
 
                 <a
