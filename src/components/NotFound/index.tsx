@@ -1,3 +1,4 @@
+import { track } from "@vercel/analytics";
 import { REDDIT_URL } from "../../consts";
 
 /**
@@ -13,6 +14,9 @@ type NotFoundProps = NotFoundData;
 
 /** Source repository, linked as a footnote under the deprecation notice. */
 const GITHUB_URL = "https://github.com/tuxracer/dailyblocks";
+
+/** Vercel Web Analytics custom event fired when the Reddit CTA is clicked. */
+const CONTINUE_ON_REDDIT_EVENT = "continue_on_reddit";
 
 /** Video camera with a slash through it, shown in the header badge. */
 const NoVideoIcon: React.FC<{ className?: string }> = (props) => (
@@ -59,6 +63,17 @@ export const NotFound: React.FC<NotFoundProps> = (props) => {
         ? `${REDDIT_URL}/r/${props.subreddit}`
         : REDDIT_URL;
 
+    /**
+     * Records the hand-off to Reddit in Vercel Web Analytics. The browser
+     * navigates away right after this, so the event is best effort.
+     */
+    const handleContinueClick = () => {
+        track(CONTINUE_ON_REDDIT_EVENT, {
+            subreddit: props.subreddit ?? null,
+            destination: redditUrl,
+        });
+    };
+
     return (
         <main className="min-h-dvh w-full flex items-center justify-center px-6 py-12">
             <div className="w-full max-w-md flex flex-col items-center text-center">
@@ -95,6 +110,7 @@ export const NotFound: React.FC<NotFoundProps> = (props) => {
                     className="mt-8 w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-orange-600 px-7 py-3.5 text-base font-medium text-white shadow-sm transition-colors hover:bg-orange-500 active:bg-orange-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
                     href={redditUrl}
                     rel="noreferrer"
+                    onClick={handleContinueClick}
                 >
                     Continue on Reddit
                     <ArrowRightIcon className="size-4" />
