@@ -70,7 +70,6 @@ export const NotFound: React.FC<NotFoundProps> = (props) => {
     const handleContinueClick = () => {
         track(CONTINUE_ON_REDDIT_EVENT, {
             subreddit: props.subreddit ?? null,
-            destination: redditUrl,
         });
     };
 
