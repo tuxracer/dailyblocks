@@ -40,8 +40,11 @@ const CONTINUE_ON_REDDIT_EVENT = "continue_on_reddit";
 /** Vercel Web Analytics custom event fired when another project is clicked. */
 const OTHER_PROJECT_EVENT = "other_project_click";
 
-/** Video camera with a slash through it, shown in the header badge. */
-const NoVideoIcon: React.FC<{ className?: string }> = (props) => (
+/**
+ * Play button with an arrow leaving it, shown in the header badge. The arrow
+ * frames the page as a hand-off to Reddit rather than a dead end.
+ */
+const PlayElsewhereIcon: React.FC<{ className?: string }> = (props) => (
     <svg
         className={props.className}
         viewBox="0 0 24 24"
@@ -52,9 +55,10 @@ const NoVideoIcon: React.FC<{ className?: string }> = (props) => (
         strokeLinejoin="round"
         aria-hidden="true"
     >
-        <path d="M10.7 6H14a2 2 0 0 1 2 2v3.3l1 1L22 8v8" />
-        <path d="M16 16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2l10 10Z" />
-        <path d="M2 2 22 22" />
+        <path d="M20.5 12.8a8.5 8.5 0 1 1-6.4-8.2" />
+        <path d="M10.2 9.1 14.6 12l-4.4 2.9V9.1Z" />
+        <path d="M15.5 3.5H21v5.5" />
+        <path d="M21 3.5 16 8.5" />
     </svg>
 );
 
@@ -76,9 +80,9 @@ const ArrowRightIcon: React.FC<{ className?: string }> = (props) => (
 );
 
 /**
- * Empty state for routes that cannot find anything to play. It explains why the
- * player is empty and sends the visitor to the equivalent page on reddit.com,
- * which is where every dailyblocks URL now points.
+ * Shown for routes that have nothing to play. It frames the page as a hand-off
+ * rather than a dead end: the content still exists, it just has to be watched
+ * on reddit.com now, so the page leads with the equivalent Reddit link.
  */
 export const NotFound: React.FC<NotFoundProps> = (props) => {
     const redditPath =
@@ -104,27 +108,28 @@ export const NotFound: React.FC<NotFoundProps> = (props) => {
                         className="absolute inset-0 -z-10 rounded-full bg-orange-500/25 blur-2xl"
                     />
                     <div className="flex size-16 sm:size-20 items-center justify-center rounded-2xl bg-linear-to-br from-orange-500 to-rose-500 text-white shadow-lg shadow-orange-500/25">
-                        <NoVideoIcon className="size-8 sm:size-10" />
+                        <PlayElsewhereIcon className="size-8 sm:size-10" />
                     </div>
                 </div>
 
                 <h1 className="mt-6 sm:mt-8 text-2xl sm:text-3xl font-semibold tracking-tight text-balance">
-                    No videos found
+                    Watch it on Reddit
                 </h1>
 
                 <p className="mt-3 text-sm sm:text-base text-pretty text-gray-600 dark:text-gray-400">
-                    {props.subreddit ? (
+                    {props.permalink ? (
+                        <>This post and its comments are</>
+                    ) : props.subreddit ? (
                         <>
-                            There is nothing to play from{" "}
                             <span className="font-medium text-gray-900 dark:text-gray-100">
                                 r/{props.subreddit}
                             </span>{" "}
-                            here anymore.
+                            is
                         </>
                     ) : (
-                        <>There is nothing left to play here.</>
+                        <>Every video is</>
                     )}{" "}
-                    Reddit still has it all.
+                    still up, just not here.
                 </p>
 
                 <a
