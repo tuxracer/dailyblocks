@@ -15,6 +15,20 @@ type NotFoundProps = NotFoundData;
 /** Source repository, linked as a footnote under the deprecation notice. */
 const GITHUB_URL = "https://github.com/tuxracer/dailyblocks";
 
+/** Other projects worth a visit now that dailyblocks is retired. */
+const OTHER_PROJECTS = [
+    {
+        name: "dashradar.app",
+        description: "Police detection on your dash using just your phone",
+        url: "https://dashradar.app",
+    },
+    {
+        name: "tuxbank.app",
+        description: "Privacy first calendar budget app",
+        url: "https://tuxbank.app",
+    },
+];
+
 /** Vercel Web Analytics custom event fired when the Reddit CTA is clicked. */
 const CONTINUE_ON_REDDIT_EVENT = "continue_on_reddit";
 
@@ -115,23 +129,45 @@ export const NotFound: React.FC<NotFoundProps> = (props) => {
                     <ArrowRightIcon className="size-4" />
                 </a>
 
-                <p className="mt-10 max-w-prose rounded-xl border border-gray-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-800/50 px-4 py-3 text-xs leading-relaxed text-gray-500 dark:text-gray-400">
-                    <span className="font-medium text-gray-700 dark:text-gray-300">
-                        Deprecated.
-                    </span>{" "}
-                    Reddit now returns HTTP 403 for all requests. This project
-                    depended on Reddit allowing unauthenticated requests from
-                    arbitrary hosts, which is no longer the case.
+                <p className="mt-8 text-xs leading-relaxed text-balance text-gray-500 dark:text-gray-400">
+                    dailyblocks is retired. Reddit shut off the API it ran on.{" "}
+                    <a
+                        className="underline underline-offset-4 transition-colors hover:text-gray-900 dark:hover:text-gray-100"
+                        href={GITHUB_URL}
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        Source on GitHub
+                    </a>
                 </p>
 
-                <a
-                    className="mt-4 text-xs text-gray-500 dark:text-gray-400 underline underline-offset-4 transition-colors hover:text-gray-900 dark:hover:text-gray-100"
-                    href={GITHUB_URL}
-                    target="_blank"
-                    rel="noreferrer"
-                >
-                    View the source code on GitHub
-                </a>
+                <div className="mt-10 w-full border-t border-gray-200 dark:border-zinc-800 pt-6">
+                    <h2 className="text-xs font-medium uppercase tracking-wider text-gray-400 dark:text-gray-500">
+                        More things I made
+                    </h2>
+                    <ul className="mt-3 flex flex-col gap-2">
+                        {OTHER_PROJECTS.map((project) => (
+                            <li key={project.url}>
+                                <a
+                                    className="group flex items-center gap-3 rounded-xl border border-gray-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-800/50 px-4 py-3 text-left transition-colors hover:border-gray-300 dark:hover:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-800"
+                                    href={project.url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    <span className="min-w-0 flex-1">
+                                        <span className="block text-sm font-medium">
+                                            {project.name}
+                                        </span>
+                                        <span className="block text-xs text-pretty text-gray-500 dark:text-gray-400">
+                                            {project.description}
+                                        </span>
+                                    </span>
+                                    <ArrowRightIcon className="size-4 shrink-0 text-gray-400 dark:text-gray-500 transition-transform group-hover:translate-x-0.5" />
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             </div>
         </main>
     );
