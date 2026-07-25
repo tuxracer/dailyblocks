@@ -10,7 +10,9 @@ const RouteComponent: React.FC = () => {
     }
 
     if (!subreddit.firstPermalink) {
-        throw notFound({ data: { subreddit: DEFAULT_SUBREDDIT } });
+        // No subreddit is named here, so the empty state stays generic rather
+        // than pointing at the fallback used to pick the first video.
+        throw notFound();
     }
 
     return <Navigate to={subreddit.firstPermalink} replace />;

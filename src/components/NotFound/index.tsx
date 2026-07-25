@@ -122,7 +122,7 @@ export const NotFound: React.FC<NotFoundProps> = (props) => {
                             here anymore.
                         </>
                     ) : (
-                        <>There is nothing to play at this address anymore.</>
+                        <>There is nothing left to play here.</>
                     )}{" "}
                     Reddit still has it all.
                 </p>
