@@ -1,17 +1,13 @@
-import {
-    createRootRoute,
-    HeadContent,
-    Outlet,
-    type NotFoundRouteProps,
-} from "@tanstack/react-router";
+import { createRootRoute, HeadContent, Outlet } from "@tanstack/react-router";
 import { WatchedVideosHistoryProvider } from "../contexts/WatchedVideosHistoryContext";
 import { SWRConfig } from "swr";
-import { NotFound, type NotFoundData } from "../components/NotFound";
 
-const NotFoundComponent: React.FC<NotFoundRouteProps> = (props) => {
-    const data = props.data as NotFoundData | undefined;
-
-    return <NotFound subreddit={data?.subreddit} />;
+const NotFoundComponent: React.FC = () => {
+    return (
+        <div className="w-full h-screen flex items-center justify-center">
+            No videos found ❌
+        </div>
+    );
 };
 
 export const Route = createRootRoute({

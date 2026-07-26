@@ -4,75 +4,65 @@ _Reddit now returns HTTP 403 for all requests. This project depended on Reddit a
 
 ## dailyblocks.tv
 
-Dailyblocks was a lightweight video player for Reddit built with Vite + React. Browse and watch videos from your favorite subreddits with a clean, distraction-free interface.
+Dailyblocks was a lightweight video player for Reddit built with Vite + React. It is retired, and the site is now a single static page that hands visitors off to reddit.com.
 
-## Features
+## What gets deployed
 
-- 📱 **Mobile-Friendly**: Responsive layout optimized for mobile devices
-- 🔄 **Auto-Play**: Automatically play the next video when one ends
-- 💬 **Comments**: View Reddit comments alongside videos
-- 🖼️ **Thumbnail Navigation**: Browse through video thumbnails in a sidebar
-- 🎨 **Clean UI**: Minimalist interface focused on video content
+```
+public/
+├── index.html   # the entire site: markup, styles, and a little JavaScript
+└── favicon.ico
+vercel.json      # serve public/ with no build step, rewrite every path to index.html
+```
 
-## Tech Stack
+No build, no dependencies, no `package.json`. `public/index.html` is what gets served.
 
-- **Framework**: React
-- **Language**: TypeScript
-- **Routing**: [TanStack Router](https://tanstack.com/router)
-- **Video Player**: [React Player](https://github.com/cookpete/react-player) (supports YouTube, Vimeo, and more)
-- **Data Fetching**: [SWR](https://swr.vercel.app/) for efficient data fetching and caching
-- **Build Tool**: [Vite](https://vite.dev/)
+### The page
 
-## Getting Started
+Every path the player used to serve now renders the same page. Its "Continue on Reddit" link is `reddit.com` in the markup and gets narrowed by the inline script to match the path being visited, so it still works without JavaScript:
 
-### Prerequisites
+| Path                               | Link                                   |
+| ---------------------------------- | -------------------------------------- |
+| `/r/{sub}/comments/{postId}/{...}` | `reddit.com/r/{sub}/comments/{postId}` |
+| `/r/{sub}`                         | `reddit.com/r/{sub}`                   |
+| anything else                      | `reddit.com`                           |
 
-- Node.js >= 24.0.0
-- npm
+Only the subreddit name and post id are carried over, and neither is ever written into the page copy.
 
-### Installation
+Clicks are reported to Vercel Web Analytics as the `continue_on_reddit` and `other_project_click` custom events. Web Analytics loads from the platform-served `/_vercel/insights/script.js` instead of the npm package.
 
-1. Clone the repository:
+## The original player
+
+`src/` is the React source, kept so the code is easy to browse for anyone curious about how the app worked.
+
+It is dead code. Nothing builds it, nothing deploys it, and nothing on the live site touches it. The tooling it needs (`package.json`, `package-lock.json`, `vite.config.ts`, the tsconfigs, the ESLint config) was removed from the latest commit, so it will not run as-is. All of it is still in this repo at the `full-source` tag.
+
+It is restored verbatim from the `full-source` tag, the last commit where the player still worked against Reddit's API:
 
 ```bash
-git clone https://github.com/tuxracer/dailyblocks.git
-cd dailyblocks
+git show full-source          # the commit it came from
+git checkout full-source      # the whole project, tooling included, as it shipped
 ```
 
-2. Install dependencies:
+Later commits gradually hollowed the player out into the deprecation notice; `ded33bc` is the last one that has `src/` in that half-retired state.
+
+### How it worked
+
+- **TanStack Router** with file-based routing in `src/routes/`, route tree generated into `src/routeTree.gen.ts`
+- **SWR** hooks in `src/hooks/` wrapping Reddit's public JSON API, with `src/utils/reddit.ts` doing the fetching and `src/models/` parsing the responses
+- **react-player** for playback, with posts filtered down to playable media by `ReactPlayer.canPlay()`
+- **WatchedVideosHistoryContext** tracking watched videos in localStorage so `/` could land on the first unwatched one
+- **Tailwind CSS v4** for styling
+
+## Developing
+
+Serve the deployed directory:
 
 ```bash
-npm install
+npx http-server public -p 8080 -c-1 --proxy "http://localhost:8080?"
 ```
 
-3. Start the development server:
-
-```bash
-npm run dev
-```
-
-The app will be available at `http://localhost:5173`
-
-## Available Scripts
-
-- `npm run dev` - Start development server with hot module replacement (HMR)
-- `npm run build` - Create a production-ready build
-- `npm run preview` - Preview the production build locally
-
-## Usage
-
-### Viewing Videos
-
-Navigate to a subreddit using the URL pattern:
-
-```
-/r/{subreddit}/comments/{postId}
-```
-
-For example:
-
-- `/r/videos/comments/abc123` - View a specific video from r/videos
-- `/r/videos` - Redirects to the default/hot video from r/videos
+Path-specific links need the rewrite that `vercel.json` provides in production, so use `vercel dev` to exercise those locally.
 
 ## License
 

@@ -11,7 +11,7 @@ const SubredditPage: React.FC = () => {
     }
 
     if (!firstPostPermalink) {
-        throw notFound({ data: { subreddit: params.subreddit } });
+        throw notFound();
     }
 
     return <Navigate to={firstPostPermalink} replace />;
