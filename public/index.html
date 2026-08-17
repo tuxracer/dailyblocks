@@ -141,13 +141,6 @@
                 height: 1.25rem;
             }
 
-            /*
-             * Shared treatment for the structural labels: the wordmark above
-             * the headline, the one over the destination panel, and the
-             * heading over the project list. Monospace and wide tracking set
-             * them apart from the prose so they read as signposts rather than
-             * content.
-             */
             .label {
                 font-family: var(--font-mono);
                 font-size: 0.6875rem;
@@ -218,15 +211,6 @@
                 transition: color 150ms;
             }
 
-            /*
-             * The page has two variants: the retirement notice with the
-             * hand-off to tuxbank.app, shown at the root path, and the
-             * hand-off to Reddit, shown when a deep link such as /r/videos
-             * lands here. The root view is the default because the Reddit
-             * button needs JavaScript to point at the right place anyway; the
-             * script in the head opts into it before first paint. :not() hides
-             * rather than shows so each element keeps its own display value.
-             */
             html:not(.is-handoff) .view-handoff {
                 display: none;
             }
@@ -235,11 +219,6 @@
                 display: none;
             }
 
-            /*
-             * Where the root path is going. The panel carries the same accent
-             * as the button inside it, so the whole block reads as one move
-             * away from this page rather than a card of extra reading.
-             */
             .destination {
                 margin-top: 2rem;
                 padding: 1.5rem 1.25rem 1.25rem;
@@ -269,12 +248,6 @@
                 margin-top: 1.25rem;
             }
 
-            /*
-             * The countdown only appears once the timer behind it is actually
-             * running, which the head script decides. Without JavaScript there
-             * is no redirect to announce, and the button above stands on its
-             * own.
-             */
             .countdown {
                 display: none;
                 align-items: center;
@@ -314,10 +287,6 @@
                 stroke: var(--rule);
             }
 
-            /*
-             * 106.81 is the circumference of the r=17 ring, so one full dash
-             * covers the circle and the offset animation empties it.
-             */
             .countdown-sweep {
                 stroke: var(--accent-badge);
                 stroke-linecap: round;
@@ -474,11 +443,6 @@
             }
         </style>
 
-        <!--
-            Runs before the body renders so each visitor gets the right view
-            without a flash of the other one, and so the countdown ring starts
-            sweeping on the first painted frame.
-        -->
         <script>
             if (location.pathname === "/") {
                 document.documentElement.classList.add("is-counting");
@@ -489,37 +453,10 @@
     </head>
 
     <body>
-        <!--
-            dailyblocks no longer works because Reddit closed off the public
-            JSON API. Every route the player used to serve now lands here.
-
-            Deep links (a subreddit or a post) are framed as a hand-off rather
-            than a dead end: whatever the visitor came for still exists, it
-            just has to be watched on reddit.com now. The hand-off button is
-            narrowed to the matching subreddit or post by the script below.
-
-            The root path carries no video to hand off, so it says the player
-            is retired and why, then moves the visitor on to tuxbank.app: the
-            button goes there immediately, and the countdown goes there on its
-            own after ten seconds unless it is canceled. Both carry UTM tags,
-            so tuxbank's own analytics can separate the traffic this page sends
-            it and tell a click from a wait. That countdown is hidden until the
-            script that runs it says otherwise, so a visitor without JavaScript
-            is never promised a redirect that cannot happen.
-
-            The list of other projects belongs to the Reddit view alone. The
-            root path is already pointing at one place and leaving for it, so
-            a second list of somewhere else to go only competes with that.
-        -->
         <main class="page">
             <div class="card">
                 <div class="intro">
                     <span class="badge">
-                        <!--
-                            Play button with an arrow leaving it. The arrow
-                            frames the page as a hand-off, to Reddit for a
-                            video and to tuxbank.app for everyone else.
-                        -->
                         <svg
                             viewBox="0 0 24 24"
                             fill="none"
@@ -729,7 +666,6 @@
             </div>
         </main>
 
-        <!-- Vercel Web Analytics, served by the platform. -->
         <script>
             window.va ??= (...args) => (window.vaq ??= []).push(args);
         </script>
@@ -739,26 +675,12 @@
             const REDDIT_URL = "https://www.reddit.com";
             const COUNTDOWN_SECONDS = 10;
 
-            /**
-             * The two route shapes the player used to serve, as one pattern:
-             * the post branch first, then the bare listing. `subreddit` is
-             * named in both branches, which is allowed because only one of
-             * them can match. Anything else hands off to reddit.com itself,
-             * the way the router used to treat paths it had no route for.
-             *
-             * The captures are the only part of the URL that reaches the link,
-             * and \w keeps them to the characters subreddit names and post ids
-             * are made of. They never reach the copy either, so the page cannot
-             * be used to display arbitrary text under this domain.
-             */
             const ROUTE =
                 /^\/r\/(?:(?<subreddit>\w{1,50})\/comments\/(?<post>\w{1,20})(?:\/|$)|(?<subreddit>\w{1,50})\/?$)/;
 
             const { subreddit = null, post = null } =
                 ROUTE.exec(location.pathname)?.groups ?? {};
 
-            // Reddit expands a bare post id into the full permalink, so the
-            // title slug does not have to be carried over.
             const destination = post
                 ? `${REDDIT_URL}/r/${subreddit}/comments/${post}`
                 : subreddit
@@ -777,14 +699,6 @@
 
             const tuxbank = document.getElementById("open-tuxbank");
 
-            /*
-             * The campaign is written down once, on the button, because that
-             * is the one link whose tags have to survive a visitor with no
-             * JavaScript. Every other way off this page copies those tags and
-             * overrides utm_content, which is the tag that names the way out.
-             * The project links need them most: they carry rel="noreferrer",
-             * so the tags are the only signal that reaches the other site.
-             */
             const campaign = new URL(tuxbank.href).searchParams;
 
             const tagged = (href, content) => {
@@ -803,22 +717,12 @@
                 });
             });
 
-            /*
-             * The head script decides whether this visit is the root one, and
-             * it also started the ring sweeping, so the timers below start in
-             * the same frame the animation did. `replace` rather than `assign`
-             * keeps this page out of the session history: coming back from
-             * tuxbank should land wherever the visitor was before, not on a
-             * page that immediately sends them away again.
-             */
             if (document.documentElement.classList.contains("is-counting")) {
                 const countdown = document.getElementById("countdown");
                 const value = document.getElementById("countdown-value");
                 const text = document.getElementById("countdown-text");
                 const cancel = document.getElementById("countdown-cancel");
 
-                // The button's destination, relabeled as the waited-out way
-                // there rather than the clicked one.
                 const target = tagged(tuxbank.href, "countdown");
 
                 let remaining = COUNTDOWN_SECONDS;
