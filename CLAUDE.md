@@ -4,7 +4,7 @@ dailyblocks was a Reddit video player. It is retired and this repo is kept for r
 
 ## What is live
 
-`public/index.html` is the entire site: one static page, with inline `<style>` and `<script>`, that hands visitors off to reddit.com. `vercel.json` serves `public/` and rewrites `/(.*)` to `/index.html`. There is no build step, no dependencies, and no `package.json`. Do not add a framework or a bundler.
+`public/index.html` is the entire site: one static page, with inline `<style>` and `<script>`, that hands every visitor off somewhere else. A deep link such as `/r/videos` or `/r/videos/comments/abc123` gets a button to the matching place on reddit.com. The root path has no video to hand off, so it says the player is retired and why, then points at tuxbank.app: a button goes there immediately, and a ten-second countdown goes there on its own unless the visitor cancels. Both destinations carry UTM tags (`utm_content` is `button` or `countdown`) so tuxbank's Vercel Web Analytics can attribute the traffic; the tags are written once, in the button's `href`, and the countdown reads them off it. `vercel.json` serves `public/` and rewrites `/(.*)` to `/index.html`. There is no build step, no dependencies, and no `package.json`. Do not add a framework or a bundler.
 
 Preview the page with an SPA-style fallback so deep links like `/r/videos` rewrite to `index.html` the way `vercel.json` does in production (the `--proxy` value's trailing `?` is what turns unresolved paths into a fallback; `-c-1` disables caching so edits show up on reload):
 
@@ -12,7 +12,7 @@ Preview the page with an SPA-style fallback so deep links like `/r/videos` rewri
 npx http-server public -p 8080 -c-1 --proxy "http://localhost:8080?"
 ```
 
-A plain `npx http-server public` 404s on every path except `/`, which now only shows the retirement notice, not the hand-off view.
+A plain `npx http-server public` 404s on every path except `/`, which shows the tuxbank hand-off rather than the Reddit one. Both views live in the same file, so checking one is never enough: load `/` and a `/r/...` path after touching the markup, and remember that `/` starts a real ten-second redirect to tuxbank.app.
 
 ## The last working version
 
