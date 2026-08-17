@@ -335,8 +335,7 @@
                 transition: color 150ms;
             }
 
-            .countdown.is-stopped .countdown-dial,
-            .countdown.is-stopped .countdown-cancel {
+            .countdown.is-stopped {
                 display: none;
             }
 
@@ -573,7 +572,7 @@
                                 >10</span
                             >
                         </span>
-                        <span class="countdown-text" id="countdown-text">
+                        <span class="countdown-text">
                             Taking you there automatically
                         </span>
                         <button
@@ -718,7 +717,6 @@
             if (document.documentElement.classList.contains("is-counting")) {
                 const countdown = document.getElementById("countdown");
                 const value = document.getElementById("countdown-value");
-                const text = document.getElementById("countdown-text");
                 const cancel = document.getElementById("countdown-cancel");
 
                 const target = tagged(tuxbank.href, "countdown");
@@ -743,7 +741,7 @@
                     clearInterval(ticker);
                     clearTimeout(jump);
                     countdown.classList.add("is-stopped");
-                    text.textContent = "Automatic redirect stopped.";
+                    tuxbank.focus();
                     window.va("event", { name: "open_tuxbank_canceled" });
                 });
             }
