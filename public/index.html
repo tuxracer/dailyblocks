@@ -777,6 +777,25 @@
 
             const tuxbank = document.getElementById("open-tuxbank");
 
+            /*
+             * The campaign is written down once, on the button, because that
+             * is the one link whose tags have to survive a visitor with no
+             * JavaScript. Every other way off this page copies those tags and
+             * overrides utm_content, which is the tag that names the way out.
+             * The project links need them most: they carry rel="noreferrer",
+             * so the tags are the only signal that reaches the other site.
+             */
+            const campaign = new URL(tuxbank.href).searchParams;
+
+            const tagged = (href, content) => {
+                const url = new URL(href);
+                for (const [tag, value] of campaign) {
+                    url.searchParams.set(tag, value);
+                }
+                url.searchParams.set("utm_content", content);
+                return url.href;
+            };
+
             tuxbank.addEventListener("click", () => {
                 window.va("event", {
                     name: "open_tuxbank",
@@ -798,14 +817,9 @@
                 const text = document.getElementById("countdown-text");
                 const cancel = document.getElementById("countdown-cancel");
 
-                /*
-                 * The button's destination, relabeled. utm_content is the one
-                 * tag that separates waiting from clicking, so tuxbank's
-                 * analytics can tell the two apart; every other tag is read
-                 * off the link so the campaign is written down once.
-                 */
-                const target = new URL(tuxbank.href);
-                target.searchParams.set("utm_content", "countdown");
+                // The button's destination, relabeled as the waited-out way
+                // there rather than the clicked one.
+                const target = tagged(tuxbank.href, "countdown");
 
                 let remaining = COUNTDOWN_SECONDS;
 
@@ -820,7 +834,7 @@
                         name: "open_tuxbank",
                         data: { trigger: "countdown" },
                     });
-                    location.replace(target.href);
+                    location.replace(target);
                 }, COUNTDOWN_SECONDS * 1_000);
 
                 cancel.addEventListener("click", () => {
@@ -841,6 +855,8 @@
             }
 
             for (const project of document.querySelectorAll("[data-project]")) {
+                project.href = tagged(project.href, "project-list");
+
                 project.addEventListener("click", () => {
                     window.va("event", {
                         name: "other_project_click",
