@@ -39,9 +39,6 @@
                 --accent-hover: #ff6900;
                 --accent-active: #ca3500;
                 --accent-badge: #f54a00;
-
-                --panel-bg: rgb(245 74 0 / 0.04);
-                --panel-line: rgb(245 74 0 / 0.16);
             }
 
             @media (prefers-color-scheme: dark) {
@@ -57,9 +54,6 @@
                     --arrow-hover: #d1d5dc;
 
                     --accent-badge: #ff8904;
-
-                    --panel-bg: rgb(255 137 4 / 0.05);
-                    --panel-line: rgb(255 137 4 / 0.2);
                 }
             }
 
@@ -204,140 +198,11 @@
                 text-wrap: balance;
             }
 
-            .note a,
-            .lede a {
+            .note a {
                 text-decoration: underline;
                 text-decoration-color: var(--underline);
                 text-underline-offset: 4px;
                 transition: color 150ms;
-            }
-
-            html:not(.is-handoff) .view-handoff {
-                display: none;
-            }
-
-            .is-handoff .view-root {
-                display: none;
-            }
-
-            .destination {
-                margin-top: 2rem;
-                padding: 1.5rem 1.25rem 1.25rem;
-                border: 1px solid var(--panel-line);
-                border-radius: 1rem;
-                background-color: var(--panel-bg);
-                text-align: center;
-            }
-
-            .destination-name {
-                margin-top: 0.625rem;
-                font-family: var(--font-mono);
-                font-size: 1.125rem;
-                font-weight: 600;
-                letter-spacing: -0.01em;
-            }
-
-            .destination-description {
-                margin-top: 0.5rem;
-                font-size: 0.875rem;
-                color: var(--text-body);
-                text-wrap: pretty;
-            }
-
-            .destination .cta {
-                width: 100%;
-                margin-top: 1.25rem;
-            }
-
-            .countdown {
-                display: none;
-                align-items: center;
-                justify-content: center;
-                gap: 0.625rem;
-                margin-top: 1.25rem;
-            }
-
-            .is-counting .countdown {
-                display: flex;
-            }
-
-            .countdown-dial {
-                position: relative;
-                display: flex;
-                flex-shrink: 0;
-                align-items: center;
-                justify-content: center;
-                width: 2.25rem;
-                height: 2.25rem;
-            }
-
-            .countdown-dial svg {
-                position: absolute;
-                inset: 0;
-                width: 100%;
-                height: 100%;
-                transform: rotate(-90deg);
-            }
-
-            .countdown-dial circle {
-                fill: none;
-                stroke-width: 2;
-            }
-
-            .countdown-track {
-                stroke: var(--rule);
-            }
-
-            .countdown-sweep {
-                stroke: var(--accent-badge);
-                stroke-linecap: round;
-                stroke-dasharray: 106.81;
-            }
-
-            .is-counting .countdown-sweep {
-                animation: countdown 10s linear forwards;
-            }
-
-            @keyframes countdown {
-                from {
-                    stroke-dashoffset: 0;
-                }
-
-                to {
-                    stroke-dashoffset: 106.81;
-                }
-            }
-
-            .countdown-value {
-                position: relative;
-                font-family: var(--font-mono);
-                font-size: 0.875rem;
-                font-variant-numeric: tabular-nums;
-                color: var(--text);
-            }
-
-            .countdown-text {
-                font-size: 0.8125rem;
-                color: var(--text-secondary);
-            }
-
-            .countdown-cancel {
-                margin: 0;
-                padding: 0;
-                border: 0;
-                background: none;
-                color: var(--text-secondary);
-                font: inherit;
-                font-size: 0.8125rem;
-                text-decoration: underline;
-                text-decoration-color: var(--underline);
-                text-underline-offset: 4px;
-                cursor: pointer;
-                transition: color 150ms;
-            }
-
-            .countdown.is-stopped {
-                display: none;
             }
 
             .projects {
@@ -403,10 +268,6 @@
                     width: auto;
                 }
 
-                .destination {
-                    padding: 1.75rem 1.5rem 1.5rem;
-                }
-
                 .projects {
                     margin-top: 5rem;
                 }
@@ -417,8 +278,7 @@
                     background-color: var(--accent-hover);
                 }
 
-                .note a:hover,
-                .countdown-cancel:hover {
+                .note a:hover {
                     color: var(--text-hover);
                 }
 
@@ -433,23 +293,11 @@
             }
 
             @media (prefers-reduced-motion: reduce) {
-                .is-counting .countdown-sweep {
-                    animation-timing-function: steps(10, start);
-                }
-
                 .project:hover svg {
                     transform: none;
                 }
             }
         </style>
-
-        <script>
-            if (location.pathname === "/") {
-                document.documentElement.classList.add("is-counting");
-            } else {
-                document.documentElement.classList.add("is-handoff");
-            }
-        </script>
     </head>
 
     <body>
@@ -475,25 +323,14 @@
 
                     <p class="label">dailyblocks</p>
 
-                    <h1 class="headline view-handoff">Watch it on Reddit</h1>
-                    <h1 class="headline view-root">This player is retired</h1>
+                    <h1 class="headline">Watch it on Reddit</h1>
 
-                    <p class="lede view-handoff">
-                        Every video is still up, just not here.
-                    </p>
-                    <p class="lede view-root">
-                        Reddit shut off the public API dailyblocks ran on, so
-                        it can no longer load videos. Everything it played is
-                        still up on
-                        <a href="https://www.reddit.com" rel="noreferrer"
-                            >reddit.com</a
-                        >.
-                    </p>
+                    <p class="lede">Every video is still up, just not here.</p>
 
                     <a
-                        class="cta view-handoff"
+                        class="cta"
                         id="continue-on-reddit"
-                        href="https://www.reddit.com"
+                        href="https://www.reddit.com/r/videos"
                         rel="noreferrer"
                     >
                         Continue on Reddit
@@ -511,7 +348,7 @@
                         </svg>
                     </a>
 
-                    <p class="note view-handoff">
+                    <p class="note">
                         dailyblocks is retired. Reddit shut off the API it ran
                         on.
                         <a
@@ -524,86 +361,13 @@
                     </p>
                 </div>
 
-                <div class="destination view-root">
-                    <p class="label">What I'm building now</p>
-                    <p class="destination-name">tuxbank.app</p>
-                    <p class="destination-description">
-                        A month calendar for the money going in and out. It
-                        runs entirely in your browser, keeps your data on your
-                        device, and works offline.
-                    </p>
-
-                    <a
-                        class="cta"
-                        id="open-tuxbank"
-                        href="https://tuxbank.app/?utm_source=dailyblocks.tv&amp;utm_medium=referral&amp;utm_campaign=dailyblocks-retirement&amp;utm_content=button"
-                    >
-                        Open tuxbank.app
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            aria-hidden="true"
-                        >
-                            <path d="M5 12h13" />
-                            <path d="m12 5 7 7-7 7" />
-                        </svg>
-                    </a>
-
-                    <div class="countdown" id="countdown">
-                        <span class="countdown-dial" aria-hidden="true">
-                            <svg viewBox="0 0 40 40">
-                                <circle
-                                    class="countdown-track"
-                                    cx="20"
-                                    cy="20"
-                                    r="17"
-                                />
-                                <circle
-                                    class="countdown-sweep"
-                                    cx="20"
-                                    cy="20"
-                                    r="17"
-                                />
-                            </svg>
-                            <span class="countdown-value" id="countdown-value"
-                                >10</span
-                            >
-                        </span>
-                        <span class="countdown-text">
-                            Taking you there automatically
-                        </span>
-                        <button
-                            class="countdown-cancel"
-                            id="countdown-cancel"
-                            type="button"
-                        >
-                            Cancel
-                        </button>
-                    </div>
-                </div>
-
-                <p class="note view-root">
-                    Curious how dailyblocks worked?
-                    <a
-                        class="source-on-github"
-                        href="https://github.com/tuxracer/dailyblocks"
-                        target="_blank"
-                        rel="noreferrer"
-                        >Source on GitHub</a
-                    >
-                </p>
-
-                <div class="projects view-handoff">
+                <div class="projects">
                     <h2 class="label">More things I made</h2>
                     <ul>
                         <li>
                             <a
                                 class="project"
-                                href="https://dashradar.app"
+                                href="https://dashradar.app/?utm_source=dailyblocks.tv&amp;utm_medium=referral&amp;utm_campaign=dailyblocks-retirement&amp;utm_content=project-list"
                                 target="_blank"
                                 data-project="dashradar.app"
                             >
@@ -633,7 +397,7 @@
                         <li>
                             <a
                                 class="project"
-                                href="https://tuxbank.app"
+                                href="https://tuxbank.app/?utm_source=dailyblocks.tv&amp;utm_medium=referral&amp;utm_campaign=dailyblocks-retirement&amp;utm_content=project-list"
                                 target="_blank"
                                 data-project="tuxbank.app"
                             >
@@ -671,22 +435,19 @@
 
         <script type="module">
             const REDDIT_URL = "https://www.reddit.com";
-            const COUNTDOWN_SECONDS = 10;
+            const DEFAULT_SUBREDDIT = "videos";
 
             const ROUTE =
                 /^\/r\/(?:(?<subreddit>\w{1,50})\/comments\/(?<post>\w{1,20})(?:\/|$)|(?<subreddit>\w{1,50})\/?$)/;
 
-            const { subreddit = null, post = null } =
+            const { subreddit = DEFAULT_SUBREDDIT, post = null } =
                 ROUTE.exec(location.pathname)?.groups ?? {};
 
-            const destination = post
-                ? `${REDDIT_URL}/r/${subreddit}/comments/${post}`
-                : subreddit
-                  ? `${REDDIT_URL}/r/${subreddit}`
-                  : REDDIT_URL;
-
             const cta = document.getElementById("continue-on-reddit");
-            cta.href = destination;
+
+            cta.href = post
+                ? `${REDDIT_URL}/r/${subreddit}/comments/${post}`
+                : `${REDDIT_URL}/r/${subreddit}`;
 
             cta.addEventListener("click", () => {
                 window.va("event", {
@@ -695,69 +456,13 @@
                 });
             });
 
-            const tuxbank = document.getElementById("open-tuxbank");
-
-            const campaign = new URL(tuxbank.href).searchParams;
-
-            const tagged = (href, content) => {
-                const url = new URL(href);
-                for (const [tag, value] of campaign) {
-                    url.searchParams.set(tag, value);
-                }
-                url.searchParams.set("utm_content", content);
-                return url.href;
-            };
-
-            tuxbank.addEventListener("click", () => {
-                window.va("event", {
-                    name: "open_tuxbank",
-                    data: { trigger: "button" },
-                });
-            });
-
-            if (document.documentElement.classList.contains("is-counting")) {
-                const countdown = document.getElementById("countdown");
-                const value = document.getElementById("countdown-value");
-                const cancel = document.getElementById("countdown-cancel");
-
-                const target = tagged(tuxbank.href, "countdown");
-
-                let remaining = COUNTDOWN_SECONDS;
-
-                const ticker = setInterval(() => {
-                    remaining -= 1;
-                    value.textContent = String(Math.max(remaining, 0));
-                }, 1_000);
-
-                const jump = setTimeout(() => {
-                    clearInterval(ticker);
-                    window.va("event", {
-                        name: "open_tuxbank",
-                        data: { trigger: "countdown" },
-                    });
-                    location.replace(target);
-                }, COUNTDOWN_SECONDS * 1_000);
-
-                cancel.addEventListener("click", () => {
-                    clearInterval(ticker);
-                    clearTimeout(jump);
-                    countdown.classList.add("is-stopped");
-                    tuxbank.focus();
-                    window.va("event", { name: "open_tuxbank_canceled" });
-                });
-            }
-
-            for (const link of document.querySelectorAll(
-                ".source-on-github",
-            )) {
+            for (const link of document.querySelectorAll(".source-on-github")) {
                 link.addEventListener("click", () => {
                     window.va("event", { name: "source_on_github" });
                 });
             }
 
             for (const project of document.querySelectorAll("[data-project]")) {
-                project.href = tagged(project.href, "project-list");
-
                 project.addEventListener("click", () => {
                     window.va("event", {
                         name: "other_project_click",
